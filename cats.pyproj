@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{cbd9616e-66c9-408c-a7c7-46933480a82c}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile />
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <InterpreterId>{f7e883ae-1444-4f14-92b6-249ab4bc9dcd}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <IsWindowsApplication>False</IsWindowsApplication>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Compile Include="cats\__init__.py" />
+    <Compile Include="cats\readers\competition.py" />
+    <Compile Include="cats\readers\__init__.py" />
+    <Compile Include="cats\test\readerstest.py" />
+    <Compile Include="cats\test\__init__.py" />
+    <Content Include=".gitignore" />
+    <Content Include="data\Curriculum_based_Course_timetabling\curriculumtechreport.pdf" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp1.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp2.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp3.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp4.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp5.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp6.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp7.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp8.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp9.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp10.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp11.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp12.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp13.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp14.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp15.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp16.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp17.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp18.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp19.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp20.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\comp21.ctt" />
+    <Content Include="data\Curriculum_based_Course_timetabling\datasets\get.sh" />
+    <Content Include="requirements.txt" />
+    <Content Include="docs\cat_meme.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="cats" />
+    <Folder Include="cats\readers" />
+    <Folder Include="cats\test" />
+    <Folder Include="data\" />
+    <Folder Include="data\Curriculum_based_Course_timetabling\" />
+    <Folder Include="data\Curriculum_based_Course_timetabling\datasets\" />
+    <Folder Include="docs" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="venv\">
+      <Id>{f7e883ae-1444-4f14-92b6-249ab4bc9dcd}</Id>
+      <BaseInterpreter>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</BaseInterpreter>
+      <Version>2.7</Version>
+      <Description>venv (Python 2.7)</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <LibraryPath>Lib\</LibraryPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+    </Interpreter>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>
