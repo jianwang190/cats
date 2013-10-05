@@ -3,6 +3,9 @@ cats
 
 Comparison of Algorithms for Timetable Scheduling
 
+##Na dobry początek
+Piszemy z ograniczeniami konkursowymi, później rozszerzamy o typy zajęć i typy sal. Korzystamy z pythona 2.7.
+
 
 ![cats](/docs/cat_meme.jpg "A cat.")
 

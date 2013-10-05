@@ -27,14 +27,14 @@ class Reader(object):
 
 
 class CompetitionReader(Reader):
-    def __init__(self, instanceNum): 
+    def __init__(self, instanceNum):
         Reader.__init__(self)
         self.meta = {}
-        with open(u"..\..\data\Curriculum_based_Course_timetabling\datasets\comp" + str(instanceNum) + ".ctt") as f:
+        print os.getcwd()
+        with open(u"data/Curriculum_based_Course_timetabling/datasets/comp" + str(instanceNum) + ".ctt") as f:
             buffer = map(lambda x: re.sub("\\\n", "", x), f.readlines())
             it = 0
             while it<len(buffer):
-                
                 s = buffer[it].split(':')
                 if len(s)<2:
                     break
@@ -44,7 +44,6 @@ class CompetitionReader(Reader):
                     self.meta[s[0].lower()] = int(s[1])
                 it+=1
 
-           
             it+=2
             while it<len(buffer):
                 s = buffer[it].split(' ')
