@@ -1,7 +1,7 @@
 import os
 
-from inputDataStructures import Course, Room, Curriculum, Constraint
-from data import Data
+from cats.utils.inputDataStructures import Course, Room, Curriculum, Constraint
+from cats.utils.data import Data
 
 
 class CompetitionReader(object):

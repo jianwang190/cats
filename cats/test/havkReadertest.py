@@ -1,5 +1,5 @@
 import unittest
-from cats.utils.competitionReader import CompetitionReader
+from cats.readers.competitionReader import CompetitionReader
 from cats.utils.data import Data
 
 class ReadTest(unittest.TestCase):
