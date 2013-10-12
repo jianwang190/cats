@@ -1,4 +1,5 @@
 import unittest
+import os
 from cats.tabuSearch.tabuSearch import TimeTable
 from cats.readers.competitionReader import CompetitionReader
 from random import randint
@@ -35,5 +36,11 @@ class TabuSearchTest(unittest.TestCase):
         self.assertEqual(counter, 26)
         counter = self.t.availableNumberOfPeriods(self.data.constraints, 'c0001')
         self.assertEqual(counter, 21)
+
+    def test_createNeighbourhoodList(self):
+        neighbourhoodList = self.t.createNeighbourhoodList(self.data.curricula, self.data.courses)
+        path = u"data/TabuSearchDataTests/neighbourhoodCourses"
+        f = open(path, "r")
+        self.assertEqual(str(neighbourhoodList), f.readline().strip())
 if __name__=="__main__":
     unittest.main()
