@@ -10,7 +10,7 @@ class ReadTest(unittest.TestCase):
     def test_header(self):
         self.assertEquals(self.data.instanceName, "Fis0506-1")
         self.assertEquals(self.data.daysNum, 5)
-        self.assertEquals(self.data.periods_per_day, 6)
+        self.assertEquals(self.data.periodsPerDay, 6)
 
     def test_courses(self):
         self.assertEquals(self.data.courses[0].id, 'c0001')
