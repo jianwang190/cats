@@ -9,8 +9,7 @@ class CellOfTimeTable(object):
 
 class TimeTable(object):
     def __init__(self, daysNum, periodsPerDayNum):
-	    # courseId roomId
-    	self.periodsPerDayNum = periodsPerDayNum
+        self.periodsPerDayNum = periodsPerDayNum
         self.daysNum = daysNum
         self.timeSlots = range(self.daysNum * self.periodsPerDayNum)
         self.timeTable = {x : [] for x in self.timeSlots}
@@ -36,14 +35,17 @@ class TimeTable(object):
                 self.neighbourhoodList[i[1]].add(i[0])
         return self.neighbourhoodList
 
+    """Get key to slot in timetable"""
     def getKey(self, day, day_period):
         key = day * self.periodsPerDayNum + day_period
         return key
 
+    """Map day and period to key in timetable"""
     def mapKeys(self,constraint):
         key = self.getKey(constraint.day, constraint.dayPeriod)
         return key
 
+    """Create list of rooms for course with appropriate capacity of room for course (considering number of students attending course)"""
     def createListOfRooms(self, roomList, courseStudentsNum):
         listOfRooms = set([r.id for r in roomList if (r.capacity >= courseStudentsNum)])
         return listOfRooms
@@ -53,6 +55,7 @@ class TimeTable(object):
         roomsForCourses = {x.id: self.createListOfRooms(roomList, x.studentsNum) for x in courseList}
         return roomsForCourses
 
+    """Get list of constraints for course"""
     def getKeyConstraintsOfCourse(self, constraintsList, courseId):
         keysConstraintsOfCourse = map(self.mapKeys, [ x for x in constraintsList if x.id == courseId])
         return keysConstraintsOfCourse
@@ -69,7 +72,9 @@ class TimeTable(object):
 
 
     """Count number of available slots for course, function considers neighourhood, count available positions - periods (slot, room)"""
-    def availableNumberOfPeriods(self, constraintsList, courseId):
+    """availablePeriodsNum - the total number of available periods for course, availablePeriods - list of available periods"""
+    """availablePairsNum - the total naumber of available positions (period and room pairs), availablePairs - list of available pairs (period- room)"""
+    def availablePeriodsRooms(self, constraintsList, courseId):
         keysConstraintsOfCourse = set(self.getKeyConstraintsOfCourse(constraintsList, courseId))
         availablePeriods = set()
         availablePairs = {}
