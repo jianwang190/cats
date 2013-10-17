@@ -1,6 +1,6 @@
 import unittest
 import os
-from cats.tabuSearch.tabuSearch import TimeTable, CellOfTimeTable
+from cats.tabuSearch.tabuSearch import TimeTable, CellOfTimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionReader
 from random import randint
 from cats.utils.data import Data
@@ -9,13 +9,12 @@ class TabuSearchTest(unittest.TestCase):
     def setUp(self):
         self.c = CompetitionReader()
         self.data = self.c.readInstance(1)
-        self.t = TimeTable(self.data.daysNum, self.data.periods_per_day)
-        self.t.neighbourhoodList = self.t.createNeighbourhoodList(self.data.curricula, self.data.courses)
-        self.t.roomsIdListForCourses = self.t.getRoomsIdForCourses(self.data.rooms, self.data.courses)
+        self.t = TimeTableFactory.getTimeTable(self.data)
+
     def test_initial(self):
         self.assertEquals(len(self.t.getTimeTable()), 30)
         day = randint(0, self.data.daysNum - 1)
-        day_period = randint(0, self.data.periods_per_day - 1)
+        day_period = randint(0, self.data.periodsPerDay - 1)
         self.assertEquals(self.t.getValueSlot(day, day_period), [])
 
     def test_getKeyConstraintsOfCourse(self):

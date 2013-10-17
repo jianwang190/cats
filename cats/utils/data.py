@@ -8,7 +8,9 @@ class Data(object):
         self.constraints = []
         self.instanceName = ""
         self.daysNum = 0
-        self.periodsPerDayNum = 0
+        self.periodsPerDay = 0
+    def __str__(self):
+        return " ".join([str(self.daysNum), str(self.periodsPerDay)])
 
 
 

@@ -1,5 +1,4 @@
 import itertools
-from cats.utils.inputDataStructures import Course, Room, Constraint, Curriculum
 from cats.utils.data import Data
 
 class CellOfTimeTable(object):
@@ -7,21 +6,28 @@ class CellOfTimeTable(object):
         self.courseId = courseId
         self.roomId = roomId
 
-class TimeTable(object):
-    def __init__(self, daysNum, periodsPerDayNum):
-        self.periodsPerDayNum = periodsPerDayNum
-        self.daysNum = daysNum
-        self.timeSlots = range(self.daysNum * self.periodsPerDayNum)
-        self.timeTable = {x : [] for x in self.timeSlots}
-        self.neighbourhoodList = {}
-        self.roomsIdListForCourses = {}
+class TimeTableFactory(object):
+    @classmethod
+    def getTimeTable(self, data):
+        t = TimeTable()
+        t.periodsPerDay = data.periodsPerDay
+        t.daysNum = data.daysNum
+        t.timeSlots = range(t.daysNum * t.periodsPerDay)
+        t.timeTable = {x : [] for x in t.timeSlots}
+        t.neighbourhoodList = t.createNeighbourhoodList(data.curricula, data.courses)
+        t.roomsIdListForCourses = t.getRoomsIdForCourses(data.rooms, data.courses)
 
+
+        return t
+
+
+class TimeTable(object):
     def getTimeTable(self):
         return self.timeTable
 
     """Get value of slot from timetable"""
     def getValueSlot(self, day, day_period):
-        key = day * self.periodsPerDayNum + day_period
+        key = day * self.periodsPerDay + day_period
         return self.timeTable[key]
 
     """Create neighourhood list for courses regarding regarding curriculum lists"""
@@ -37,7 +43,7 @@ class TimeTable(object):
 
     """Get key to slot in timetable"""
     def getKey(self, day, day_period):
-        key = day * self.periodsPerDayNum + day_period
+        key = day * self.periodsPerDay + day_period
         return key
 
     """Map day and period to key in timetable"""
