@@ -22,7 +22,6 @@ class CompetitionReader(object):
         self.getRooms()
         self.getCurricula()
         self.getConstraints()
-
         return self.data
 
     def readFile(self, instanceNr):
@@ -39,7 +38,7 @@ class CompetitionReader(object):
 
         self.data.instanceName = self.buffer[0].strip('Name: ')
         self.data.daysNum = int(self.buffer[3].strip('Days: '))
-        self.data.periods_per_day = int(self.buffer[4].strip('Periods_per_day: '))
+        self.data.periodsPerDay = int(self.buffer[4].strip('Periods_per_day: '))
 
     def getCourses(self):
         """Get courses from buffer"""
@@ -72,7 +71,7 @@ class CompetitionReader(object):
 
         while self.buffer[index] != '':
             s = self.buffer[index].split()
-            print s
+            #print s
             curriculum = Curriculum(s[0], int(s[1]), s[2:])
             self.data.curricula.append(curriculum)
 
