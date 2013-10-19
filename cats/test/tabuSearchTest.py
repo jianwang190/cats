@@ -1,6 +1,6 @@
 import unittest
 import os
-from cats.tabuSearch.tabuSearch import TimeTable, CellOfTimeTable, TimeTableFactory
+from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionReader
 from random import randint
 from cats.utils.data import Data
