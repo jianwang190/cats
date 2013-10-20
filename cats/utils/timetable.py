@@ -79,7 +79,7 @@ class TimeTable(object):
 
     """Count number of available slots for course, function considers neighourhood, count available positions - periods (slot, room)"""
     """availablePeriodsNum - the total number of available periods for course, availablePeriods - list of available periods"""
-    """availablePairsNum - the total naumber of available positions (period and room pairs), availablePairs - list of available pairs (period- room)"""
+    """availablePairsNum - the total number of available positions (period and room pairs), availablePairs - list of available pairs (period- room)"""
     def availablePeriodsRooms(self, constraintsList, courseId):
         keysConstraintsOfCourse = set(self.getKeyConstraintsOfCourse(constraintsList, courseId))
         availablePeriods = set()
@@ -92,5 +92,16 @@ class TimeTable(object):
 
         availablePairsNum = sum([len(availablePairs[x]) for x in availablePairs])
 
-        return {'availablePeriodsNum' : len(availablePeriods), 'availablePairsNum': availablePairsNum, 'availablePeriods' : availablePeriods, 'availablePairs' : availablePairs}
+        return {'availablePeriodsNum' : len(availablePeriods), \
+                'availablePairsNum': availablePairsNum, \
+                'availablePeriods' : availablePeriods, \
+                'availablePairs' : availablePairs }
+
+    def assignedLectures(self, courseId):
+        sum = []
+        for slot, cells in self.getTimeTable().iteritems():
+            sum += filter(lambda x: x.courseId == courseId, cells)
+        return sum
+
+
 

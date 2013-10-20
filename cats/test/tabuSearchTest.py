@@ -146,5 +146,25 @@ class TabuSearchTest(unittest.TestCase):
         self.assertEqual(result['period'], True)
         self.assertEqual(result['unavailableRooms'], set(['B', 'C']))
 
+    def test_assignedLectures(self):
+
+        self.t.timeTable[0].append(CellOfTimeTable('c0001', 'B'))
+        self.t.timeTable[0].append(CellOfTimeTable('c0002', 'C'))
+        self.t.timeTable[1].append(CellOfTimeTable('c0030', 'B'))
+        self.t.timeTable[2].append(CellOfTimeTable('c0030', 'C'))
+        self.t.timeTable[2].append(CellOfTimeTable('c0001', 'B'))
+        self.t.timeTable[3].append(CellOfTimeTable('c0031', 'B'))
+        self.t.timeTable[4].append(CellOfTimeTable('c0004', 'S'))
+        self.t.timeTable[4].append(CellOfTimeTable('c0031', 'B'))
+        self.t.timeTable[5].append(CellOfTimeTable('c0004', 'C'))
+
+        courseId = 'c0030'
+        result = self.t.assignedLectures(courseId)
+        self.assertEquals(len(result), 2)
+        # check if all selected assignments match courseId
+        self.assertTrue(all(map(lambda x: x.courseId==courseId, result)))
+        self.assertSequenceEqual(map(lambda x: x.roomId, result), ['B', 'C'])
+
+
 if __name__=="__main__":
     unittest.main()
