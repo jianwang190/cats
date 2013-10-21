@@ -103,5 +103,9 @@ class TimeTable(object):
             sum += filter(lambda x: x.courseId == courseId, cells)
         return sum
 
+    """ returns number of conflicting courses """
+    """ assumes all conflicts are stored in neighbourhoodList """
+    def conflictingCourses(self, courseId):
+        return len(self.neighbourhoodList[courseId])
 
 
