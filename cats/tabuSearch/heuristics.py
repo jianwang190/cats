@@ -1,4 +1,4 @@
-from cats.utils.timetable import TimeTableFactory
+from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
 import math
 
 
@@ -42,6 +42,29 @@ def getNextCourse(partialTimetable, data):
     else:
         return selectedStage1[0]
 
+"""TODO: Test the function, not checked if working properly, ADD curriculumCompactness, RoomStability"""
+def softConstraints(partialTimetable, data, courseId, period, roomId, curId):
 
+    partialTimetable[period].append(CellOfTimeTable(courseId, roomId, curId))
 
+    penalty = 0
+    dataCourse = [c for c in data.courses if (c.id == courseId)]
+    roomCapacity = ([r.capacity for r in data.rooms if (r.id == roomId)])
+
+    if(dataCourse.studentsNum > roomCapacity):
+        penalty += roomCapacity - dataCourse.studentsNum
+
+    workingDaysSet = set()
+    totalNumberLectures = 0;
+    for key in partialTimetable.keys():
+        for cell in partialTimetable[key]:
+            if(cell.courseId == courseId and cell.curId == curId):
+                ++totalNumberLectures
+                workingDaysSet.add(key / data.periodsPerDay)
+    daysNum = totalNumberLectures - len(workingDaysSet)
+    workingDaysNumPartial = dataCourse.lectureNum - totalNumberLectures + daysNum
+    if(workingDaysNumPartial < dataCourse.minWorkingDays):
+        penalty += 5 * (dataCourse.minWorkingDays - workingDaysNumPartial)
+
+    return penalty
 
