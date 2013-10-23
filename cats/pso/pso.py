@@ -7,7 +7,7 @@ class PSO(object):
     def __init__(self, data):
         self.data = data
         self.particles = []
-        self.globalBest =
+        self.globalBest = None
         self.evaluationFunction = EvaluationFunction()
 
     def run(self):
