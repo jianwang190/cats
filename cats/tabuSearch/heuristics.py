@@ -13,7 +13,6 @@ def costFunctionStage2(partialTimetable, data, courseId):
     aps = partialTimetable.availablePeriodsRooms(data.constraints, courseId)
     cx = map(lambda x: x.id, data.courses).index(courseId)
     nl = data.courses[cx].lectureNum - len(partialTimetable.assignedLectures(courseId))
-
     return float(aps["availablePairsNum"])/math.sqrt(nl)
 
 
