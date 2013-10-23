@@ -28,22 +28,16 @@ class TabuSearchTest(unittest.TestCase):
         self.assertEqual(counter, 30)
 
     def test_availablePeriodsRooms2(self):
-        self.t.timeTable[0].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[1].append(CellOfTimeTable('c0002', 'B'))
-        self.t.timeTable[2].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[24].append(CellOfTimeTable('c0001', 'B'))
+        assignedList = [(0, 'c0001', 'B'), (1, 'c0002', 'B'), (2, 'c0001', 'B'), (24, 'c0001', 'B') ]
+        self.t.addDataToTimetable(assignedList)
         counter = self.t.availablePeriodsRooms(self.data.constraints, 'c0001')['availablePeriodsNum']
         self.assertEqual(counter, 21)
         counter = self.t.availablePeriodsRooms(self.data.constraints, 'c0002')['availablePeriodsNum']
         self.assertEqual(counter, 26)
 
     def test_availablePeriodsRooms3(self):
-        self.t.timeTable[0].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[1].append(CellOfTimeTable('c0002', 'B'))
-        self.t.timeTable[1].append(CellOfTimeTable('c0014', 'C'))
-        self.t.timeTable[3].append(CellOfTimeTable('c0014', 'C'))
-        self.t.timeTable[2].append(CellOfTimeTable('c0004', 'C'))
-        self.t.timeTable[24].append(CellOfTimeTable('c0001', 'B'))
+        assignedList = [(0, 'c0001', 'B'), (1, 'c0002', 'B'), (1, 'c0014', 'C'), (3, 'c0014', 'C'),(2, 'c0004', 'C'), (24, 'c0001', 'B') ]
+        self.t.addDataToTimetable(assignedList)
         counter = self.t.availablePeriodsRooms(self.data.constraints, 'c0001')['availablePeriodsNum']
         self.assertEqual(counter, 21)
         counter = self.t.availablePeriodsRooms(self.data.constraints, 'c0002')['availablePeriodsNum']
@@ -67,6 +61,7 @@ class TabuSearchTest(unittest.TestCase):
         self.assertEqual(self.t.roomsIdListForCourses['c0030'], set(['B', 'C', 'F', 'G', 'S']))
         self.assertEqual(self.t.roomsIdListForCourses['c0032'], set(['B', 'C']))
         self.assertEqual(self.t.roomsIdListForCourses['c0031'], set(['B', 'C', 'F', 'G', 'S']))
+
     def test_createNeighbourhoodList(self):
         neighbourhoodList = self.t.createNeighbourhoodList(self.data.curricula, self.data.courses)
         path = u"data/TabuSearchDataTests/neighbourhoodCourses"
@@ -77,11 +72,10 @@ class TabuSearchTest(unittest.TestCase):
     def test_availabeNumberOfPeriods4(self):
         periodsList = self.t.availablePeriodsRooms(self.data.constraints, 'c0001')['availablePeriods']
         self.assertEqual(periodsList, set(range(0, 24)))
-        self.t.timeTable[10].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[14].append(CellOfTimeTable('c0014', 'C'))
-        self.t.timeTable[14].append(CellOfTimeTable('c0030', 'B'))
-        self.t.timeTable[11].append(CellOfTimeTable('c0002', 'B'))
-        self.t.timeTable[12].append(CellOfTimeTable('c0004', 'B'))
+
+        assignedList = [(10, 'c0001', 'B'),(14, 'c0014', 'C'), (14, 'c0030', 'B'), (11, 'c0002', 'B'), (12, 'c0004', 'B') ]
+        self.t.addDataToTimetable(assignedList)
+
         result = self.t.availablePeriodsRooms(self.data.constraints, 'c0001')
 
         self.assertEqual(result['availablePeriods'], set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]))
@@ -111,11 +105,8 @@ class TabuSearchTest(unittest.TestCase):
         result = self.t.availablePeriodsRooms(self.data.constraints, 'c0033')
         self.assertEqual(result['availablePairsNum'], 38)
         self.assertEqual(result['availablePeriodsNum'], 20)
-        self.t.timeTable[1].append(CellOfTimeTable('c0030', 'B'))
-        self.t.timeTable[2].append(CellOfTimeTable('c0030', 'C'))
-        self.t.timeTable[2].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[3].append(CellOfTimeTable('c0031', 'B'))
-        self.t.timeTable[4].append(CellOfTimeTable('c0004', 'S'))
+        assignedList = [(1, 'c0030', 'B'), (2, 'c0030', 'C'), (2, 'c0001', 'B'), (3, 'c0031', 'B'), (4, 'c0004', 'S') ]
+        self.t.addDataToTimetable(assignedList)
         result = self.t.availablePeriodsRooms(self.data.constraints, 'c0030')
         self.assertEqual(result['availablePairsNum'], 136)
         self.assertEqual(result['availablePeriodsNum'], 28)
@@ -147,17 +138,8 @@ class TabuSearchTest(unittest.TestCase):
         self.assertEqual(result['unavailableRooms'], set(['B', 'C']))
 
     def test_assignedLectures(self):
-
-        self.t.timeTable[0].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[0].append(CellOfTimeTable('c0002', 'C'))
-        self.t.timeTable[1].append(CellOfTimeTable('c0030', 'B'))
-        self.t.timeTable[2].append(CellOfTimeTable('c0030', 'C'))
-        self.t.timeTable[2].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[3].append(CellOfTimeTable('c0031', 'B'))
-        self.t.timeTable[4].append(CellOfTimeTable('c0004', 'S'))
-        self.t.timeTable[4].append(CellOfTimeTable('c0031', 'B'))
-        self.t.timeTable[5].append(CellOfTimeTable('c0004', 'C'))
-
+        assignedList = [(0, 'c0001', 'B'), (0, 'c0002', 'C'), (1, 'c0030', 'B'),(2, 'c0030', 'C'), (2, 'c0001', 'B'), (3, 'c0031', 'B'), (4, 'c0004', 'S'), (4, 'c0031', 'B'), (5, 'c0004', 'C')]
+        self.t.addDataToTimetable(assignedList)
         courseId = 'c0030'
         result = self.t.assignedLectures(courseId)
         self.assertEquals(len(result), 2)

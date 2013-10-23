@@ -2,9 +2,10 @@ import itertools
 from cats.utils.data import Data
 
 class CellOfTimeTable(object):
-    def __init__(self, courseId = [], roomId = []):
+    def __init__(self, courseId = [], roomId = [], curId = []):
         self.courseId = courseId
         self.roomId = roomId
+        self.curId = curId
 
 class TimeTableFactory(object):
     @classmethod
@@ -108,4 +109,10 @@ class TimeTable(object):
     def conflictingCourses(self, courseId):
         return len(self.neighbourhoodList[courseId])
 
-
+    """Add data to timetable (period, courseId, roomId, curId - optional)"""
+    def addDataToTimetable(self, assignedList):
+        for a in assignedList:
+            if(len(a) < 4):
+                self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2]))
+            else:
+                self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2],a[3]))
