@@ -4,11 +4,12 @@ from copy import deepcopy
 
 
 class PSO(object):
-    def __init__(self, data):
+    def __init__(self, data, evaluationFunction):
         self.data = data
         self.particles = []
-        self.globalBest = None
-        self.evaluationFunction = EvaluationFunction()
+        self.globalBestSolution = None
+        self.evaluationFunction = evaluationFunction
+        self.timeTableFactory = TimetableFactory(data)
 
     def run(self):
         self.genParticles()
@@ -16,36 +17,36 @@ class PSO(object):
         for i in range(conf.maxIterations):
             self.doIteration()
 
-        return self.globalBest
+        return self.globalBestSolution
 
     def genParticles(self):
         """Generate population of particles"""
 
         for i in range(conf.populationSize):
-            self.particles.append(Particle())
+            timetable = self.timeTableFactory.getRandomTimetable()
+            self.particles.append(Particle(timetable))
 
     def doIteration(self):
         """Do PSO iteration"""
 
         for particle in self.particles:
-            particle.evaluate()
-            """
-                Napisz funkcje do oceniania
-                ktora korzysta z pola penalty
-                klasy timetable. Jak penalty == None
-                to oblicza u ustawia to pole.
-                Najpeliej wrzuc ta funkcje do klasy
-                timetable.
-            """
-            particle.updateLocalBest()
-            self.updateGlobalBest(particle)
-            particle.produceNewSolution(self.globalBest)
+            self.evaluate(particle)
+            particle.updateLocalBestSoluton()
+            self.updateGlobalBestSoluton(particle)
+            particle.produceNewSolution(self.globalBestSolution)
 
-    def updateGlobalBest(self, particle):
-        """Update local best solution of particle"""
+    def evaluate(self, particle):
+        """Evaluate particle"""
+        particle.actual.penalty = self.evaluationFunction.evaluate(particle.actual)
 
-        if particle.best.penalty < self.globalBest.penalty:
-            self.globalBest = deepcopy(particle.best)
+    def updateGlobalBestSoluton(self, particle):
+        """Update global best solution"""
+
+        if self.globalBestSolution == None:
+            self.globalBestSolution = particle.best
+
+        if particle.bestSoluton.penalty < self.globalBestSolution.penalty:
+            self.globalBestSolution = deepcopy(particle.best)
 
 
 
