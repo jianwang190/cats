@@ -28,7 +28,7 @@ class TabuSearchTest(unittest.TestCase):
         self.assertEqual(counter, 30)
 
     def test_availablePeriodsRooms2(self):
-        assignedList = [(0, 'c0001', 'B'), (1, 'c0002', 'B'), (2, 'c0001', 'B'), (24, 'c0001', 'B') ]
+        assignedList = [(0, 'c0001', 'B'), (1, 'c0002', 'B'), (2, 'c0001', 'B'), (24, 'c0001', 'B')]
         self.t.addDataToTimetable(assignedList)
         counter = self.t.availablePeriodsRooms(self.data.constraints, 'c0001')['availablePeriodsNum']
         self.assertEqual(counter, 21)
