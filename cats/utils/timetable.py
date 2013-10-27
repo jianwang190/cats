@@ -2,10 +2,10 @@ import itertools
 from cats.utils.data import Data
 
 class CellOfTimeTable(object):
-    def __init__(self, courseId = [], roomId = [], curId = []):
+    def __init__(self, courseId = [], roomId = [], curriculumId = []):
         self.courseId = courseId
         self.roomId = roomId
-        self.curId = curId
+        self.curriculumId = curriculumId
 
 class TimeTableFactory(object):
     @classmethod
