@@ -1,5 +1,6 @@
 import itertools
 from cats.utils.data import Data
+import collections
 
 class CellOfTimeTable(object):
     def __init__(self, courseId = [], roomId = [], curriculumId = []):
@@ -15,10 +16,8 @@ class TimeTableFactory(object):
         t.daysNum = data.daysNum
         t.timeSlots = range(t.daysNum * t.periodsPerDay)
         t.timeTable = {x : [] for x in t.timeSlots}
-        t.neighbourhoodList = t.createNeighbourhoodList(data.curricula, data.courses)
-        t.roomsIdListForCourses = t.getRoomsIdForCourses(data.rooms, data.courses)
-
-
+        t.neighbourhoodList = t.createNeighbourhoodList(data.getAllCurricula(), data.getAllCourses())
+        t.roomsIdListForCourses = t.getRoomsIdForCourses(data.getAllRooms(), data.getAllCourses())
         return t
 
 
@@ -35,8 +34,7 @@ class TimeTable(object):
     def createNeighbourhoodList(self, curriculumList, courseList):
         self.neighbourhoodList = {x.id : set([]) for x in courseList}
         for c in curriculumList:
-            comb = []
-            comb += itertools.combinations(c.members, 2)
+            comb = itertools.combinations(c.members, 2)
             for i in comb:
                 self.neighbourhoodList[i[0]].add(i[1])
                 self.neighbourhoodList[i[1]].add(i[0])
@@ -48,7 +46,7 @@ class TimeTable(object):
         return key
 
     """Map day and period to key in timetable"""
-    def mapKeys(self,constraint):
+    def mapKeys(self, constraint):
         key = self.getKey(constraint.day, constraint.dayPeriod)
         return key
 
@@ -116,3 +114,16 @@ class TimeTable(object):
                 self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2]))
             else:
                 self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2],a[3]))
+
+
+    def unfinishedCourses(self, data):
+        counts = collections.Counter( \
+            map(\
+                lambda x: x.courseId, \
+                sum(self.getTimeTable().values(), [])) \
+        )
+        """ data process """
+
+        return [x.id for x in \
+                filter(lambda x: data.getCourse(x.id).lectureNum>counts[x.id], data.getAllCourses())]
+

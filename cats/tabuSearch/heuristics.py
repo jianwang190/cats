@@ -3,17 +3,15 @@ import math
 
 
 def costFunctionStage1(partialTimetable, data, courseId):
-    apd = partialTimetable.availablePeriodsRooms(data.constraints, courseId)["availablePeriodsNum"]
-    cx = map(lambda x: x.id, data.courses).index(courseId)
-    nl = data.courses[cx].lectureNum - len(partialTimetable.assignedLectures(courseId))
+    apd = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriodsNum"]
+    nl = data.getCourse(courseId).lectureNum - len(partialTimetable.assignedLectures(courseId))
 
     return float(apd) / math.sqrt(nl)
 
 
 def costFunctionStage2(partialTimetable, data, courseId):
-    aps = partialTimetable.availablePeriodsRooms(data.constraints, courseId)
-    cx = map(lambda x: x.id, data.courses).index(courseId)
-    nl = data.courses[cx].lectureNum - len(partialTimetable.assignedLectures(courseId))
+    aps = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)
+    nl = data.getCourse(courseId).lectureNum - len(partialTimetable.assignedLectures(courseId))
     return float(aps["availablePairsNum"])/math.sqrt(nl)
 
 
@@ -22,7 +20,7 @@ def costFunctionStage2(partialTimetable, data, courseId):
 
 def getNextCourse(partialTimetable, data):
     courses = sorted([(x, costFunctionStage1(partialTimetable, data, x.id)) \
-                      for x in data.courses], \
+                      for x in data.getAllCourses()], \
                      key=lambda x: x[1], \
                      reverse=True)
 

@@ -19,10 +19,10 @@ def totalSoftConstraintsPenalty(partialTimetable, data, courseId, curriculumId):
 def penaltyRoomCapacity(data, courseId, roomIdList):
     penalty = 0
 
-    dataCourse = ([c for c in data.courses if (c.id == courseId)])[0]
+    dataCourse = ([c for c in data.getAllCourses() if (c.id == courseId)])[0]
     roomCapacityList = []
     for roomId in roomIdList:
-        for r in data.rooms:
+        for r in data.getAllRooms():
             if roomId == r.id:
                 roomCapacityList.append(r.capacity)
 
@@ -60,7 +60,7 @@ def softConstraintsPenalty(partialTimetable, data, courseId, curriculumId = None
     curriculumPeriodsList = []
     totalNumberLectures = 0
 
-    dataCourse = ([c for c in data.courses if (c.id == courseId)])[0]
+    dataCourse = ([c for c in data.getAllCourses() if (c.id == courseId)])[0]
 
     for key in partialTimetable.keys():
         for cell in partialTimetable[key]:
