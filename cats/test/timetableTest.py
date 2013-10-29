@@ -147,7 +147,7 @@ class TimetableTest(unittest.TestCase):
         result = self.t.assignedLectures(courseId)
         self.assertEquals(len(result), 2)
         # check if all selected assignments match courseId
-        self.assertTrue(all(map(lambda x: x.courseId==courseId, result)))
+        self.assertTrue(all(map(lambda x: x.courseId == courseId, result)))
         self.assertSequenceEqual(map(lambda x: x.roomId, result), ['B', 'C'])
 
     def test_assignedLecturesWithCurriculum(self):
@@ -173,6 +173,8 @@ class TimetableTest(unittest.TestCase):
         result = self.t.assignedLectures(courseId)
         self.assertEqual(map(lambda x: x.curriculumId, result), [[]])
         self.assertEqual(len(self.t.getTimeTable()[0]), 2)
+
+
 
 if __name__=="__main__":
     unittest.main()

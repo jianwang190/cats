@@ -1,13 +1,13 @@
 import unittest
 from cats.tabuSearch import softConstraints
-from cats.readers.competitionReader import CompetitionReader
+from cats.readers.competitionReader import CompetitionReader, CompetitionDictReader
 from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
 
 
 class softConstraintsTest(unittest.TestCase):
     def setUp(self):
-        c = CompetitionReader()
-        self.data = c.readInstance(1)
+        self.c = CompetitionDictReader()
+        self.data = self.c.readInstance(1)
         self.t = TimeTableFactory.getTimeTable(self.data)
 
 
