@@ -1,13 +1,13 @@
 import unittest
 from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionReader
-from cats.tabuSearch.tabuSearch import TabuSearch
-class NeighborhoodTest(unittest.TestCase):
+from cats.tabuSearch.maximumMatching import MaximumMatching
+class MaximumMatchingTest(unittest.TestCase):
     def setUp(self):
         self.c = CompetitionReader()
         self.data = self.c.readInstance(1)
         self.t = TimeTableFactory.getTimeTable(self.data)
-        self.tabuSearch = TabuSearch()
+        self.tabuSearch = MaximumMatching()
 
     def test_createLeftRightLists(self):
         self.t.timeTable[0].append(CellOfTimeTable('c0001', 'B'))

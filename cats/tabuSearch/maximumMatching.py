@@ -1,6 +1,7 @@
 from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
 
-class TabuSearch(object):
+"""Maximum matching old version"""
+class MaximumMatching(object):
 
     def findMin(self, rightNodes, leftNodes, courseId):
         minSize = 1000000000

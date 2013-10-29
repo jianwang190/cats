@@ -102,6 +102,13 @@ class TimeTable(object):
             sum += filter(lambda x: x.courseId == courseId, cells)
         return sum
 
+    def readLecturesToTimetable(self, path):
+        f = open(path, "r")
+        lecturesBuffer = map(lambda x: x.rstrip('\n'), f.readlines())
+        for lecture in lecturesBuffer:
+            l = lecture.split()
+            self.timeTable[int(l[0])].append(CellOfTimeTable(l[1], l[2], l[3:]))
+
     """ returns number of conflicting courses """
     """ assumes all conflicts are stored in neighbourhoodList """
     def conflictingCourses(self, courseId):

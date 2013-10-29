@@ -5,7 +5,7 @@ from cats.readers.competitionReader import CompetitionReader, CompetitionDictRea
 from random import randint
 from cats.utils.data import Data
 
-class TabuSearchTest(unittest.TestCase):
+class TimetableTest(unittest.TestCase):
     def setUp(self):
         self.c = CompetitionDictReader()
         self.data = self.c.readInstance(1)
@@ -150,6 +150,29 @@ class TabuSearchTest(unittest.TestCase):
         self.assertTrue(all(map(lambda x: x.courseId==courseId, result)))
         self.assertSequenceEqual(map(lambda x: x.roomId, result), ['B', 'C'])
 
+    def test_assignedLecturesWithCurriculum(self):
+        assignedList = [(0, 'c0001', 'B', ['q0001', 'q0002']), (0, 'c0002', 'C', ['q0001', 'q0004', 'q0008']), (0, 'c0030', 'B'),(2, 'c0030', 'C'), (2, 'c0001', 'B'), (3, 'c0031', 'B'), (4, 'c0004', 'S'), (4, 'c0031', 'B'), (5, 'c0004', 'C')]
+        self.t.addDataToTimetable(assignedList)
+        result = self.t.getTimeTable()[0]
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0].curriculumId, ['q0001', 'q0002'])
+        self.assertEqual(result[1].curriculumId, ['q0001', 'q0004', 'q0008'])
+        self.assertEqual(result[2].curriculumId, [])
+
+    """Test for function reading lectures to timetable from input file"""
+    def test_readLecturesToTimetable(self):
+        path = u"data/TabuSearchDataTests/lecturesToTimetable"
+        self.t.readLecturesToTimetable(path)
+        courseId = 'c0001'
+        result = self.t.assignedLectures(courseId)
+        self.assertEqual(len(result), 2)
+        self.assertTrue(all(map(lambda x: x.courseId == courseId, result)))
+        self.assertSequenceEqual(map(lambda x: x.roomId, result), ['B', 'E'])
+        self.assertEqual(map(lambda x: x.curriculumId, result), [['q0001', 'q0003'], []])
+        courseId = 'c0008'
+        result = self.t.assignedLectures(courseId)
+        self.assertEqual(map(lambda x: x.curriculumId, result), [[]])
+        self.assertEqual(len(self.t.getTimeTable()[0]), 2)
 
 if __name__=="__main__":
     unittest.main()
