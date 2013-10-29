@@ -70,7 +70,7 @@ def softConstraintsPenalty(partialTimetable, data, courseId, curriculumId = None
                 roomIdSet.add(cell.roomId)
                 roomIdList.append(cell.roomId)
             if curriculumId in cell.curriculumId:
-                    curriculumPeriodsList.append(key)
+                curriculumPeriodsList.append(key)
     """Room capacity penalty for one course and rooms list"""
     roomCapacityPenalty = penaltyRoomCapacity(data, courseId, roomIdList)
 
