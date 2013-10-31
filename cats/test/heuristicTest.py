@@ -1,5 +1,5 @@
 import unittest
-from cats.tabuSearch import heuristics
+from cats.adaptiveTabuSearch import heuristics
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
 

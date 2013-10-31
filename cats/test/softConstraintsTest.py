@@ -1,5 +1,5 @@
 import unittest
-from cats.tabuSearch import softConstraints
+from cats.adaptiveTabuSearch import softConstraints
 from cats.readers.competitionReader import CompetitionReader, CompetitionDictReader
 from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
 
