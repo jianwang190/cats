@@ -28,29 +28,6 @@ class MaximumMatchingTest(unittest.TestCase):
         penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyRoomCapacity'], coursesId))
         self.assertEqual(penalty, 305)
 
-
-    def test_checkSimpleSwapMove2(self):
-        assignedList = [(0, 'c0001', 'B'), (0, 'c0014', 'B'), (2, 'c0030', 'B'), (2, 'c0001', 'B')]
-        self.t.addDataToTimetable(assignedList)
-        basicNeighborHood = tabuSearch.BasicNeighborhood()
-
-        """Check if possible to change course 'c0001' with 'c0030' (if 'c0030' can be assigned to slot == 0)"""
-        self.assertTrue(basicNeighborHood.checkSimpleSwapMove(self.t.timeTable, self.t.neighbourhoodList, 'c0001', 'c0030', 0) is True)
-        """Check if possible to change course 'c0001' with 'c0030' (if 'c0001' can be assigned to slot == 2)"""
-        self.assertTrue(basicNeighborHood.checkSimpleSwapMove(self.t.timeTable, self.t.neighbourhoodList, 'c0030', 'c0001', 2) is False)
-
-
-
-    def test_simpeSwap(self):
-        assignedList = [(0, 'c0001', 'B'), (0, 'c0014', 'B'), (2, 'c0030', 'B'), (2, 'c0001', 'B')]
-        self.t.addDataToTimetable(assignedList)
-        basicNeighborHood = tabuSearch.BasicNeighborhood()
-        basicNeighborHood.simpleSwap(self.t.timeTable, self.t.neighbourhoodList)
-        print("LISTA")
-        print(basicNeighborHood.basicList)
-        #self.assertEqual(len(basicNeighborHood.getBasicList()), 113)
-
-
 if __name__=="__main__":
     unittest.main()
 
