@@ -19,7 +19,7 @@ class heuristicTest(unittest.TestCase):
     def testUnfinishedCourses(self):
         assignedList = [(3, 'c0004', 'B'), (4, 'c0004', 'B'), (5, 'c0004', 'B')]
         self.t.addDataToTimetable(assignedList)
-        self.assertTrue(1==1)
+        self.assertEquals(self.t.unavailableUnfinishedCoursesLectureNum(3, 'c0024', self.data), 25)
 
 
 

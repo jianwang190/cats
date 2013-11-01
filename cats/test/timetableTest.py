@@ -31,6 +31,8 @@ class TimetableTest(unittest.TestCase):
     def test_availablePeriodsRooms2(self):
         assignedList = [(0, 'c0001', 'B'), (1, 'c0002', 'B'), (2, 'c0001', 'B'), (24, 'c0001', 'B')]
         self.t.addDataToTimetable(assignedList)
+        print self.t.availableRoomsList(1, self.data)
+        print self.t.findMatchingRoom('c0004', 0, self.data)
         counter = self.t.availablePeriodsRooms(self.data.getAllConstraints(), 'c0001')['availablePeriodsNum']
         self.assertEqual(counter, 21)
         counter = self.t.availablePeriodsRooms(self.data.getAllConstraints(), 'c0002')['availablePeriodsNum']

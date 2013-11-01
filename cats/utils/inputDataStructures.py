@@ -9,11 +9,13 @@ class Course(Model):
         self.lectureNum = lectureNum
         self.minWorkingDays = minWorkingDays
         self.studentsNum = studentsNum
-
+        self.assignedLectureNum = 0
 class Room(Model):
     def __init__(self, id, capacity):
         self.id = id
         self.capacity = capacity
+    def __str__(self):
+        return str(self.id)+" "+str(self.capacity)
 
 class Curriculum(Model):
     def __init__(self, id, courseNum, members):

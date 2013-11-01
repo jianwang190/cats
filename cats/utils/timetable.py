@@ -1,7 +1,5 @@
-import itertools
-from cats.utils.data import Data
 import collections
-
+from itertools import combinations, groupby
 class CellOfTimeTable(object):
     def __init__(self, courseId = [], roomId = [], curriculumId = []):
         self.courseId = courseId
@@ -31,10 +29,18 @@ class TimeTable(object):
         return self.timeTable[key]
 
     """Create neighourhood list for courses regarding regarding curriculum lists"""
+    """Consider teacher's conflicts"""
     def createNeighbourhoodList(self, curriculumList, courseList):
         self.neighbourhoodList = {x.id : set([]) for x in courseList}
         for c in curriculumList:
-            comb = itertools.combinations(c.members, 2)
+            comb = combinations(c.members, 2)
+            for i in comb:
+                self.neighbourhoodList[i[0]].add(i[1])
+                self.neighbourhoodList[i[1]].add(i[0])
+
+        courseList.sort(key= lambda x: x.teacher)
+        for k, teacherCourses in groupby(courseList, key=lambda x: x.teacher):
+            comb = combinations([e.id for e in teacherCourses], 2)
             for i in comb:
                 self.neighbourhoodList[i[0]].add(i[1])
                 self.neighbourhoodList[i[1]].add(i[0])
@@ -114,6 +120,39 @@ class TimeTable(object):
     def conflictingCourses(self, courseId):
         return len(self.neighbourhoodList[courseId])
 
+    def unavailableUnfinishedCoursesLectureNum(self, period, courseId, data):
+        result = 0
+        for course in data.getUnfinishedCourses():
+            if self.neighbourhoodList.has_key(courseId) and \
+                course.id in self.neighbourhoodList[courseId]:
+                result += course.lectureNum - course.assignedLectureNum
+        return result
+
+
+    def availableRoomsList(self, period, data):
+        return list(set(map(lambda x: x.id, data.getAllRooms())) \
+               - set(map(lambda x: x.roomId, self.getTimeTable()[period])))
+
+    """ BEWARE: UGLY, BUGGY, NOT TESTED """
+    def findMatchingRoom(self, courseId, period, data):
+        course = data.getCourse(courseId)
+        l =  sorted( \
+            filter(lambda y: y.capacity>course.studentsNum, \
+                   map(lambda x: data.getRoom(x), self.availableRoomsList(period, data)) \
+            ), key = lambda x: x.capacity)
+        return l[0]
+
+
+    """ do the feasible insertion of lecture of course to period and room """
+    def feasibleInsertion(self, courseId, period, room, data):
+
+        # assign matching course-room to period
+        self.timeTable[period].append(CellOfTimeTable(courseId, self.findMatchingRoom(courseId, period, data), data.getCurriculumForCourse(courseId)))
+        # update course assigned lecture number
+        data.popCourse(courseId)
+
+
+
     """Add data to timetable (period, courseId, roomId, curId - optional)"""
     def addDataToTimetable(self, assignedList):
         for a in assignedList:
@@ -121,16 +160,3 @@ class TimeTable(object):
                 self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2]))
             else:
                 self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2],a[3]))
-
-
-    def unfinishedCourses(self, data):
-        counts = collections.Counter( \
-            map(\
-                lambda x: x.courseId, \
-                sum(self.getTimeTable().values(), [])) \
-        )
-        """ data process """
-
-        return [x.id for x in \
-                filter(lambda x: data.getCourse(x.id).lectureNum>counts[x.id], data.getAllCourses())]
-
