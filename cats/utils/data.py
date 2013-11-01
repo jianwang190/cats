@@ -35,6 +35,8 @@ class DictData(IData):
     curricula = {}
     constraints = {}
 
+    curriculumLookup = {}
+
     """ convert old data object """
     def __init__(self, data):
         self.periodsPerDay, self.instanceName, self.daysNum = data.periodsPerDay, data.instanceName, data.daysNum
@@ -44,6 +46,8 @@ class DictData(IData):
             self.rooms[r.id] = r
         for c in data.curricula:
             self.curricula[c.id] = c
+            for m in c.members:
+                self.curriculumLookup[m] = c
         self.constraints = { c.id: [] for c in data.constraints}
         for c in data.constraints:
             self.constraints[c.id].append(c)
@@ -62,6 +66,7 @@ class DictData(IData):
         return sum(self.constraints.values(),[])
 
 
+
     def getCourse(self, id):
         return self.courses[id]
     def getRoom(self, id):
@@ -71,3 +76,12 @@ class DictData(IData):
     def getConstraintsForCourse(self, id):
         return self.constraints[id]
 
+    def getCurriculumForCourseId(self, courseId):
+        return self.curriculumLookup[courseId] if courseId in self.curriculumLookup else []
+
+
+    def popCourse(self, id):
+        self.courses[id].assignedLectureNum+=1
+
+    def getUnfinishedCourses(self):
+        return filter(lambda x: x.lectureNum>x.assignedLectureNum, self.getAllCourses())

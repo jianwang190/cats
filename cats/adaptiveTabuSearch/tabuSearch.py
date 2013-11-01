@@ -6,6 +6,11 @@ import operator
 PERIOD_RELATED_COST_TAU = 2
 DEPTH_OF_TABU_SEARCH = 10
 
+def initialSolution(timetable, data):
+
+    pass
+
+
 def simpleSwap(timetable):
     pass
 
