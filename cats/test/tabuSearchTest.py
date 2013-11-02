@@ -2,6 +2,8 @@ import unittest
 from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.adaptiveTabuSearch import tabuSearch, softConstraints
+from cats.adaptiveTabuSearch.heuristics import initialSolution
+import time
 
 class MaximumMatchingTest(unittest.TestCase):
     def setUp(self):
@@ -27,6 +29,15 @@ class MaximumMatchingTest(unittest.TestCase):
         self.assertEqual(listOfAssignedRooms, ['G', 'S', 'E', 'B', 'C', 'F'])
         penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyRoomCapacity'], coursesId))
         self.assertEqual(penalty, 305)
+
+    def testATS(self):
+        for i in range(1,22):
+            self.data = self.c.readInstance(i)
+            self.t = TimeTableFactory.getTimeTable(self.data)
+            start = time.time()
+            initialSolution(self.t, self.data)
+            print "[%d] ATS INITIAL PHASE" % i, time.time() - start
+            self.assertSequenceEqual(self.data.getUnfinishedCourses(), [])
 
 if __name__=="__main__":
     unittest.main()

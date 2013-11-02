@@ -1,5 +1,6 @@
 from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
 from softConstraints import totalSoftConstraintsPenalty
+from itertools import groupby
 import math
 
 
@@ -15,23 +16,26 @@ def initialSolution(timetable, data):
         nextCourse = getNextCourse(timetable, data)
         #for k in timetable.getTimeTable():
         #    print k, [(x.courseId, x.roomId) for x in timetable.getTimeTable()[k]]
-        print nextCourse.id,
+        #print nextCourse.id,
         if feasibleInsertion(timetable, nextCourse.id, data)==False:
             break
     print
+
+
+    #print ">>> TIMETABLE"
+    #for k in timetable.getTimeTable():
+    #    print k, [(x.courseId, x.roomId) for x in timetable.getTimeTable()[k]]
+
+    #print ">>> CONSTRAINTS"
+    #l = sorted(data.getAllConstraints(), key = lambda x: x.id)
+    #for c, cl in groupby(l, key=lambda x: x.id):
+    #    print c, [timetable.getKey(ce.day, ce.dayPeriod) for ce in cl]
+
     print "##### INITIAL SOLUTION FINISHED #####"
     print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
     for c in data.getUnfinishedCourses():
-        print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum)])
-
-    print ">>> TIMETABLE"
-    for k in timetable.getTimeTable():
-        print k, [(x.courseId, x.roomId) for x in timetable.getTimeTable()[k]]
-
-    print ">>> CONSTRAINTS"
-    for c in data.getAllConstraints():
-        print c.id,  timetable.getKey(c.day, c.dayPeriod)
-
+        print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
+                               " ".join(timetable.neighbourhoodList[c.id])])
 
 
 
@@ -54,7 +58,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
     if len(solutionRankings)>0:
         period = solutionRankings[0][1][0]
         room = solutionRankings[0][1][1]
-        print solutionRankings[0][0]
+        #print solutionRankings[0][0]
         # assign matching course-room to period
         partialTimeTable.getTimeTable()[period].append(
             CellOfTimeTable(courseId, room))
@@ -69,7 +73,6 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 def costFunctionStage1(partialTimetable, data, courseId):
     apd = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriodsNum"]
     nl = data.getCourse(courseId).lectureNum - data.getCourse(courseId).assignedLectureNum
-    #len(partialTimetable.assignedLectures(courseId))
 
     return float(apd) / math.sqrt(nl)
 
@@ -77,7 +80,7 @@ def costFunctionStage1(partialTimetable, data, courseId):
 def costFunctionStage2(partialTimetable, data, courseId):
     aps = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)
     nl = data.getCourse(courseId).lectureNum - data.getCourse(courseId).assignedLectureNum
-    #len(partialTimetable.assignedLectures(courseId))
+
     return float(aps["availablePairsNum"])/math.sqrt(nl)
 
 
@@ -87,24 +90,23 @@ def costFunctionStage2(partialTimetable, data, courseId):
 def getNextCourse(partialTimetable, data):
     courses = sorted([(x, costFunctionStage1(partialTimetable, data, x.id)) \
                       for x in data.getUnfinishedCourses()], \
-                     key=lambda x: x[1], \
-                     reverse=True)
+                     key=lambda x: x[1])
 
     selectedStage1 = filter(lambda x: x[1] == courses[0][1], courses)
 
     if len(selectedStage1) > 1:
         selectedStage2 = sorted( \
             map(lambda x: (x[0], costFunctionStage2(partialTimetable, data, x[0].id)), selectedStage1),
-            key=lambda x: x[1], reverse=True)
+            key=lambda x: x[1])
         selectedStage2 = map(lambda x: x[0], filter(lambda x: x[1] == selectedStage2[0][1], selectedStage2))
         if len(selectedStage2) > 1:
-            #print "DRAW"
+            #print "DRAW",
             return sorted(selectedStage2, key=lambda x: partialTimetable.conflictingCourses(x.id))[0]
         else:
-            #print "STAGE2"
+            #print "STAGE2",
             return selectedStage2[0]
     else:
-        #print "STAGE1"
+        #print "STAGE1", [(c[0].id, round(c[1],2)) for c in courses[:4]],
         return selectedStage1[0][0]
 
 
