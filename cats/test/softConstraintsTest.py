@@ -60,10 +60,10 @@ class softConstraintsTest(unittest.TestCase):
 
     """Test for soft constraints penalty for curriculum compactness"""
     def testSoftConstraintsCurriculumCompactness(self):
-        assignedList = [(0, 'c0001', 'E', ['q0001']), (1, 'c0001', 'B', ['q0001']), (4, 'c0001', 'C', ['q0001']), (7, 'c0002', 'G', ['q0001']), (9, 'c0072', 'E', ['q0002'])]
+        assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (4, 'c0001', 'C'), (7, 'c0002', 'G'), (9, 'c0072', 'E')]
         self.t.addDataToTimetable(assignedList)
-        penalty = softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001', 'q0001')['penaltyCurriculumCompactness']
-        self.assertEqual(penalty, 4)
+        penalty = softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001')['penaltyCurriculumCompactness']
+        self.assertEqual(penalty, 6)
 
     """Test for helper function to count curriculum compactness"""
     def testCountPenaltyForCurriculumCompactness(self):
@@ -77,9 +77,9 @@ class softConstraintsTest(unittest.TestCase):
         self.assertEqual(penalty, 2)
 
     def testTotalSoftConstrainsPenalty(self):
-        assignedList = [(0, 'c0001', 'E', ['q0001']), (1, 'c0001', 'B', ['q0001']), (4, 'c0001', 'C', ['q0001']), (7, 'c0002', 'G', ['q0001']), (9, 'c0072', 'E', ['q0002'])]
+        assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (4, 'c0001', 'C'), (7, 'c0002', 'G'), (9, 'c0072', 'E')]
         self.t.addDataToTimetable(assignedList)
-        result = softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001', 'q0001')
+        result = softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001')
         penalty = result['penaltyRoomStability']
         self.assertEqual(penalty, 2)
         penalty = result['penaltyRoomCapacity']
@@ -87,9 +87,13 @@ class softConstraintsTest(unittest.TestCase):
         penalty = result['penaltyMinWorkingDays']
         self.assertEqual(penalty, 0)
         penalty = result['penaltyCurriculumCompactness']
-        self.assertEqual(penalty, 4)
-        penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001', 'q0001')
-        self.assertEqual(penalty, 157)
+        self.assertEqual(penalty, 6)
+        penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001')
+        self.assertEqual(penalty, 159)
+        result = softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0072')['penaltyCurriculumCompactness']
+        self.assertEqual(result, 4)
+
+
 
     def testTotalSoftConstraintsPenalty2(self):
         path = u"data/TabuSearchDataTests/softConstraintsLectures"
@@ -101,11 +105,14 @@ class softConstraintsTest(unittest.TestCase):
         self.assertEqual(penalty, 440)
         penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyMinWorkingDays'], coursesId))
         self.assertEqual(penalty, 10)
-        penalty = softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001', 'q0001')['penaltyCurriculumCompactness']
-        self.assertEqual(penalty, 8)
-        penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001', 'q0001')
-        self.assertEqual(penalty, 361)
-        penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0004', 'q0001')
-        self.assertEqual(penalty, 96)
-        penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0072', 'q0008')
+        penalty = softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001')['penaltyCurriculumCompactness']
+        self.assertEqual(penalty, 10)
+        penalty = softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0004')['penaltyCurriculumCompactness']
         self.assertEqual(penalty, 14)
+        penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0001')
+        self.assertEqual(penalty, 363)
+        penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0004')
+        self.assertEqual(penalty, 102)
+        penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0072')
+        self.assertEqual(penalty, 16)
+

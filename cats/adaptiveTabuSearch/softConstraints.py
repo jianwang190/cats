@@ -7,8 +7,8 @@ COMPACTNESS_PENALTY = 2
 STABILITY_PENALTY = 1
 
 """Count total penalty for soft constraints"""
-def totalSoftConstraintsPenalty(partialTimetable, data, courseId, curriculumId):
-    result = softConstraintsPenalty(partialTimetable, data, courseId, curriculumId)
+def totalSoftConstraintsPenalty(partialTimetable, data, courseId):
+    result = softConstraintsPenalty(partialTimetable, data, courseId)
     penalty = sum(result.values())
     return penalty
 
@@ -40,13 +40,14 @@ def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
     return penalty
 
 """Count soft penalty for minimum working days and room stability and curriculum compactness"""
-def softConstraintsPenalty(partialTimetable, data, courseId, curriculumId = None):
+def softConstraintsPenalty(partialTimetable, data, courseId):
     penaltyMinWorking = 0
     penaltyRoomStability = 0
     workingDaysSet = set()
     roomIdList = []
-    curriculumPeriodsList = []
     totalNumberLectures = 0
+
+    curPeriodDict = {x.id: [] for x in data.getCurriculumForCourseId(courseId)}
 
     dataCourse = data.getCourse(courseId)
 
@@ -56,8 +57,11 @@ def softConstraintsPenalty(partialTimetable, data, courseId, curriculumId = None
                 totalNumberLectures += 1
                 workingDaysSet.add(key / data.periodsPerDay)
                 roomIdList.append(cell.roomId)
-            #if curriculumId in cell.curriculumId:
-            #    curriculumPeriodsList.append(key)
+
+            for curriculumId in curPeriodDict.keys():
+                if cell.courseId in data.getCurriculum(curriculumId).members:
+                    curPeriodDict[curriculumId].append(key)
+
     """Room capacity penalty for one course and rooms list"""
     roomCapacityPenalty = penaltyRoomCapacity(data, courseId, roomIdList)
 
@@ -71,7 +75,9 @@ def softConstraintsPenalty(partialTimetable, data, courseId, curriculumId = None
         penaltyRoomStability += STABILITY_PENALTY * (len(set(roomIdList)) - 1)
 
     """Curriculum compactness penalty"""
-    penaltyCurriculumCompactness = countPenaltyForCurriculumCompactness(curriculumPeriodsList, data.periodsPerDay)
+    penaltyCurriculumCompactness = 0
+    for curriculumId in curPeriodDict.keys():
+        penaltyCurriculumCompactness += countPenaltyForCurriculumCompactness(curPeriodDict[curriculumId], data.periodsPerDay)
 
     return {'penaltyMinWorkingDays': penaltyMinWorking, 'penaltyRoomStability': penaltyRoomStability,
             'penaltyCurriculumCompactness': penaltyCurriculumCompactness, 'penaltyRoomCapacity': roomCapacityPenalty}

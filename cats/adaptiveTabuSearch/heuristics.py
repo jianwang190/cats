@@ -47,7 +47,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 
     solutionRankings = \
         map(lambda x: (UAC_CONST*partialTimeTable.unavailableUnfinishedCoursesLectureNum(x[0], courseId, data) \
-            + SOFT_CONST*totalSoftConstraintsPenalty(partialTimeTable.getTimeTable(), data, courseId, None), x), \
+            + SOFT_CONST*totalSoftConstraintsPenalty(partialTimeTable.getTimeTable(), data, courseId), x), \
             availablePairs)
 
     solutionRankings.sort(key = lambda x: x[0])
@@ -57,7 +57,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
         print solutionRankings[0][0]
         # assign matching course-room to period
         partialTimeTable.getTimeTable()[period].append(
-            CellOfTimeTable(courseId, room, data.getCurriculumForCourseId(courseId)))
+            CellOfTimeTable(courseId, room))
         # update course assigned lecture number
         data.popCourse(courseId)
     else:

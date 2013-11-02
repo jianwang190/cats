@@ -1,10 +1,9 @@
 import collections
 from itertools import combinations, groupby
 class CellOfTimeTable(object):
-    def __init__(self, courseId = [], roomId = [], curriculumId = []):
+    def __init__(self, courseId = [], roomId = []):
         self.courseId = courseId
         self.roomId = roomId
-        self.curriculumId = curriculumId
 
 class TimeTableFactory(object):
     @classmethod
@@ -113,7 +112,7 @@ class TimeTable(object):
         lecturesBuffer = map(lambda x: x.rstrip('\n'), f.readlines())
         for lecture in lecturesBuffer:
             l = lecture.split()
-            self.timeTable[int(l[0])].append(CellOfTimeTable(l[1], l[2], l[3:]))
+            self.timeTable[int(l[0])].append(CellOfTimeTable(l[1], l[2]))
 
     """ returns number of conflicting courses """
     """ assumes all conflicts are stored in neighbourhoodList """
@@ -137,8 +136,5 @@ class TimeTable(object):
 
     """Add data to timetable (period, courseId, roomId, curId - optional)"""
     def addDataToTimetable(self, assignedList):
-        for a in assignedList:
-            if(len(a) < 4):
-                self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2]))
-            else:
-                self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2],a[3]))
+        map(lambda a: self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2])), assignedList)
+

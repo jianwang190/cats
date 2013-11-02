@@ -47,7 +47,8 @@ class DictData(IData):
         for c in data.curricula:
             self.curricula[c.id] = c
             for m in c.members:
-                self.curriculumLookup[m] = c
+                self.curriculumLookup.setdefault(m, []).append(c)
+
         self.constraints = { c.id: [] for c in data.constraints}
         for c in data.constraints:
             self.constraints[c.id].append(c)
