@@ -128,28 +128,10 @@ class TimeTable(object):
                 result += course.lectureNum - course.assignedLectureNum
         return result
 
-
     def availableRoomsList(self, period, data):
         return list(set(map(lambda x: x.id, data.getAllRooms())) \
                - set(map(lambda x: x.roomId, self.getTimeTable()[period])))
 
-    """ BEWARE: UGLY, BUGGY, NOT TESTED """
-    def findMatchingRoom(self, courseId, period, data):
-        course = data.getCourse(courseId)
-        l =  sorted( \
-            filter(lambda y: y.capacity>course.studentsNum, \
-                   map(lambda x: data.getRoom(x), self.availableRoomsList(period, data)) \
-            ), key = lambda x: x.capacity)
-        return l[0]
-
-
-    """ do the feasible insertion of lecture of course to period and room """
-    def feasibleInsertion(self, courseId, period, room, data):
-
-        # assign matching course-room to period
-        self.timeTable[period].append(CellOfTimeTable(courseId, self.findMatchingRoom(courseId, period, data), data.getCurriculumForCourse(courseId)))
-        # update course assigned lecture number
-        data.popCourse(courseId)
 
 
 
