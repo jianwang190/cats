@@ -30,14 +30,14 @@ class MaximumMatchingTest(unittest.TestCase):
         penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyRoomCapacity'], coursesId))
         self.assertEqual(penalty, 305)
 
-    def testATS(self):
-        for i in range(1,22):
-            self.data = self.c.readInstance(i)
-            self.t = TimeTableFactory.getTimeTable(self.data)
-            start = time.time()
-            initialSolution(self.t, self.data)
-            print "[%d] ATS INITIAL PHASE" % i, time.time() - start
-            self.assertSequenceEqual(self.data.getUnfinishedCourses(), [])
+    #def testATS(self):
+    #    for i in range(1,22):
+    #        self.data = self.c.readInstance(i)
+    #        self.t = TimeTableFactory.getTimeTable(self.data)
+    #        start = time.time()
+    #        initialSolution(self.t, self.data)
+    #        print "[%d] ATS INITIAL PHASE" % i, time.time() - start
+    #        self.assertSequenceEqual(self.data.getUnfinishedCourses(), [])
 
 if __name__=="__main__":
     unittest.main()
