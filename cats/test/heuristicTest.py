@@ -21,5 +21,8 @@ class heuristicTest(unittest.TestCase):
         self.t.addDataToTimetable(assignedList)
         self.assertEquals(self.t.unavailableUnfinishedCoursesLectureNum(3, 'c0024', self.data), 25)
 
+    def testFeasibleInsertion(self):
+        heuristics.feasibleInsertion(self.t, 'c0004', self.data)
 
-
+    def testInitialSolution(self):
+        heuristics.initialSolution(self.t, self.data)
