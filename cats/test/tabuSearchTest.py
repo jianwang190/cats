@@ -10,6 +10,7 @@ class MaximumMatchingTest(unittest.TestCase):
         self.c = CompetitionDictReader()
         self.data = self.c.readInstance(1)
         self.t = TimeTableFactory.getTimeTable(self.data)
+        "Create sorted list of rooms (sorted by capacity)"
         self.sortedRoomIdList = sorted(self.data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
 
     def test_matchRoomAllocation(self):
@@ -29,6 +30,21 @@ class MaximumMatchingTest(unittest.TestCase):
         self.assertEqual(listOfAssignedRooms, ['G', 'S', 'E', 'B', 'C', 'F'])
         penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyRoomCapacity'], coursesId))
         self.assertEqual(penalty, 305)
+
+    def test_coeficientTabuTenure(self):
+        tabu = tabuSearch.TabuList(self.data.getAllCourses(), self.t.neighbourhoodList)
+        courseIds = ['c0070', 'c0001', 'c0004']
+        result = sum(map(lambda y: tabu.parameter[y][0], filter(lambda x: x in courseIds, tabu.parameter)))
+        self.assertTrue(format(result, '.2f'), 0.43)
+
+    def test_tabuTenure(self):
+        tabu = tabuSearch.TabuList(self.data.getAllCourses(), self.t.neighbourhoodList)
+        assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (4, 'c0001', 'C'), (7, 'c0002', 'G'), (9, 'c0072', 'E')]
+        self.t.addDataToTimetable(assignedList)
+        tabu.addTabuMove('c0001', 10, 'E')
+        tabu.addTabuMove('c0001', 12, 'E')
+        result = tabu.tabuTenure('c0001', self.t.getTimeTable(), self.data)
+        self.assertEqual(result, 244.4)
 
     #def testATS(self):
     #    for i in range(1,22):

@@ -14,6 +14,9 @@ class BasicNeighborhood(object):
     def __init__(self):
         self.basicList = []
 
+    def clearBasicList(self):
+        self.basicList = []
+
     """Add possible swap between courses"""
     def addCell(self, cellFirst, cellSecond):
         self.basicList.append((cellFirst, cellSecond))

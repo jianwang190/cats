@@ -6,11 +6,16 @@ MIN_WORKINGS_DAY_PENALTY = 5
 COMPACTNESS_PENALTY = 2
 STABILITY_PENALTY = 1
 
-"""Count total penalty for soft constraints"""
+"""Count total penalty for soft constraints for specified courseId"""
 def totalSoftConstraintsPenalty(partialTimetable, data, courseId):
     result = softConstraintsPenalty(partialTimetable, data, courseId)
     penalty = sum(result.values())
     return penalty
+
+"""Count total penalty for soft constraints for whole solution (timetable)"""
+def totalSoftConstraintsForTimetable(partialTimetable, data):
+    totalPenalty = sum(map(lambda x: totalSoftConstraintsPenalty(partialTimetable, data, x.id), data.getAllCourses()))
+    return totalPenalty
 
 
 

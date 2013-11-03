@@ -116,3 +116,9 @@ class softConstraintsTest(unittest.TestCase):
         penalty = softConstraints.totalSoftConstraintsPenalty(self.t.getTimeTable(), self.data, 'c0072')
         self.assertEqual(penalty, 16)
 
+    def testTotalSoftConstraintsForTimetable(self):
+        assignedList = [(0, 'c0001', 'E')]
+        self.t.addDataToTimetable(assignedList)
+        penalty = softConstraints.totalSoftConstraintsForTimetable(self.t.getTimeTable(), self.data)
+        self.assertEqual(penalty, 137)
+
