@@ -1,4 +1,4 @@
-import collections
+import collections, json
 from itertools import combinations, groupby
 class CellOfTimeTable(object):
     def __init__(self, courseId = [], roomId = []):
@@ -138,3 +138,14 @@ class TimeTable(object):
     def addDataToTimetable(self, assignedList):
         map(lambda a: self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2])), assignedList)
 
+    """ Serialize timetables neighbourhood list to json, d3.js readable """
+    """ Check http://bl.ocks.org/mbostock/4062045 """
+    def jsonify(self):
+
+        links = []
+        nodes = self.t.neighbourhoodList.keys()
+        for n in nodes:
+            for m in self.t.neighbourhoodList[n]:
+                links.append({"source": nodes.index(n), "target": nodes.index(m), "value": 1})
+        print json.dumps({"nodes" : map(lambda x: {"name": x, "group": 1}, self.t.neighbourhoodList.keys()), "links": links}, \
+                         indent=4, separators=(',', ': '))

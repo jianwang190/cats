@@ -45,6 +45,5 @@ class BasicNeighborhoodTest(unittest.TestCase):
         self.assertEqual(len(basicNeighborHood.getPossibleSwapsForCourse('c0030', 2)), 32)
 
 
-
 if __name__=="__main__":
     unittest.main()

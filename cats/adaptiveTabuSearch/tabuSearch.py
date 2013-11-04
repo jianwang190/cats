@@ -49,9 +49,6 @@ def initialSolution(timetable, data):
     pass
 
 
-"""Single and double kempe swap"""
-def kempeSwap(timetable):
-    pass
 
 """Matching algorithm to make room allocations (number of courses in slot <= number of rooms)"""
 """Return timetable[slot] with assigned rooms to courses"""
