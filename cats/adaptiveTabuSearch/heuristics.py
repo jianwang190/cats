@@ -31,11 +31,11 @@ def initialSolution(timetable, data):
     #for c, cl in groupby(l, key=lambda x: x.id):
     #    print c, [timetable.getKey(ce.day, ce.dayPeriod) for ce in cl]
 
-    print "##### INITIAL SOLUTION FINISHED #####"
-    print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
-    for c in data.getUnfinishedCourses():
-        print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
-                               " ".join(timetable.neighbourhoodList[c.id])])
+    #print "##### INITIAL SOLUTION FINISHED #####"
+    #print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
+    #for c in data.getUnfinishedCourses():
+    #    print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
+    #                           " ".join(timetable.neighbourhoodList[c.id])])
 
 
 

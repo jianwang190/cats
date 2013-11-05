@@ -6,16 +6,10 @@ MIN_WORKINGS_DAY_PENALTY = 5
 COMPACTNESS_PENALTY = 2
 STABILITY_PENALTY = 1
 
-"""Count total penalty for soft constraints for specified courseId"""
-def totalSoftConstraintsPenaltyHelper(partialTimetable, data, courseId):
-    result = softConstraintsPenalty(partialTimetable, data, courseId)
-    penalty = sum(result.values())
-    return penalty
-
 """Count total penalty for soft constraints for whole solution (timetable)"""
 def totalSoftConstraintsForTimetable(partialTimetable, data):
 
-    totalPenalty = sum(map(lambda x: totalSoftConstraintsPenaltyHelper(partialTimetable, data, x.id), data.getAllCourses()))
+    totalPenalty = softConstraintsPenalty(partialTimetable, data)['partialTotalPenalty']
     totalPenalty += curriculumCompactnessPenalty(partialTimetable, data)
 
     return totalPenalty
@@ -50,15 +44,14 @@ def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
     return penalty
 
 
+"""Count penalty for curriculum compactness for all curriculums"""
 def curriculumCompactnessPenalty(partialTimetable, data):
 
     curPeriodDict = {x.id: [] for x in data.getAllCurricula()}
 
-
     for cur in curPeriodDict.keys():
         for key in partialTimetable.keys():
             for cell in partialTimetable[key]:
-
                 if cell.courseId in data.getCurriculum(cur).members:
                     curPeriodDict[cur].append(key)
 
@@ -70,35 +63,37 @@ def curriculumCompactnessPenalty(partialTimetable, data):
 
 
 """Count soft penalty for minimum working days and room stability and curriculum compactness"""
-def softConstraintsPenalty(partialTimetable, data, courseId):
+def softConstraintsPenalty(partialTimetable, data):
     penaltyMinWorking = 0
     penaltyRoomStability = 0
-    workingDaysSet = set()
-    roomIdList = []
-    totalNumberLectures = 0
+    #totalNumberOfLextures , Set od days
+    workingDaysDict = {x.id :[0, set()] for x in data.getAllCourses()}
+    roomIdDict = {x.id: [] for x in data.getAllCourses()}
 
-
-    dataCourse = data.getCourse(courseId)
 
     for key in partialTimetable.keys():
         for cell in partialTimetable[key]:
-            if cell.courseId == courseId:
-                totalNumberLectures += 1
-                workingDaysSet.add(key / data.periodsPerDay)
-                roomIdList.append(cell.roomId)
+            workingDaysDict[cell.courseId][1].add(key / data.periodsPerDay)
+            workingDaysDict[cell.courseId][0] += 1
+            roomIdDict[cell.courseId].append(cell.roomId)
 
     """Room capacity penalty for one course and rooms list"""
-    roomCapacityPenalty = penaltyRoomCapacity(data, courseId, roomIdList)
+    roomCapacityPenalty = 0
+    for key in roomIdDict.keys():
+        roomCapacityPenalty += penaltyRoomCapacity(data, key, roomIdDict[key])
 
     """Minimum working days penalty"""
-    workingDaysNumPartial = dataCourse.lectureNum - totalNumberLectures + len(workingDaysSet)
-    if workingDaysNumPartial < dataCourse.minWorkingDays:
-        penaltyMinWorking += MIN_WORKINGS_DAY_PENALTY * (dataCourse.minWorkingDays - workingDaysNumPartial)
+    for key in workingDaysDict.keys():
+        workingDaysNumPartial = data.getCourse(key).lectureNum - workingDaysDict[key][0] + len(workingDaysDict[key][1])
+        if workingDaysNumPartial < data.getCourse(key).minWorkingDays:
+            penaltyMinWorking += MIN_WORKINGS_DAY_PENALTY * (data.getCourse(key).minWorkingDays - workingDaysNumPartial)
 
     """Room stability penalty"""
-    if len(set(roomIdList)) > 1:
-        penaltyRoomStability += STABILITY_PENALTY * (len(set(roomIdList)) - 1)
+    for key in roomIdDict.keys():
+        if len(set(roomIdDict[key])) > 1:
+            penaltyRoomStability += STABILITY_PENALTY * (len(set(roomIdDict[key])) - 1)
 
+    partialtotalPenalty = penaltyMinWorking + penaltyRoomStability + roomCapacityPenalty
 
     return {'penaltyMinWorkingDays': penaltyMinWorking, 'penaltyRoomStability': penaltyRoomStability,
-             'penaltyRoomCapacity': roomCapacityPenalty}
+             'penaltyRoomCapacity': roomCapacityPenalty, 'partialTotalPenalty' : partialtotalPenalty}

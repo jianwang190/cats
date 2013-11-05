@@ -21,14 +21,15 @@ class MaximumMatchingTest(unittest.TestCase):
         self.t.timeTable[slot] = tabuSearch.matchingRoomAllocations(self.t.getTimeTable(), slot, self.data, self.sortedRoomIdList)
         listOfAssignedRooms = [x.roomId for x in self.t.timeTable[slot]]
         self.assertEqual(listOfAssignedRooms, ['B', 'S', 'C', 'G', 'F'])
-        penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyRoomCapacity'], coursesId))
+        penalty =  softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
         self.assertEqual(penalty, 340)
 
         slot = 1
         self.t.timeTable[slot] = tabuSearch.matchingRoomAllocations(self.t.getTimeTable(), slot, self.data, self.sortedRoomIdList)
         listOfAssignedRooms = [x.roomId for x in self.t.timeTable[slot]]
         self.assertEqual(listOfAssignedRooms, ['G', 'S', 'E', 'B', 'C', 'F'])
-        penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyRoomCapacity'], coursesId))
+        penalty =  softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
+
         self.assertEqual(penalty, 305)
 
     def test_coeficientTabuTenure(self):
@@ -37,14 +38,14 @@ class MaximumMatchingTest(unittest.TestCase):
         result = sum(map(lambda y: tabu.parameter[y][0], filter(lambda x: x in courseIds, tabu.parameter)))
         self.assertTrue(format(result, '.2f'), 0.43)
 
-    #def test_tabuTenure(self):
-    #    tabu = tabuSearch.TabuList(self.data.getAllCourses(), self.t.neighbourhoodList)
-    #    assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (4, 'c0001', 'C'), (7, 'c0002', 'G'), (9, 'c0072', 'E')]
-    #    self.t.addDataToTimetable(assignedList)
-    #    tabu.addTabuMove('c0001', 10, 'E')
-    #    tabu.addTabuMove('c0001', 12, 'E')
-    #    result = tabu.tabuTenure('c0001', self.t.getTimeTable(), self.data)
-    #    self.assertEqual(result, 244.4)
+    def test_tabuTenure(self):
+        tabu = tabuSearch.TabuList(self.data.getAllCourses(), self.t.neighbourhoodList)
+        assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (4, 'c0001', 'C'), (7, 'c0002', 'G'), (9, 'c0072', 'E')]
+        self.t.addDataToTimetable(assignedList)
+        tabu.addTabuMove('c0001', 10, 'E')
+        tabu.addTabuMove('c0001', 12, 'E')
+        result = tabu.tabuTenure('c0001', self.t.getTimeTable(), self.data)
+        self.assertEqual(result, 218.4)
 
     #def testATS(self):
     #    for i in range(1,22):
