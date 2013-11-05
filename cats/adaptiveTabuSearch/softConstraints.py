@@ -7,14 +7,17 @@ COMPACTNESS_PENALTY = 2
 STABILITY_PENALTY = 1
 
 """Count total penalty for soft constraints for specified courseId"""
-def totalSoftConstraintsPenalty(partialTimetable, data, courseId):
+def totalSoftConstraintsPenaltyHelper(partialTimetable, data, courseId):
     result = softConstraintsPenalty(partialTimetable, data, courseId)
     penalty = sum(result.values())
     return penalty
 
 """Count total penalty for soft constraints for whole solution (timetable)"""
 def totalSoftConstraintsForTimetable(partialTimetable, data):
-    totalPenalty = sum(map(lambda x: totalSoftConstraintsPenalty(partialTimetable, data, x.id), data.getAllCourses()))
+
+    totalPenalty = sum(map(lambda x: totalSoftConstraintsPenaltyHelper(partialTimetable, data, x.id), data.getAllCourses()))
+    totalPenalty += curriculumCompactnessPenalty(partialTimetable, data)
+
     return totalPenalty
 
 
@@ -26,6 +29,8 @@ def penaltyRoomCapacity(data, courseId, roomIdList):
     penalty = sum(filter(lambda x: x > 0, map(lambda x: dataCourse.studentsNum - data.getRoom(x).capacity, roomIdList)))
     penalty = CAPACITY_PENALTY * penalty
     return penalty
+
+
 
 """Count penalty for soft constraint curriculum compactness helper function"""
 def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
@@ -44,6 +49,26 @@ def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
     penalty = COMPACTNESS_PENALTY * penalty
     return penalty
 
+
+def curriculumCompactnessPenalty(partialTimetable, data):
+
+    curPeriodDict = {x.id: [] for x in data.getAllCurricula()}
+
+
+    for cur in curPeriodDict.keys():
+        for key in partialTimetable.keys():
+            for cell in partialTimetable[key]:
+
+                if cell.courseId in data.getCurriculum(cur).members:
+                    curPeriodDict[cur].append(key)
+
+    penaltyCurriculumCompactness = 0
+    for curriculumId in curPeriodDict.keys():
+        penaltyCurriculumCompactness += countPenaltyForCurriculumCompactness(curPeriodDict[curriculumId], data.periodsPerDay)
+
+    return penaltyCurriculumCompactness
+
+
 """Count soft penalty for minimum working days and room stability and curriculum compactness"""
 def softConstraintsPenalty(partialTimetable, data, courseId):
     penaltyMinWorking = 0
@@ -52,7 +77,6 @@ def softConstraintsPenalty(partialTimetable, data, courseId):
     roomIdList = []
     totalNumberLectures = 0
 
-    curPeriodDict = {x.id: [] for x in data.getCurriculumForCourseId(courseId)}
 
     dataCourse = data.getCourse(courseId)
 
@@ -62,10 +86,6 @@ def softConstraintsPenalty(partialTimetable, data, courseId):
                 totalNumberLectures += 1
                 workingDaysSet.add(key / data.periodsPerDay)
                 roomIdList.append(cell.roomId)
-
-            for curriculumId in curPeriodDict.keys():
-                if cell.courseId in data.getCurriculum(curriculumId).members:
-                    curPeriodDict[curriculumId].append(key)
 
     """Room capacity penalty for one course and rooms list"""
     roomCapacityPenalty = penaltyRoomCapacity(data, courseId, roomIdList)
@@ -79,10 +99,6 @@ def softConstraintsPenalty(partialTimetable, data, courseId):
     if len(set(roomIdList)) > 1:
         penaltyRoomStability += STABILITY_PENALTY * (len(set(roomIdList)) - 1)
 
-    """Curriculum compactness penalty"""
-    penaltyCurriculumCompactness = 0
-    for curriculumId in curPeriodDict.keys():
-        penaltyCurriculumCompactness += countPenaltyForCurriculumCompactness(curPeriodDict[curriculumId], data.periodsPerDay)
 
     return {'penaltyMinWorkingDays': penaltyMinWorking, 'penaltyRoomStability': penaltyRoomStability,
-            'penaltyCurriculumCompactness': penaltyCurriculumCompactness, 'penaltyRoomCapacity': roomCapacityPenalty}
+             'penaltyRoomCapacity': roomCapacityPenalty}
