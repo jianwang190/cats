@@ -16,12 +16,13 @@ class GeneticAlgorithm(object):
             # promote early classes - random.paretovariate
             periods = self.timeTable.availablePeriodsRooms(self.data.constraints, course.id)
             slot = random.randint(0, periods['availablePairsNum']-1)
+            print course.id
             for room in periods['availablePairs'][slot]:
                 print room
             roomId = random.sample(periods['availablePairs'][slot], 1)
-            curId = self.timeTable.getCurriculumOfCourse(self.data.curricula, course.id)
+            #curId = self.timeTable.getCurriculumOfCourse(self.data.curricula, course.id)
             #self.timeTable.addDataToTimetable(slot, course.id, periods['availablePairs'][slot][roomId], curId)
-            self.timeTable.addDataToTimetable([(slot, course.id, roomId[0], curId)])
+            self.timeTable.addDataToTimetable([(slot, course.id, roomId[0])])
 
     def doMutation(self):
         pass

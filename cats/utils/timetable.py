@@ -1,11 +1,9 @@
-import itertools
-from cats.utils.data import Data
-
+import collections, json
+from itertools import combinations, groupby
 class CellOfTimeTable(object):
-    def __init__(self, courseId = [], roomId = [], curId = []):
+    def __init__(self, courseId = [], roomId = []):
         self.courseId = courseId
         self.roomId = roomId
-        self.curId = curId
 
 class TimeTableFactory(object):
     @classmethod
@@ -15,10 +13,8 @@ class TimeTableFactory(object):
         t.daysNum = data.daysNum
         t.timeSlots = range(t.daysNum * t.periodsPerDay)
         t.timeTable = {x : [] for x in t.timeSlots}
-        t.neighbourhoodList = t.createNeighbourhoodList(data.curricula, data.courses)
-        t.roomsIdListForCourses = t.getRoomsIdForCourses(data.rooms, data.courses)
-
-
+        t.neighbourhoodList = t.createNeighbourhoodList(data.getAllCurricula(), data.getAllCourses())
+        t.roomsIdListForCourses = t.getRoomsIdForCourses(data.getAllRooms(), data.getAllCourses())
         return t
 
 
@@ -32,11 +28,18 @@ class TimeTable(object):
         return self.timeTable[key]
 
     """Create neighourhood list for courses regarding regarding curriculum lists"""
+    """Consider teacher's conflicts"""
     def createNeighbourhoodList(self, curriculumList, courseList):
         self.neighbourhoodList = {x.id : set([]) for x in courseList}
         for c in curriculumList:
-            comb = []
-            comb += itertools.combinations(c.members, 2)
+            comb = combinations(c.members, 2)
+            for i in comb:
+                self.neighbourhoodList[i[0]].add(i[1])
+                self.neighbourhoodList[i[1]].add(i[0])
+
+        courseList.sort(key= lambda x: x.teacher)
+        for k, teacherCourses in groupby(courseList, key=lambda x: x.teacher):
+            comb = combinations([e.id for e in teacherCourses], 2)
             for i in comb:
                 self.neighbourhoodList[i[0]].add(i[1])
                 self.neighbourhoodList[i[1]].add(i[0])
@@ -48,7 +51,7 @@ class TimeTable(object):
         return key
 
     """Map day and period to key in timetable"""
-    def mapKeys(self,constraint):
+    def mapKeys(self, constraint):
         key = self.getKey(constraint.day, constraint.dayPeriod)
         return key
 
@@ -104,21 +107,42 @@ class TimeTable(object):
             sum += filter(lambda x: x.courseId == courseId, cells)
         return sum
 
-    """ returns number of conflicting coutimeTablerses """
+    def readLecturesToTimetable(self, path):
+        f = open(path, "r")
+        lecturesBuffer = map(lambda x: x.rstrip('\n'), f.readlines())
+        for lecture in lecturesBuffer:
+            l = lecture.split()
+            self.timeTable[int(l[0])].append(CellOfTimeTable(l[1], l[2]))
+
+    """ returns number of conflicting courses """
     """ assumes all conflicts are stored in neighbourhoodList """
     def conflictingCourses(self, courseId):
         return len(self.neighbourhoodList[courseId])
 
+    def unavailableUnfinishedCoursesLectureNum(self, period, courseId, data):
+        result = 0
+        for course in data.getUnfinishedCourses():
+            if self.neighbourhoodList.has_key(courseId) and \
+                course.id in self.neighbourhoodList[courseId]:
+                result += course.lectureNum - course.assignedLectureNum
+        return result
+
+    def availableRoomsList(self, period, data):
+        return list(set(map(lambda x: x.id, data.getAllRooms())) \
+               - set(map(lambda x: x.roomId, self.getTimeTable()[period])))
+
     """Add data to timetable (period, courseId, roomId, curId - optional)"""
     def addDataToTimetable(self, assignedList):
-        for a in assignedList:
-            if(len(a) < 4):
-                self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2]))
-            else:
-                self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2],a[3]))
+        map(lambda a: self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2])), assignedList)
 
-    def getCurriculumOfCourse(self, curricula, courseId):
-        for curriculum in curricula:
-            if courseId in curriculum.members:
-                return curriculum.id
-        return -1
+    """ Serialize timetables neighbourhood list to json, d3.js readable """
+    """ Check http://bl.ocks.org/mbostock/4062045 """
+    def jsonify(self):
+
+        links = []
+        nodes = self.t.neighbourhoodList.keys()
+        for n in nodes:
+            for m in self.t.neighbourhoodList[n]:
+                links.append({"source": nodes.index(n), "target": nodes.index(m), "value": 1})
+        print json.dumps({"nodes" : map(lambda x: {"name": x, "group": 1}, self.t.neighbourhoodList.keys()), "links": links}, \
+                         indent=4, separators=(',', ': '))

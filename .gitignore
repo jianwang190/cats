@@ -36,6 +36,8 @@ nosetests.xml
 .suo
 TestResults/
 obj/
+.ropeproject/
+.idea/
 
 # Virtualenv
 venv/

@@ -1,12 +1,12 @@
 import unittest
-from cats.tabuSearch import heuristics
-from cats.readers.competitionReader import CompetitionReader
+from cats.adaptiveTabuSearch import heuristics
+from cats.readers.competitionReader import CompetitionDictReader
 from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
 
 
 class heuristicTest(unittest.TestCase):
     def setUp(self):
-        c = CompetitionReader()
+        c = CompetitionDictReader()
         self.data = c.readInstance(1)
         self.t = TimeTableFactory.getTimeTable(self.data)
 
@@ -14,7 +14,15 @@ class heuristicTest(unittest.TestCase):
     def testHR1(self):
     	self.assertTrue( \
             heuristics.getNextCourse(self.t, self.data)!=None)
-        print heuristics.getNextCourse(self.t, self.data)
 
+    """TODO: write unittests"""
+    def testUnfinishedCourses(self):
+        assignedList = [(3, 'c0004', 'B'), (4, 'c0004', 'B'), (5, 'c0004', 'B')]
+        self.t.addDataToTimetable(assignedList)
+        self.assertEquals(self.t.unavailableUnfinishedCoursesLectureNum(3, 'c0024', self.data), 25)
 
+    def testFeasibleInsertion(self):
+        heuristics.feasibleInsertion(self.t, 'c0004', self.data)
 
+    def testInitialSolution(self):
+        heuristics.initialSolution(self.t, self.data)
