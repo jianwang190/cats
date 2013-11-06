@@ -1,5 +1,5 @@
 from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
-from softConstraints import totalSoftConstraintsPenalty
+from softConstraints import totalSoftConstraintsForTimetable
 from itertools import groupby
 import math
 
@@ -28,6 +28,7 @@ def initialSolution(timetable, data):
 
 
 
+
 def feasibleInsertion(partialTimeTable, courseId, data):
 
     """
@@ -46,7 +47,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 
     solutionRankings = \
         map(lambda x: (UAC_CONST*partialTimeTable.unavailableUnfinishedCoursesLectureNum(x[0], courseId, data) \
-            + SOFT_CONST*totalSoftConstraintsPenalty(partialTimeTable.getTimeTable(), data, courseId), x), \
+            + SOFT_CONST*totalSoftConstraintsForTimetable(partialTimeTable.getTimeTable(), data), x), \
             availablePairs)
 
     solutionRankings.sort(key = lambda x: x[0])

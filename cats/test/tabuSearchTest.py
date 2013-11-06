@@ -21,14 +21,15 @@ class MaximumMatchingTest(unittest.TestCase):
         self.t.timeTable[slot] = tabuSearch.matchingRoomAllocations(self.t.getTimeTable(), slot, self.data, self.sortedRoomIdList)
         listOfAssignedRooms = [x.roomId for x in self.t.timeTable[slot]]
         self.assertEqual(listOfAssignedRooms, ['B', 'S', 'C', 'G', 'F'])
-        penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyRoomCapacity'], coursesId))
+        penalty =  softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
         self.assertEqual(penalty, 340)
 
         slot = 1
         self.t.timeTable[slot] = tabuSearch.matchingRoomAllocations(self.t.getTimeTable(), slot, self.data, self.sortedRoomIdList)
         listOfAssignedRooms = [x.roomId for x in self.t.timeTable[slot]]
         self.assertEqual(listOfAssignedRooms, ['G', 'S', 'E', 'B', 'C', 'F'])
-        penalty = sum(map(lambda x: softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data, x)['penaltyRoomCapacity'], coursesId))
+        penalty =  softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
+
         self.assertEqual(penalty, 305)
 
     def test_coeficientTabuTenure(self):
@@ -44,7 +45,7 @@ class MaximumMatchingTest(unittest.TestCase):
         tabu.addTabuMove('c0001', 10, 'E')
         tabu.addTabuMove('c0001', 12, 'E')
         result = tabu.tabuTenure('c0001', self.t.getTimeTable(), self.data)
-        self.assertEqual(result, 244.4)
+        self.assertEqual(result, 218.4)
 
     #def testATS(self):
     #    for i in range(1,22):
