@@ -19,6 +19,7 @@ class BasicNeighborhood(object):
 
     """Add possible swap between courses"""
     def addCell(self, cellFirst, cellSecond):
+
         self.basicList.append((cellFirst, cellSecond))
 
     """Get list containing possible swaps"""

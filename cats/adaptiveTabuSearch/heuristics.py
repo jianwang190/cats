@@ -14,22 +14,10 @@ def initialSolution(timetable, data):
     while len(data.getUnfinishedCourses())>0:
 
         nextCourse = getNextCourse(timetable, data)
-        #for k in timetable.getTimeTable():
-        #    print k, [(x.courseId, x.roomId) for x in timetable.getTimeTable()[k]]
-        #print nextCourse.id,
         if feasibleInsertion(timetable, nextCourse.id, data)==False:
             break
     print
 
-
-    #print ">>> TIMETABLE"
-    #for k in timetable.getTimeTable():
-    #    print k, [(x.courseId, x.roomId) for x in timetable.getTimeTable()[k]]
-
-    #print ">>> CONSTRAINTS"
-    #l = sorted(data.getAllConstraints(), key = lambda x: x.id)
-    #for c, cl in groupby(l, key=lambda x: x.id):
-    #    print c, [timetable.getKey(ce.day, ce.dayPeriod) for ce in cl]
 
     print "##### INITIAL SOLUTION FINISHED #####"
     print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
@@ -39,9 +27,16 @@ def initialSolution(timetable, data):
 
 
 
-""" do the feasible insertion of lecture of course to period and room """
+
 def feasibleInsertion(partialTimeTable, courseId, data):
 
+    """
+    do the feasible insertion of lecture of course to period and room
+    :param partialTimeTable:
+    :param courseId:
+    :param data:
+    :return: False, if no insertion can be made
+    """
     availablePairs = []
 
     periods = partialTimeTable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriods"]
@@ -58,7 +53,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
     if len(solutionRankings)>0:
         period = solutionRankings[0][1][0]
         room = solutionRankings[0][1][1]
-        #print solutionRankings[0][0]
+
         # assign matching course-room to period
         partialTimeTable.getTimeTable()[period].append(
             CellOfTimeTable(courseId, room))
@@ -84,7 +79,7 @@ def costFunctionStage2(partialTimetable, data, courseId):
     return float(aps["availablePairsNum"])/math.sqrt(nl)
 
 
-"""TODO: write unittests"""
+
 
 
 def getNextCourse(partialTimetable, data):

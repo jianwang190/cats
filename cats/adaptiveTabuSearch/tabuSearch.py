@@ -44,12 +44,6 @@ class TabuList(object):
 
 
 
-def initialSolution(timetable, data):
-
-    pass
-
-
-
 """Matching algorithm to make room allocations (number of courses in slot <= number of rooms)"""
 """Return timetable[slot] with assigned rooms to courses"""
 """Match rooms to courses starting from courses with the biggest number of students, match the biggest available room"""

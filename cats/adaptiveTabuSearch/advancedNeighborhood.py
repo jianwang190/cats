@@ -4,7 +4,6 @@ from itertools import groupby, combinations
 
 class AdvancedNeighborhood(object):
 
-
     def generateChains(self, timetable, period1, period2):
 
         """
@@ -31,7 +30,7 @@ class AdvancedNeighborhood(object):
                 counter += 1
         result = {}
         for k,v in groupby(sorted(chains.iteritems(), key= lambda x: x[1]), lambda x: x[1]):
-            result[k] = [a[0] for a in v]
+            result[k] =set([a[0] for a in v])
         return result
 
 
@@ -46,16 +45,50 @@ class AdvancedNeighborhood(object):
                        combinations(xrange(1,len(chains.keys())+1),2))
         return pairs
 
+    def exploreNeighborhood(self, timetable, data):
+        result = []
+        for pair in combinations(range(0, len(timetable.getTimeTable())),2):
+
+            chains = self.generateChains(timetable, pair[0], pair[1])
+            swappingPairs = self.generatePossibleSwappingPairs(timetable, chains)
+
+            # double chains
+            for swap in swappingPairs:
+                result.append( \
+                    (pair, \
+                     self.kempeSwap(timetable, pair[0], pair[1], (chains[swap[0]], chains[swap[1]]))))
+            #single chains
+            for c in chains.itervalues():
+                result.append(\
+                    (pair, self.kempeSwap(timetable, pair[0], pair[1], (c, set([]))))
+                    )
+
+        # room allocation violation
+        filter(lambda x: len(x[1]["newPeriods"][0])<=len(data.rooms) \
+            and len(x[1]["newPeriods"][1])<len(data.rooms), result)
+        return result
+
+
+
+
+
+
     def kempeSwap(self, timetable, period1, period2, chains):
+        """
+        Perform Kempe swap on 2 chains
+        :param timetable:
+        :param period1:
+        :param period2:
+        :param chains: pair of chains, chain: list of indices
+        :return: pair of sets containing courses for period1 and period2
+        """
         coursesFirst = set(timetable.getTimeTable()[period1])
         coursesSecond = set(timetable.getTimeTable()[period2])
         newCoursesFirst = set(filter(lambda x: x.courseId not in (chains[0] | chains[1]), coursesFirst)) \
                             | set(filter(lambda x: x.courseId in (chains[0] | chains[1]), coursesSecond))
         newCoursesSecond = set(filter(lambda x: x.courseId not in (chains[0] | chains[1]), coursesSecond)) \
                             | set(filter(lambda x: x.courseId in (chains[0] | chains[1]), coursesFirst))
-        return (newCoursesFirst, newCoursesSecond)
+        return { "newPeriods": (newCoursesFirst, newCoursesSecond), \
+                "moves": (coursesFirst - newCoursesFirst)|(coursesSecond-newCoursesSecond)}
 
 
-    # TODO: swap structure
-    # TODO: check room allocation violation
-    # TODO:

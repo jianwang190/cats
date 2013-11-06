@@ -84,5 +84,6 @@ class DictData(IData):
     def popCourse(self, id):
         self.courses[id].assignedLectureNum+=1
 
+
     def getUnfinishedCourses(self):
         return filter(lambda x: x.lectureNum>x.assignedLectureNum, self.getAllCourses())

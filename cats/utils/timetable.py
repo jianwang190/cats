@@ -118,7 +118,7 @@ class TimeTable(object):
     """ assumes all conflicts are stored in neighbourhoodList """
     def conflictingCourses(self, courseId):
         return len(self.neighbourhoodList[courseId])
-
+    
     def unavailableUnfinishedCoursesLectureNum(self, period, courseId, data):
         result = 0
         for course in data.getUnfinishedCourses():
@@ -126,7 +126,7 @@ class TimeTable(object):
                 course.id in self.neighbourhoodList[courseId]:
                 result += course.lectureNum - course.assignedLectureNum
         return result
-
+    
     def availableRoomsList(self, period, data):
         return list(set(map(lambda x: x.id, data.getAllRooms())) \
                - set(map(lambda x: x.roomId, self.getTimeTable()[period])))
@@ -138,14 +138,17 @@ class TimeTable(object):
     def addDataToTimetable(self, assignedList):
         map(lambda a: self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2])), assignedList)
 
-    """ Serialize timetables neighbourhood list to json, d3.js readable """
-    """ Check http://bl.ocks.org/mbostock/4062045 """
+
     def jsonify(self):
 
+        """
+        Serialize timetables neighbourhood list to json, d3.js readable
+        Check http://bl.ocks.org/mbostock/4062045
+        """
         links = []
-        nodes = self.t.neighbourhoodList.keys()
+        nodes = self.neighbourhoodList.keys()
         for n in nodes:
-            for m in self.t.neighbourhoodList[n]:
+            for m in self.neighbourhoodList[n]:
                 links.append({"source": nodes.index(n), "target": nodes.index(m), "value": 1})
-        print json.dumps({"nodes" : map(lambda x: {"name": x, "group": 1}, self.t.neighbourhoodList.keys()), "links": links}, \
+        print json.dumps({"nodes" : map(lambda x: {"name": x, "group": 1}, self.neighbourhoodList.keys()), "links": links}, \
                          indent=4, separators=(',', ': '))

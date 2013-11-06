@@ -28,6 +28,7 @@ def penaltyRoomCapacity(data, courseId, roomIdList):
     return penalty
 
 """Count penalty for soft constraint curriculum compactness helper function"""
+
 def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
     penalty = 0
     for i in range(0, len(periodsList)):
@@ -45,6 +46,7 @@ def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
     return penalty
 
 """Count soft penalty for minimum working days and room stability and curriculum compactness"""
+
 def softConstraintsPenalty(partialTimetable, data, courseId):
     penaltyMinWorking = 0
     penaltyRoomStability = 0
