@@ -1,5 +1,5 @@
 import itertools
-from random import randint, random
+import random
 from cats.utils.data import Data
 from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
 
@@ -12,13 +12,16 @@ class GeneticAlgorithm(object):
         self.timeTable = TimeTableFactory.getTimeTable(data)
 
     def generateInitialSolution(self):
-        for courseId in self.data.courses:
+        for course in self.data.courses:
             # promote early classes - random.paretovariate
-            periods = self.timeTable.availablePeriodsRooms(self.timeTable.getKeyConstraintsOfCourse(self.data.constraints, courseId), courseId)
-            slot = random.randint(periods['availablePairsNum'])
-            roomId = random.randint(periods['availablePairsNum'][slot])
-            curId = self.timeTable.getCurriculumOfCourse(courseId)
-            self.timeTable.addDataToTimetable(slot, courseId, roomId, curId)
+            periods = self.timeTable.availablePeriodsRooms(self.data.constraints, course.id)
+            slot = random.randint(0, periods['availablePairsNum']-1)
+            for room in periods['availablePairs'][slot]:
+                print room
+            roomId = random.sample(periods['availablePairs'][slot], 1)
+            curId = self.timeTable.getCurriculumOfCourse(self.data.curricula, course.id)
+            #self.timeTable.addDataToTimetable(slot, course.id, periods['availablePairs'][slot][roomId], curId)
+            self.timeTable.addDataToTimetable([(slot, course.id, roomId[0], curId)])
 
     def doMutation(self):
         pass

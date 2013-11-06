@@ -117,8 +117,8 @@ class TimeTable(object):
             else:
                 self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2],a[3]))
 
-    def getCurriculumOfCourse(self, courseId):
-        for curriculum in self.data.curricula:
+    def getCurriculumOfCourse(self, curricula, courseId):
+        for curriculum in curricula:
             if courseId in curriculum.members:
                 return curriculum.id
         return -1
