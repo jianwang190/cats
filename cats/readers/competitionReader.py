@@ -27,7 +27,7 @@ class CompetitionReader(object):
     def readFile(self, instanceNr):
         """Return content of file"""
 
-        path = u"data/Curriculum_based_Course_timetabling/datasets/comp" + str(instanceNr) + ".ctt"
+        path = u"/data/Curriculum_based_Course_timetabling/datasets/comp" + str(instanceNr) + ".ctt"
         f = open(path, "r")
         content = map(lambda x: x.rstrip('\n'), f.readlines())
 
