@@ -34,20 +34,33 @@ class BasicNeighborhood(object):
                            filter(lambda y : y.courseId != courseIdFirst, timetable[slot])))
         return False if len(curCourseSet) > 0 else True
 
-    """Check if swap between courses exists in BasicNeighbourhood structure"""
+
     def checkIfNotInBasicNeighbourhood(self, courseIdFirst, slotFirst, courseIdSecond, slotSecond):
+        """
+        Check if swap between courses exists in BasicNeighbourhood structure
+        :param courseIdFirst:first course id
+        :param slotFirst: slot to which first course id is assigned
+        :param courseIdSecond: second course id
+        :param slotSecond: slot to which second course id is assigned
+        :return:
+        """
         for cells in self.basicList:
-            if (cells[0].courseId == courseIdFirst and cells[0].period == slotFirst\
+            if (cells[0].courseId == courseIdFirst and cells[0].period == slotFirst \
                 and cells[1].courseId == courseIdSecond and cells[1].period == slotSecond):
                 return True
-            elif (cells[1].courseId == courseIdFirst and cells[1].period == slotFirst\
+            elif (cells[1].courseId == courseIdFirst and cells[1].period == slotFirst \
                       and cells[0].courseId == courseIdSecond and cells[0].period == slotSecond):
                 return True
         return False
 
-    """Finds all possible swaps between courses or to empty position, create basicList structure"""
     def simpleSwap(self, timetable, neighborhoodList, numberOfRooms):
 
+        """
+        Finds all possible swaps between courses or to empty position, create basicList structure
+        :param timetable:
+        :param neighborhoodList:
+        :param numberOfRooms:
+        """
         SIZE = len(timetable)
 
         for i in range(0, SIZE):

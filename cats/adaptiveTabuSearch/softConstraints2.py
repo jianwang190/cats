@@ -8,9 +8,9 @@ STABILITY_PENALTY = 1
 def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
     """
     Count curriculum compactness penalty for one curriculum
-    @param periodsList: list with slots for curriculum (when the course of curriculum took place)
-    @param periodsPerDay: periods per day in timetable
-    @return:
+    :param periodsList: list with slots for curriculum (when the course of curriculum took place)
+    :param periodsPerDay: periods per day in timetable
+    :return:
     """
     penalty = 0
     for i in range(0, len(periodsList)):
@@ -32,15 +32,15 @@ def totalSoftConstraintsForTimetable(partialTimetable, data):
 def softConstraintsPenalty(partialTimetable, data):
     """
     Count soft penalty for timetable
-    @param partialTimetable: timetable to grade
-    @param data: data for tested timetable
-    @return: dictionary with penalty for : min working days, curriculum compactness, room stability and capacity, total penalty
+    :param partialTimetable: timetable to grade
+    :param data: data for tested timetable
+    :return: dictionary with penalty for : min working days, curriculum compactness, room stability and capacity, total penalty
     """
     roomCapacityPenalty = 0
     roomStabilityPenalty = 0
     minWorkingDaysPenalty = 0
     # room Set, workingDays
-    information = {x.id : [set(), set()] for x in data.getAllCourses()}
+    information = {x.id: [set(), set()] for x in data.getAllCourses()}
     curPeriodDict = {x.id: [] for x in data.getAllCurricula()}
 
 
@@ -53,10 +53,7 @@ def softConstraintsPenalty(partialTimetable, data):
             map(lambda x: curPeriodDict[x.id].append(key), data.getCurriculumForCourseId(cell.courseId))
 
 
-    curriculumCompactnessPenalty = 0
-    for curriculumId in curPeriodDict.keys():
-        curriculumCompactnessPenalty += countPenaltyForCurriculumCompactness(curPeriodDict[curriculumId], data.periodsPerDay)
-
+    curriculumCompactnessPenalty = sum(map(lambda x: countPenaltyForCurriculumCompactness(curPeriodDict[x], data.periodsPerDay), curPeriodDict))
 
     for key in information.keys():
         roomStabilityPenalty += len(information[key][0]) - 1 if len(information[key][0]) > 1 else 0
