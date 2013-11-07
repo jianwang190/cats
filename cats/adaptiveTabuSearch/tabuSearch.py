@@ -1,5 +1,5 @@
 import operator
-from cats.adaptiveTabuSearch import softConstraints
+from cats.adaptiveTabuSearch import softConstraints2
 """Tabu search algorithm"""
 """Period related costs - sum(minimumWorkingDays, curriculumCompactness)"""
 """Room related costs - sum(roomCapacity, roomStability)"""
@@ -37,7 +37,7 @@ class TabuList(object):
     def tabuTenure(self, courseId, partialTimetable, data):
         """Moving frequency of lectures of courseId"""
         movingFreqCourse = len(self.tabuList[courseId])
-        f = softConstraints.totalSoftConstraintsForTimetable(partialTimetable, data)
+        f = softConstraints2.totalSoftConstraintsForTimetable(partialTimetable, data)
         tt =  f + self.parameter[courseId][0] * movingFreqCourse
         return tt
 

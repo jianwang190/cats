@@ -1,5 +1,5 @@
 from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
-from softConstraints import totalSoftConstraintsForTimetable
+from softConstraints2 import totalSoftConstraintsForTimetable
 from itertools import groupby
 import math
 

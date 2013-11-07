@@ -44,10 +44,13 @@ class DictData(IData):
             self.courses[c.id] = c
         for r in data.rooms:
             self.rooms[r.id] = r
+
+        self.curriculumLookup = {c.id: set() for c in data.getAllCourses()}
+
         for c in data.curricula:
             self.curricula[c.id] = c
             for m in c.members:
-                self.curriculumLookup.setdefault(m, []).append(c)
+                self.curriculumLookup[m].add(c)
 
         self.constraints = { c.id: [] for c in data.constraints}
         for c in data.constraints:
@@ -78,7 +81,7 @@ class DictData(IData):
         return self.constraints[id]
 
     def getCurriculumForCourseId(self, courseId):
-        return self.curriculumLookup[courseId] if courseId in self.curriculumLookup else []
+        return self.curriculumLookup[courseId] if courseId in self.curriculumLookup else set()
 
 
     def popCourse(self, id):
