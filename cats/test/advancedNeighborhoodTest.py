@@ -61,6 +61,15 @@ class AdvancedNeighborhoodTest(TestCase):
         # TODO: tests for single swap
         m = a.kempeSwap(self.t, 0,1,(chains[1], set()))
 
+        expectedSingle1 = sorted(["c0031", "c0032", "c0065", "c0062", "c0058", "c0057"])
+        expectedSingle2 = sorted(["c0030", "c0033", "c0059", "c0067", "c0061", "c0071"])
+
+        self.assertSequenceEqual(sorted(map(lambda x: x.courseId, m["newPeriods"][0])), expectedSingle1)
+        self.assertSequenceEqual(sorted(map(lambda x: x.courseId, m["newPeriods"][1])), expectedSingle2)
+
+        for a in m["moves"]:
+            print a.courseId, a.roomId
+
 
     def testExploreNeighborhood(self):
         a = AdvancedNeighborhood()
