@@ -1,4 +1,5 @@
 import unittest
+from cats.adaptiveTabuSearch.tabuSearch import tabuSimpleNeighborhood
 from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.adaptiveTabuSearch import tabuSearch, softConstraints2
@@ -47,7 +48,7 @@ class MaximumMatchingTest(unittest.TestCase):
         result = tabu.tabuTenure('c0001', self.t.getTimeTable(), self.data)
         self.assertEqual(result, 733.4)
 
-    #def testATS(self):
+    #def testAllInitialSolutions(self):
     #    for i in range(1,22):
     #        self.data = self.c.readInstance(i)
     #        self.t = TimeTableFactory.getTimeTable(self.data)
@@ -55,6 +56,14 @@ class MaximumMatchingTest(unittest.TestCase):
     #        initialSolution(self.t, self.data)
     #        print "[%d] ATS INITIAL PHASE" % i, time.time() - start
     #        self.assertSequenceEqual(self.data.getUnfinishedCourses(), [])
+
+    def testSimpleNeighborhood(self):
+        initialSolution(self.t, self.data)
+        tabuSimpleNeighborhood(self.t, self.data, 1)
+
+
+
+
 
 if __name__=="__main__":
     unittest.main()

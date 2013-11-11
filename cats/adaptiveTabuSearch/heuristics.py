@@ -19,11 +19,11 @@ def initialSolution(timetable, data):
     print
 
 
-    print "##### INITIAL SOLUTION FINISHED #####"
-    print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
-    for c in data.getUnfinishedCourses():
-        print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
-                               " ".join(timetable.neighbourhoodList[c.id])])
+    #print "##### INITIAL SOLUTION FINISHED #####"
+    #print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
+    #for c in data.getUnfinishedCourses():
+    #    print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
+    #                           " ".join(timetable.neighbourhoodList[c.id])])
 
 
 
