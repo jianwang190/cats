@@ -133,6 +133,10 @@ class TimeTable(object):
 
     """Add data to timetable (period, courseId, roomId, curId - optional)"""
     def addDataToTimetable(self, assignedList):
+        """
+
+        :rtype : object
+        """
         map(lambda a: self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2])), assignedList)
 
     """ Serialize timetables neighbourhood list to json, d3.js readable """

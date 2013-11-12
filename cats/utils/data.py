@@ -86,3 +86,7 @@ class DictData(IData):
 
     def getUnfinishedCourses(self):
         return filter(lambda x: x.lectureNum>x.assignedLectureNum, self.getAllCourses())
+
+    def getBestRoom(self, roomsList):
+        for room in roomsList:
+            pass

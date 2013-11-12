@@ -8,9 +8,11 @@ class GeneticTest(object):
     def setUp(self):
         self.c = CompetitionReader()
         self.data = self.c.readInstance(1)
-        self.t = TimeTableFactory.getTimeTable(self.data)
-        #print self.t.getValueSlot(1,1)
-        #print "sdfsdf"
+        self.solutions = dict()
+        self.fitnessTable = dict()
+        self.populationSize = 50
+        for it in range(self.populationSize):
+            self.solutions[it] = TimeTableFactory.getTimeTable(self.data)
         #for slot in self.t.timeSlots:
         #    print slot
         #for kurs in self.t.neighbourhoodList.keys():
@@ -22,12 +24,19 @@ class GeneticTest(object):
         #    print "SDSDS", kursy
         #    for room in self.t.roomsIdListForCourses[kursy]:
         #        print room
-        self.ga = GeneticAlgorithm(self.data)
-        self.ga.generateInitialSolution()
-        for slot in self.ga.timeTable.timeTable:
+        self.ga = GeneticAlgorithm(self.data, self.solutions, self.populationSize, 0.1)
+        self.solutions = self.ga.generateInitialSolutions()
+        self.fitnessTable = self.ga.estimateFitness(self.solutions)
+
+        for epoch in range(20):
+            self.solutions = self.ga.nextGeneration(self.solutions, "random")
+            self.solutions = self.ga.mutate(self.solutions)
+            self.fitnessTable = self.ga.estimateFitness(self.solutions)
+
+        for slot in self.t.timeTable.keys():
             print "Slot id:", slot
-            for info in slot:
-                print info
+            for pair in self.t.timeTable[slot]:
+                print pair.courseId, pair.roomId
 
 
 
