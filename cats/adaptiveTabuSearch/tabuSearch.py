@@ -8,7 +8,7 @@ from cats.adaptiveTabuSearch.basicNeighborhood import BasicNeighborhood
 
 PERIOD_RELATED_COST_TAU = 2
 DEPTH_OF_TABU_SEARCH = 10
-
+#
 
 class Move(object):
     def __init__(self, period, roomId):
@@ -67,6 +67,7 @@ class AdvancedTabuList(object):
 
 def doSimpleSwap(timetable, (swap1, swap2)):
     newTimetable = timetable.getTimeTable().copy()
+    #TODO: swap2.index == [] or swap.1.index == []
     if(swap2.index == []):
         print swap1.period, newTimetable[swap1.period]
         assert(len(newTimetable[swap1.period])> swap1.index)
@@ -84,9 +85,9 @@ def tabuSimpleNeighborhood(initialSolution, data, theta):
     for i in xrange(theta):
         b.simpleSwap(initialSolution.getTimeTable(), initialSolution.neighbourhoodList, len(data.getAllCourses()))
         neighborhood = filter(lambda swap: \
-                (swap[0].courseId, swap[0].period, initialSolution.getTimeTable()[swap[0].period][swap[0].index].roomId) not in tabuList\
+                (swap[0].courseId, swap[0].period, initialSolution.getTimeTable()[swap[0].period][swap[0].index][1]) not in tabuList\
                 and (swap[1].courseId==[] or\
-                (swap[1].courseId, swap[1].period, initialSolution.getTimeTable()[swap[1].period][swap[1].index].roomId) not in tabuList), \
+                (swap[1].courseId, swap[1].period, initialSolution.getTimeTable()[swap[1].period][swap[1].index][1]) not in tabuList), \
                 b.getBasicList())
 
         candidates = map(lambda x: doSimpleSwap(initialSolution, x), neighborhood)
@@ -119,7 +120,6 @@ def tabuSearch(initialSolution, data, theta):
         else:
             improved = False
 
-
 def matchingRoomAllocations(timetable, slot, data, sortedRoomIdList):
     """
     Matching algorithm to make room allocations (number of courses in slot <= number of rooms)
@@ -130,11 +130,14 @@ def matchingRoomAllocations(timetable, slot, data, sortedRoomIdList):
     :param sortedRoomIdList: sorted list of rooms regarding to capacity
     :return: timetable for slot with assigned rooms for each course
     """
-    studentsForCourse= {x.courseId: data.getCourse(x.courseId).studentsNum for x in timetable[slot]}
+    studentsForCourse= {x[0]: data.getCourse(x[0]).studentsNum for x in timetable[slot]}
     sortedStudentsForCourse = sorted(studentsForCourse.iteritems(), key=operator.itemgetter(1), reverse=True)
-    for x in timetable[slot]:
-        indexOfRoom = map(operator.itemgetter(0), sortedStudentsForCourse).index(x.courseId)
-        x.roomId = sortedRoomIdList[indexOfRoom].id
+    size = len(timetable[slot])
+    for i in range(0, size):
+        indexOfRoom = map(operator.itemgetter(0), sortedStudentsForCourse).index(timetable[slot][i][0])
+        # modify room Id
+        tuple = timetable[slot][i]
+        timetable[slot][i] = (tuple[0], sortedRoomIdList[indexOfRoom].id)
 
     return timetable[slot]
 

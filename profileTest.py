@@ -1,5 +1,3 @@
-__author__ = 'tomek'
-
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.adaptiveTabuSearch.heuristics import initialSolution

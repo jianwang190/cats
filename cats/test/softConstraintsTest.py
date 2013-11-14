@@ -1,6 +1,6 @@
 import unittest
 from cats.readers.competitionReader import CompetitionReader, CompetitionDictReader
-from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
+from cats.utils.timetable import TimeTableFactory
 from cats.adaptiveTabuSearch import softConstraints2
 
 
@@ -24,7 +24,7 @@ class softConstraintsTest(unittest.TestCase):
         self.t.addDataToTimetable(assignedList)
         penalty = softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyMinWorkingDays']
         self.assertEqual(penalty, 515)
-    #
+
     """Test for soft constraints function counting penalty for room stability"""
     def testSoftConstraintsRoomStability(self):
         assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (2, 'c0001', 'C'), (3, 'c0001', 'G'), (0, 'c0004', 'B'), (1, 'c0004', 'B'), (2, 'c0004', 'B')]
@@ -81,6 +81,11 @@ class softConstraintsTest(unittest.TestCase):
     def testSoftConstraintsRoomStability22(self):
         assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (2, 'c0001', 'C'), (3, 'c0001', 'G'), (0, 'c0004', 'B'), (1, 'c0004', 'B'), (2, 'c0004', 'B')]
         self.t.addDataToTimetable(assignedList)
-        penalty = softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomStability']
-        self.assertEqual(penalty, 3)
+        result = softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data, "perturbation")
+        penaltyRoomStability = result['penaltyRoomStability']
+        self.assertEqual(penaltyRoomStability, 3)
+        self.assertEqual(len(result['perturbationPenalty']), len((assignedList)))
+
+
+
 

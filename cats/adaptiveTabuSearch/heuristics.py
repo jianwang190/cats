@@ -1,4 +1,4 @@
-from cats.utils.timetable import TimeTableFactory, CellOfTimeTable
+from cats.utils.timetable import TimeTableFactory
 from softConstraints2 import totalSoftConstraintsForTimetable
 from itertools import groupby
 import math
@@ -56,8 +56,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
         room = solutionRankings[0][1][1]
 
         # assign matching course-room to period
-        partialTimeTable.getTimeTable()[period].append(
-            CellOfTimeTable(courseId, room))
+        partialTimeTable.getTimeTable()[period].append((courseId, room))
         # update course assigned lecture number
         data.popCourse(courseId)
     else:

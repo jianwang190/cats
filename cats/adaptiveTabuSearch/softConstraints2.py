@@ -3,7 +3,6 @@ MIN_WORKINGS_DAY_PENALTY = 5
 COMPACTNESS_PENALTY = 2
 STABILITY_PENALTY = 1
 
-"""Count penalty for soft constraint curriculum compactness helper function"""
 
 def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
     """
@@ -26,12 +25,21 @@ def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
             penalty += 1
     return penalty
 
+
 def totalSoftConstraintsForTimetable(partialTimetable, data):
+    """
+    Get total soft constrains penalty for timetable
+    :param partialTimetable: timetable for which soft constraints penalty is counted
+    :param data: data describing courses
+    :return: total soft constraints penalty
+    """
     return softConstraintsPenalty(partialTimetable, data)['totalPenalty']
 
-def softConstraintsPenalty(partialTimetable, data):
+
+def softConstraintsPenalty(partialTimetable, data, perturbation = None):
     """
     Count soft penalty for timetable
+    perturbation penalty for each lecture include : room stability penalty, room capacity, min workings days
     :param partialTimetable: timetable to grade
     :param data: data for tested timetable
     :return: dictionary with penalty for : min working days, curriculum compactness, room stability and capacity, total penalty
@@ -43,22 +51,37 @@ def softConstraintsPenalty(partialTimetable, data):
     information = {x.id: [set(), set()] for x in data.getAllCourses()}
     curPeriodDict = {x.id: [] for x in data.getAllCurricula()}
 
+    # dictionary with penalties necessary to perturbation phase
+    # courseId : partial penalty (without room capacity
+    perturbationPenalty = {}
+
 
     for key in partialTimetable.keys():
         for cell in partialTimetable[key]:
-            roomCapacityPenalty += data.getCourse(cell.courseId).studentsNum - data.getRoom(cell.roomId).capacity \
-                if data.getCourse(cell.courseId).studentsNum > data.getRoom(cell.roomId).capacity else 0
-            information[cell.courseId][0].add(cell.roomId)
-            information[cell.courseId][1].add(key / data.periodsPerDay)
-            map(lambda x: curPeriodDict[x.id].append(key), data.getCurriculumForCourseId(cell.courseId))
+            capacityPenalty = data.getCourse(cell[0]).studentsNum - data.getRoom(cell[1]).capacity \
+                if data.getCourse(cell[0]).studentsNum > data.getRoom(cell[1]).capacity else 0
+            roomCapacityPenalty += capacityPenalty
+            perturbationPenalty[(cell, key)] = roomCapacityPenalty * CAPACITY_PENALTY
+            information[cell[0]][0].add(cell[1])
+            information[cell[0]][1].add(key / data.periodsPerDay)
+            map(lambda x: curPeriodDict[x.id].append(key), data.getCurriculumForCourseId(cell[0]))
 
 
     curriculumCompactnessPenalty = sum(map(lambda x: countPenaltyForCurriculumCompactness(curPeriodDict[x], data.periodsPerDay), curPeriodDict))
 
     for key in information.keys():
-        roomStabilityPenalty += len(information[key][0]) - 1 if len(information[key][0]) > 1 else 0
-        minWorkingDaysPenalty += data.getCourse(key).minWorkingDays - len(information[key][1])\
+        stabilityPenalty = len(information[key][0]) - 1 if len(information[key][0]) > 1 else 0
+        workingDaysPenalty = data.getCourse(key).minWorkingDays - len(information[key][1])\
             if data.getCourse(key).minWorkingDays > len(information[key][1]) else 0
+        roomStabilityPenalty += stabilityPenalty
+        minWorkingDaysPenalty += workingDaysPenalty
+        tempPenalty = stabilityPenalty * STABILITY_PENALTY + workingDaysPenalty * MIN_WORKINGS_DAY_PENALTY
+
+        if perturbation is not None:
+            for cell in perturbationPenalty.keys():
+                if cell[0] == key:
+                    perturbationPenalty[(cell, key)] += tempPenalty
+
 
     roomStabilityPenalty *= STABILITY_PENALTY
     minWorkingDaysPenalty *= MIN_WORKINGS_DAY_PENALTY
@@ -69,5 +92,5 @@ def softConstraintsPenalty(partialTimetable, data):
 
     return {'penaltyMinWorkingDays': minWorkingDaysPenalty, 'penaltyRoomStability': roomStabilityPenalty,\
             'penaltyRoomCapacity': roomCapacityPenalty,'penaltyCurriculumCompactness': curriculumCompactnessPenalty,\
-            'totalPenalty' : penalty}
+            'totalPenalty': penalty, 'perturbationPenalty': perturbationPenalty}
 

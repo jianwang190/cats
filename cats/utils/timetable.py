@@ -1,13 +1,14 @@
 import collections, json
 from itertools import combinations, groupby
-class CellOfTimeTable(object):
-    def __init__(self, courseId = [], roomId = []):
-        self.courseId = courseId
-        self.roomId = roomId
 
 class TimeTableFactory(object):
     @classmethod
     def getTimeTable(self, data):
+        """
+        Cell in timetable format : tuples (courseId, roomId) instead of old CellOfTimeTable
+        :param data:
+        :return: timetable
+        """
         t = TimeTable()
         t.periodsPerDay = data.periodsPerDay
         t.daysNum = data.daysNum
@@ -22,14 +23,24 @@ class TimeTable(object):
     def getTimeTable(self):
         return self.timeTable
 
-    """Get value of slot from timetable"""
     def getValueSlot(self, day, day_period):
+        """
+        Get value of slot from timetable
+        :param day: day
+        :param day_period: period in day
+        :return:
+        """
         key = day * self.periodsPerDay + day_period
         return self.timeTable[key]
 
-    """Create neighourhood list for courses regarding regarding curriculum lists"""
-    """Consider teacher's conflicts"""
+
     def createNeighbourhoodList(self, curriculumList, courseList):
+        """
+        Create neighborhood list for courses regarding regarding curriculum lists and teacher's conflicts
+        :param curriculumList:
+        :param courseList:
+        :return:
+        """
         self.neighbourhoodList = {x.id : set([]) for x in courseList}
         for c in curriculumList:
             comb = combinations(c.members, 2)
@@ -45,18 +56,32 @@ class TimeTable(object):
                 self.neighbourhoodList[i[1]].add(i[0])
         return self.neighbourhoodList
 
-    """Get key to slot in timetable"""
     def getKey(self, day, day_period):
+        """
+        Get key to slot in timetable
+        :param day: day
+        :param day_period: period in day
+        :return: key in timetable
+        """
         key = day * self.periodsPerDay + day_period
         return key
 
-    """Map day and period to key in timetable"""
     def mapKeys(self, constraint):
+        """
+        Map day and period to key in timetable
+        :param constraint: constraints
+        :return: key
+        """
         key = self.getKey(constraint.day, constraint.dayPeriod)
         return key
 
-    """Create list of rooms for course with appropriate capacity of room for course (considering number of students attending course)"""
     def createListOfRooms(self, roomList, courseStudentsNum):
+        """
+        Create list of rooms for course with appropriate capacity of room for course (considering number of students attending course)
+        :param roomList: list of rooms
+        :param courseStudentsNum: number of students attending to course
+        :return:
+        """
         listOfRooms = set([r.id for r in roomList if (r.capacity >= courseStudentsNum)])
         return listOfRooms
 
@@ -74,10 +99,10 @@ class TimeTable(object):
     def checkIfAvailable(self, timeTableList, courseId):
         rooms = set()
         for cell in timeTableList:
-            if (cell is not []) and ((cell.courseId in self.neighbourhoodList[courseId]) or (cell.courseId == courseId)):
+            if (cell is not []) and ((cell[0] in self.neighbourhoodList[courseId]) or (cell[0] == courseId)):
                 return {'period' : False, 'unavailableRooms' : set()}
             else:
-                rooms.update(cell.roomId)
+                rooms.update(cell[1])
         return {'period': True, 'unavailableRooms' : rooms}
 
 
@@ -104,7 +129,7 @@ class TimeTable(object):
     def assignedLectures(self, courseId):
         sum = []
         for slot, cells in self.getTimeTable().iteritems():\
-            sum += filter(lambda x: x.courseId == courseId, cells)
+            sum += filter(lambda x: x[0] == courseId, cells)
         return sum
 
     def readLecturesToTimetable(self, path):
@@ -112,7 +137,8 @@ class TimeTable(object):
         lecturesBuffer = map(lambda x: x.rstrip('\n'), f.readlines())
         for lecture in lecturesBuffer:
             l = lecture.split()
-            self.timeTable[int(l[0])].append(CellOfTimeTable(l[1], l[2]))
+            #courseId l[1], roomId l[2]
+            self.timeTable[int(l[0])].append((l[1], l[2]))
 
     """ returns number of conflicting courses """
     """ assumes all conflicts are stored in neighbourhoodList """
@@ -129,18 +155,18 @@ class TimeTable(object):
     
     def availableRoomsList(self, period, data):
         return list(set(map(lambda x: x.id, data.getAllRooms())) \
-               - set(map(lambda x: x.roomId, self.getTimeTable()[period])))
+               - set(map(lambda x: x[1], self.getTimeTable()[period])))
 
 
-
-
-    """Add data to timetable (period, courseId, roomId, curId - optional)"""
     def addDataToTimetable(self, assignedList):
-        map(lambda a: self.timeTable[a[0]].append(CellOfTimeTable(a[1],a[2])), assignedList)
+        """
+        Add data to timetable (period, courseId, roomId, curId - optional)
+        :param assignedList: courses and rooms to add to timetable
+        """
+        map(lambda a: self.timeTable[a[0]].append((a[1],a[2])), assignedList)
 
 
     def jsonify(self):
-
         """
         Serialize timetables neighbourhood list to json, d3.js readable
         Check http://bl.ocks.org/mbostock/4062045

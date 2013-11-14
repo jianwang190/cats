@@ -1,6 +1,6 @@
 import unittest
 from cats.adaptiveTabuSearch.tabuSearch import tabuSimpleNeighborhood
-from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
+from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.adaptiveTabuSearch import tabuSearch, softConstraints2
 from cats.adaptiveTabuSearch.heuristics import initialSolution
@@ -20,16 +20,16 @@ class MaximumMatchingTest(unittest.TestCase):
         slot = 0
         coursesId = ['c0001', 'c0002', 'c0004', 'c0030', 'c0005', 'c0014', 'c0015', 'c0016']
         self.t.timeTable[slot] = tabuSearch.matchingRoomAllocations(self.t.getTimeTable(), slot, self.data, self.sortedRoomIdList)
-        listOfAssignedRooms = [x.roomId for x in self.t.timeTable[slot]]
+        listOfAssignedRooms = [x[1] for x in self.t.timeTable[slot]]
         self.assertEqual(listOfAssignedRooms, ['B', 'S', 'C', 'G', 'F'])
         penalty =  softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
         self.assertEqual(penalty, 340)
 
         slot = 1
         self.t.timeTable[slot] = tabuSearch.matchingRoomAllocations(self.t.getTimeTable(), slot, self.data, self.sortedRoomIdList)
-        listOfAssignedRooms = [x.roomId for x in self.t.timeTable[slot]]
+        listOfAssignedRooms = [x[1] for x in self.t.timeTable[slot]]
         self.assertEqual(listOfAssignedRooms, ['G', 'S', 'E', 'B', 'C', 'F'])
-        penalty =  softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
+        penalty = softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
 
         self.assertEqual(penalty, 305)
 

@@ -1,8 +1,9 @@
 
 import unittest
-from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
+from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.adaptiveTabuSearch.perturbation import selectRandom
+
 
 
 class PerturbationTest(unittest.TestCase):

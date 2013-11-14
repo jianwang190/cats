@@ -1,14 +1,16 @@
 import random
+from cats.adaptiveTabuSearch.softConstraints2 import softConstraintsPenalty
+from operator import itemgetter
 """Perturbation"""
 PERTURBATION_STRENGTH_MIN = 4
 PERTURBATION_STRENGTH_MAX = 15
+
 """n - number of selected lectures form the first q highly penalized ones"""
-def rankingOfLectures(n, q):
-    pass
+def rankingOfLectures(partialTimetable, data, n, q):
+    perturbationDict = softConstraintsPenalty(partialTimetable, data, "perturbation")
+    rankingLectures = sorted(perturbationDict.items(), key=itemgetter(1), reverse=True)
 
-def probabilityDistribution(lecture, rankNumber):
     pass
-
 
 def selectRandom(listItems, numberOfSelectedItems):
 
@@ -33,4 +35,3 @@ def selectRandom(listItems, numberOfSelectedItems):
         listItems.remove(item)
         probabilities.pop(index)
     return selectedValues
-

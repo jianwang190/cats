@@ -1,4 +1,3 @@
-__author__ = 'tomek'
 from cats.utils.timetable import TimeTable
 from itertools import groupby, combinations
 
@@ -14,12 +13,12 @@ class AdvancedNeighborhood(object):
         :return: dictionary, keys: Kempe chain indices, values: vertexes of chains
         """
         assignedCourses = timetable.getTimeTable()[period1] + timetable.getTimeTable()[period2]
-        uniqueCourses = set(map(lambda x: x.courseId, assignedCourses))
+        uniqueCourses = set(map(lambda x: x[0], assignedCourses))
         chains = {}
         counter = 1
         for c in assignedCourses:
-            if c.courseId not in chains.keys():
-                dfsStack = [c.courseId]
+            if c[0] not in chains.keys():
+                dfsStack = [c[0]]
                 while len(dfsStack)>0:
                     currentNode = dfsStack.pop()
                     chains[currentNode] = counter
@@ -84,10 +83,10 @@ class AdvancedNeighborhood(object):
         """
         coursesFirst = set(timetable.getTimeTable()[period1])
         coursesSecond = set(timetable.getTimeTable()[period2])
-        newCoursesFirst = set(filter(lambda x: x.courseId not in (chains[0] | chains[1]), coursesFirst)) \
-                            | set(filter(lambda x: x.courseId in (chains[0] | chains[1]), coursesSecond))
-        newCoursesSecond = set(filter(lambda x: x.courseId not in (chains[0] | chains[1]), coursesSecond)) \
-                            | set(filter(lambda x: x.courseId in (chains[0] | chains[1]), coursesFirst))
+        newCoursesFirst = set(filter(lambda x: x[0] not in (chains[0] | chains[1]), coursesFirst)) \
+                            | set(filter(lambda x: x[0] in (chains[0] | chains[1]), coursesSecond))
+        newCoursesSecond = set(filter(lambda x: x[0] not in (chains[0] | chains[1]), coursesSecond)) \
+                            | set(filter(lambda x: x[0] in (chains[0] | chains[1]), coursesFirst))
         return { "newPeriods": (newCoursesFirst, newCoursesSecond), \
                 "moves": (coursesFirst - newCoursesFirst)|(coursesSecond-newCoursesSecond)}
 

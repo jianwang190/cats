@@ -1,6 +1,6 @@
 
 import unittest
-from cats.utils.timetable import  TimeTableFactory
+from cats.utils.timetable import TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.adaptiveTabuSearch.basicNeighborhood import BasicNeighborhood
 
