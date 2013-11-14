@@ -77,7 +77,7 @@ class softConstraintsTest(unittest.TestCase):
         self.assertEqual(penalty, 958)
 
 
-    """Test for soft constraints function counting penalty for room stability"""
+    """Perturbation penalty"""
     def testSoftConstraintsRoomStability22(self):
         assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (2, 'c0001', 'C'), (3, 'c0001', 'G'), (0, 'c0004', 'B'), (1, 'c0004', 'B'), (2, 'c0004', 'B')]
         self.t.addDataToTimetable(assignedList)
@@ -85,6 +85,16 @@ class softConstraintsTest(unittest.TestCase):
         penaltyRoomStability = result['penaltyRoomStability']
         self.assertEqual(penaltyRoomStability, 3)
         self.assertEqual(len(result['perturbationPenalty']), len((assignedList)))
+
+
+    """Perturbation"""
+    def testSoftConstraintsPerturbation(self):
+        assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (4, 'c0001', 'C'), (7, 'c0002', 'G'), (9, 'c0072', 'E')]
+        self.t.addDataToTimetable(assignedList)
+        result = softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data, "perturbation")
+        print "perturbation penalty", result['perturbationPenalty']
+        self.assertEqual(sum(map(lambda x: result['perturbationPenalty'][x], result['perturbationPenalty'])), 896)
+
 
 
 
