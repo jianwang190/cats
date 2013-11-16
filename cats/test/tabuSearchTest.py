@@ -43,8 +43,8 @@ class TabuSearchTest(unittest.TestCase):
         tabu = tabuSearch.TabuList(self.data.getAllCourses(), self.t.neighbourhoodList)
         assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (4, 'c0001', 'C'), (7, 'c0002', 'G'), (9, 'c0072', 'E')]
         self.t.addDataToTimetable(assignedList)
-        tabu.addTabuMove('c0001', 10, 'E')
-        tabu.addTabuMove('c0001', 12, 'E')
+        tabu.addTabuMove('c0001', 10, 'E', 1)
+        tabu.addTabuMove('c0001', 12, 'E', 1)
         result = tabu.tabuTenure('c0001', self.t.getTimeTable(), self.data)
         self.assertEqual(result, 733.4)
 
