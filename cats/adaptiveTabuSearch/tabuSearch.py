@@ -52,8 +52,10 @@ class TabuList(object):
         return tt
 
     def isTabuMove(self, courseId, period, roomId, currentIteration, tt):
+        #print [(x.period,x.room,  x.iteration) for x in self.tabuList[courseId]]
+        #print filter(lambda x: x.period==period and x.room==roomId, self.tabuList[courseId])
         return len( \
-            filter(lambda x: x.period==period and x.room==roomId and x.iteration+tt<currentIteration, self.tabuList[courseId]))>0
+            filter(lambda x: x.period==period and x.room==roomId and x.iteration+tt>=currentIteration, self.tabuList[courseId]))>0
 
 
 
@@ -83,7 +85,8 @@ def doSimpleSwap(timetable, (swap1, swap2)):
 def tabuSimpleNeighborhood(initialSolution, data, theta):
     tabuList = TabuList(data.getAllCourses(), initialSolution.neighbourhoodList)
     b = BasicNeighborhood()
-
+    currentBestSolution = initialSolution.getTimeTable()
+    currentBestQuality = softConstraints2.totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
     for i in xrange(theta):
         b.clearBasicList()
 
@@ -91,12 +94,13 @@ def tabuSimpleNeighborhood(initialSolution, data, theta):
         tabuTenure = {x.id : tabuList.tabuTenure(x.id, initialSolution.getTimeTable(), data) for x in data.getAllCourses()}
 
         neighborhood = filter(lambda swap: \
+            (swap[0].courseId==[] or
                 tabuList.isTabuMove(\
                     swap[0].courseId, \
                     swap[0].period, \
                     initialSolution.getTimeTable()[swap[0].period][swap[0].index][1], \
                     i, \
-                    tabuTenure[swap[0].courseId]) == False
+                    tabuTenure[swap[0].courseId]) == False)
                 and (swap[1].courseId==[] or \
                 tabuList.isTabuMove( \
                     swap[1].courseId, \
@@ -124,8 +128,19 @@ def tabuSimpleNeighborhood(initialSolution, data, theta):
         if second.courseId!=[]:
             tabuList.addTabuMove(second.courseId, second.period, initialSolution.getTimeTable()[second.period][second.index][1], i)
 
+        print "FIRST:  ",first.courseId, first.period
+        print "SECOND: ", second.courseId, second.period
+        for i in tabuList.tabuList.keys():
+            print i, tabuTenure[i],[(x.period, x.room, x.iteration) for x in tabuList.tabuList[i]]
 
         initialSolution.timeTable = bestSwap[0][1]
+        if bestSwap[1]<currentBestQuality:
+            currentBestQuality, currentBestSolution = bestSwap[1], bestSwap[0][1]
+    initialSolution.timeTable = currentBestSolution
+    print "CURRENT BEST: ", currentBestQuality
+    print "CURRENT BEST: ", currentBestSolution
+
+    return initialSolution
 
 
 
