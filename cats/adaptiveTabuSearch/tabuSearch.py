@@ -1,7 +1,7 @@
 import operator
 from cats.adaptiveTabuSearch import softConstraints2
 from cats.adaptiveTabuSearch.basicNeighborhood import BasicNeighborhood
-
+import time
 """Tabu search algorithm"""
 """Period related costs - sum(minimumWorkingDays, curriculumCompactness)"""
 """Room related costs - sum(roomCapacity, roomStability)"""
@@ -11,9 +11,10 @@ DEPTH_OF_TABU_SEARCH = 10
 #
 
 class Move(object):
-    def __init__(self, period, roomId):
+    def __init__(self, period, roomId, iteration):
         self.period = period
         self.room = roomId
+        self.iteration = iteration
 
 
 # separate object of TabuList class should be created for N1 and N2
@@ -23,12 +24,9 @@ class TabuList(object):
         self.tabuList = {x.id : [] for x in courseList}
         self.parameter = self.coefficientTabuTenure(courseList, neighborhoodList)
 
-    def __contains__(self, (course, period, room)):
-        return any(map(lambda x: x.period==period and x.room==room, self.tabuList[course]))
 
-
-    def addTabuMove(self, courseId, period, roomId):
-        move = Move(period, roomId)
+    def addTabuMove(self, courseId, period, roomId, iteration):
+        move = Move(period, roomId, iteration)
         self.tabuList[courseId].append(move)
 
 
@@ -53,6 +51,12 @@ class TabuList(object):
         tt =  f + self.parameter[courseId][0] * movingFreqCourse
         return tt
 
+    def isTabuMove(self, courseId, period, roomId, currentIteration, tt):
+        return len( \
+            filter(lambda x: x.period==period and x.room==roomId and x.iteration+tt<currentIteration, self.tabuList[courseId]))>0
+
+
+
 
 
 
@@ -66,13 +70,11 @@ class AdvancedTabuList(object):
 
 
 def doSimpleSwap(timetable, (swap1, swap2)):
-    newTimetable = timetable.getTimeTable().copy()
-    #TODO: swap2.index == [] or swap.1.index == []
+
+    newTimetable = {x: timetable.getTimeTable()[x][:] for x in timetable.getTimeTable().keys()}
     if(swap2.index == []):
-        print swap1.period, newTimetable[swap1.period]
-        assert(len(newTimetable[swap1.period])> swap1.index)
-        #newTimetable[swap2.period].append(newTimetable[swap1.period][swap1.index])
-        #del newTimetable[swap1.period][swap1.index]
+        newTimetable[swap2.period].append(newTimetable[swap1.period][swap1.index])
+        del newTimetable[swap1.period][swap1.index]
     else:
         newTimetable[swap1.period][swap1.index], newTimetable[swap2.period][swap2.index] = \
             newTimetable[swap2.period][swap2.index], newTimetable[swap1.period][swap1.index]
@@ -81,21 +83,53 @@ def doSimpleSwap(timetable, (swap1, swap2)):
 def tabuSimpleNeighborhood(initialSolution, data, theta):
     tabuList = TabuList(data.getAllCourses(), initialSolution.neighbourhoodList)
     b = BasicNeighborhood()
-    b.clearBasicList()
+
     for i in xrange(theta):
+        b.clearBasicList()
+
         b.simpleSwap(initialSolution.getTimeTable(), initialSolution.neighbourhoodList, len(data.getAllCourses()))
+        tabuTenure = {x.id : tabuList.tabuTenure(x.id, initialSolution.getTimeTable(), data) for x in data.getAllCourses()}
+
         neighborhood = filter(lambda swap: \
-                (swap[0].courseId, swap[0].period, initialSolution.getTimeTable()[swap[0].period][swap[0].index][1]) not in tabuList\
-                and (swap[1].courseId==[] or\
-                (swap[1].courseId, swap[1].period, initialSolution.getTimeTable()[swap[1].period][swap[1].index][1]) not in tabuList), \
+                tabuList.isTabuMove(\
+                    swap[0].courseId, \
+                    swap[0].period, \
+                    initialSolution.getTimeTable()[swap[0].period][swap[0].index][1], \
+                    i, \
+                    tabuTenure[swap[0].courseId]) == False
+                and (swap[1].courseId==[] or \
+                tabuList.isTabuMove( \
+                    swap[1].courseId, \
+                    swap[1].period, \
+                    initialSolution.getTimeTable()[swap[1].period][swap[1].index][1],
+                    i,\
+                    tabuTenure[swap[1].courseId]) == False), \
                 b.getBasicList())
 
-        candidates = map(lambda x: doSimpleSwap(initialSolution, x), neighborhood)
+        if len(neighborhood)==0:
+            break
+
+        candidates = map(lambda x: (x, doSimpleSwap(initialSolution, x)), neighborhood)
         initialQuality = softConstraints2.totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
-        candidatesAfterPeriods = filter(lambda x: x[1]-initialQuality>0, \
-                map(lambda x:  (x, softConstraints2.totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)), candidates))
-        print initialQuality
-        print candidatesAfterPeriods
+        print initialQuality, len(neighborhood)
+
+        candidatesAfterPeriods = map(lambda x:  (x,  softConstraints2.totalSoftConstraintsForTimetable(x[1], data)), candidates)
+
+        bestSwap = sorted(candidatesAfterPeriods, key=lambda x: x[1])[0]
+        (first, second) = bestSwap[0][0]
+
+
+        if first.courseId!=[]:
+            tabuList.addTabuMove(first.courseId, first.period, initialSolution.getTimeTable()[first.period][first.index][1], i)
+        if second.courseId!=[]:
+            tabuList.addTabuMove(second.courseId, second.period, initialSolution.getTimeTable()[second.period][second.index][1], i)
+
+
+        initialSolution.timeTable = bestSwap[0][1]
+
+
+
+
 
 
 

@@ -6,7 +6,7 @@ from cats.adaptiveTabuSearch import tabuSearch, softConstraints2
 from cats.adaptiveTabuSearch.heuristics import initialSolution
 import time
 
-class MaximumMatchingTest(unittest.TestCase):
+class TabuSearchTest(unittest.TestCase):
     def setUp(self):
         self.c = CompetitionDictReader()
         self.data = self.c.readInstance(1)
@@ -59,7 +59,7 @@ class MaximumMatchingTest(unittest.TestCase):
 
     def testSimpleNeighborhood(self):
         initialSolution(self.t, self.data)
-        tabuSimpleNeighborhood(self.t, self.data, 1)
+        tabuSimpleNeighborhood(self.t, self.data, 20)
 
 
 
