@@ -2,7 +2,7 @@
 import unittest
 from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
-from cats.adaptiveTabuSearch.perturbation import selectRandom
+from cats.adaptiveTabuSearch.perturbation import selectRandom, rankingOfLectures
 
 
 
@@ -20,6 +20,15 @@ class PerturbationTest(unittest.TestCase):
         selectedValuesSet = set(selectedValues)
         self.assertEqual(len(selectedValues), 5)
         self.assertEqual(len(selectedValuesSet), 5)
+
+    def testRankingOfLectures(self):
+        path = u"data/TabuSearchDataTests/softConstraintsLectures"
+        self.t.readLecturesToTimetable(path)
+        n = 4
+        q = 13
+        selectedValues = rankingOfLectures(self.t.getTimeTable(), self.data, n, q)
+        uniqueSelectedValues = set(selectedValues)
+        self.assertEqual(len(uniqueSelectedValues), len(selectedValues))
 
 
 
