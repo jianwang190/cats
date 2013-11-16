@@ -13,17 +13,7 @@ class GeneticTest(object):
         self.populationSize = 50
         for it in range(self.populationSize):
             self.solutions[it] = TimeTableFactory.getTimeTable(self.data)
-        #for slot in self.t.timeSlots:
-        #    print slot
-        #for kurs in self.t.neighbourhoodList.keys():
-        #    print "klucz", kurs
-        #    for konflikty in self.t.neighbourhoodList[kurs]:
-        #        print konflikty
-        #print "sdfsdfsdf"
-        #for kursy in self.t.roomsIdListForCourses:
-        #    print "SDSDS", kursy
-        #    for room in self.t.roomsIdListForCourses[kursy]:
-        #        print room
+
         self.ga = GeneticAlgorithm(self.data, self.solutions, self.populationSize, 0.1)
         self.solutions = self.ga.generateInitialSolutions()
         self.fitnessTable = self.ga.estimateFitness(self.solutions)
@@ -32,15 +22,18 @@ class GeneticTest(object):
             self.solutions = self.ga.nextGeneration(self.solutions, "random")
             self.solutions = self.ga.mutate(self.solutions)
             self.fitnessTable = self.ga.estimateFitness(self.solutions)
+            print self.fitnessTable[self.ga.getTopSolution(self.fitnessTable)]
 
-        for slot in self.t.timeTable.keys():
-            print "Slot id:", slot
-            for pair in self.t.timeTable[slot]:
-                print pair.courseId, pair.roomId
+        for solutionId in self.solutions.keys():
+            print "SolutionId: ", solutionId
+            for slot in self.solutions[solutionId].timeTable.keys():
+                print "Slot id:", slot
+                for pair in self.solutions[solutionId].timeTable[slot]:
+                    print pair.courseId, pair.roomId
 
 
 
 if __name__=="__main__":
     #unittest.main()
-    t= GeneticTest()
+    t=GeneticTest()
     t.setUp()

@@ -102,9 +102,9 @@ class TimeTable(object):
                 'availablePairs' : availablePairs }
 
     def assignedLectures(self, courseId):
-        sum = []
+        sum = dict()
         for slot, cells in self.getTimeTable().iteritems():
-            sum += filter(lambda x: x.courseId == courseId, cells)
+            sum[slot] = filter(lambda x: x.courseId == courseId, cells)
         return sum
 
     def readLecturesToTimetable(self, path):
