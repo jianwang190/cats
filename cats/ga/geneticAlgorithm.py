@@ -6,7 +6,7 @@ from cats.adaptiveTabuSearch.heuristics import initialSolutionWithReturn
 
 class GeneticAlgorithm(object):
 
-    def __init__(self, data, timeTables, populationSize = 100, mutationIndex = 0.01, tournamentSelcetionIndex = 4, iterations = 100):
+    def __init__(self, data, timeTables, populationSize = 100, mutationIndex = 0.01, tournamentSelcetionIndex = 3, iterations = 100):
         self.data = data
         self.timeTables = timeTables
         self.fitnessTable = dict()
@@ -159,8 +159,8 @@ class GeneticAlgorithm(object):
         return index-1
 
     def getTournamentParentIndex(self, populationSize, fitnessTable):
-        candidates = [self.tournamentSelectionIndex]
+        candidates = range(self.tournamentSelectionIndex)
         for i in range(self.tournamentSelectionIndex):
-            candidates[i] = random.randint(0, populationSize)
+            candidates[i] = random.randint(0, populationSize-1)
 
         return min(candidates, key = lambda k: fitnessTable[k])

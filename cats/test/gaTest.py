@@ -18,7 +18,7 @@ class GATest(object):
         self.fitnessTable = self.ga.estimateFitness(self.solutions)
 
         for epoch in range(int(self.ga.iterationsMax)):
-            self.solutions = self.ga.nextGeneration(self.solutions, self.fitnessTable, "random")
+            self.solutions = self.ga.nextGeneration(self.solutions, self.fitnessTable, "tournament")
             self.solutions = self.ga.mutate(self.solutions, self.fitnessTable)
             self.fitnessTable = self.ga.estimateFitness(self.solutions)
             print self.fitnessTable[self.ga.getTopSolution(self.fitnessTable)]
