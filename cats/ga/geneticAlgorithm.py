@@ -65,10 +65,10 @@ class GeneticAlgorithm(object):
 
     def estimateFitness(self, population):
         fitnessTable = dict()
-        fitnesSum = 0
+        fitnesSum = 0.0
         for solutionId in population.keys():
             fitnessTable[solutionId] = self.fitness(self.timeTables[solutionId])
-            fitnesSum += fitnessTable[solutionId]
+            fitnesSum += (1000/fitnessTable[solutionId])
 
         self.fitnessSum = fitnesSum
         return fitnessTable
@@ -153,7 +153,7 @@ class GeneticAlgorithm(object):
         index = 0
         tempValue = 0
         while(tempValue < rouletteValue):
-            tempValue += fitnessTable[index]
+            tempValue += (1000/fitnessTable[index])
             index+=1
 
         return index-1
@@ -163,4 +163,4 @@ class GeneticAlgorithm(object):
         for i in range(self.tournamentSelectionIndex):
             candidates[i] = random.randint(0, populationSize)
 
-        return max(candidates, key = lambda k: fitnessTable[k])
+        return min(candidates, key = lambda k: fitnessTable[k])
