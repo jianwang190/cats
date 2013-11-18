@@ -1,6 +1,6 @@
 import unittest
 import os
-from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
+from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionReader, CompetitionDictReader
 from random import randint
 from cats.utils.data import Data
@@ -86,12 +86,12 @@ class TimetableTest(unittest.TestCase):
         result = self.t.availablePeriodsRooms(self.data.getAllConstraints(), 'c0002')
         self.assertEqual(result['availablePairsNum'], 52)
 
-        self.t.timeTable[13].append(CellOfTimeTable('c0057', 'E'))
+        self.t.timeTable[13].append(('c0057', 'E'))
         result = self.t.availablePeriodsRooms(self.data.getAllConstraints(), 'c0002')
         self.assertEqual(result['availablePairsNum'], 52)
 
-        self.t.timeTable[13].append(CellOfTimeTable('c0066', 'B'))
-        self.t.timeTable[15].append(CellOfTimeTable('c0005', 'B'))
+        self.t.timeTable[13].append(('c0066', 'B'))
+        self.t.timeTable[15].append(('c0005', 'B'))
         result = self.t.availablePeriodsRooms(self.data.getAllConstraints(), 'c0002')
         self.assertEqual(result['availablePairsNum'], 49)
         self.assertEqual(result['availablePeriodsNum'], 26)
@@ -103,8 +103,8 @@ class TimetableTest(unittest.TestCase):
         self.assertEqual(periodsListC33, set(range(0, 20)))
         self.assertEqual(periodsListC30, set(range(0, 30)))
         self.assertEqual(periodsListC32, set(range(0, 30)))
-        self.t.timeTable[0].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[0].append(CellOfTimeTable('c0002', 'C'))
+        self.t.timeTable[0].append(('c0001', 'B'))
+        self.t.timeTable[0].append(('c0002', 'C'))
         result = self.t.availablePeriodsRooms(self.data.getAllConstraints(), 'c0033')
         self.assertEqual(result['availablePairsNum'], 38)
         self.assertEqual(result['availablePeriodsNum'], 20)
@@ -113,8 +113,8 @@ class TimetableTest(unittest.TestCase):
         result = self.t.availablePeriodsRooms(self.data.getAllConstraints(), 'c0030')
         self.assertEqual(result['availablePairsNum'], 136)
         self.assertEqual(result['availablePeriodsNum'], 28)
-        self.t.timeTable[4].append(CellOfTimeTable('c0031', 'B'))
-        self.t.timeTable[5].append(CellOfTimeTable('c0004', 'C'))
+        self.t.timeTable[4].append(('c0031', 'B'))
+        self.t.timeTable[5].append(('c0004', 'C'))
         result = self.t.availablePeriodsRooms(self.data.getAllConstraints(), 'c0031')
         self.assertEqual(result['availablePeriodsNum'], 28)
         self.assertEqual(result['availablePairsNum'], 134)
@@ -131,8 +131,8 @@ class TimetableTest(unittest.TestCase):
 
     """Test for checkIfAvailable function (check unavailableRooms and if period is available)"""
     def test_checkifAvailable(self):
-        self.t.timeTable[0].append(CellOfTimeTable('c0001', 'B'))
-        self.t.timeTable[0].append(CellOfTimeTable('c0030', 'C'))
+        self.t.timeTable[0].append(('c0001', 'B'))
+        self.t.timeTable[0].append(('c0030', 'C'))
         result = self.t.checkIfAvailable(self.t.timeTable[0], 'c0033')
         self.assertEqual(result['period'], False)
         self.assertEqual(result['unavailableRooms'], set())
@@ -147,8 +147,8 @@ class TimetableTest(unittest.TestCase):
         result = self.t.assignedLectures(courseId)
         self.assertEquals(len(result), 2)
         # check if all selected assignments match courseId
-        self.assertTrue(all(map(lambda x: x.courseId == courseId, result)))
-        self.assertSequenceEqual(map(lambda x: x.roomId, result), ['B', 'C'])
+        self.assertTrue(all(map(lambda x: x[0] == courseId, result)))
+        self.assertSequenceEqual(map(lambda x: x[1], result), ['B', 'C'])
 
 
     """Test for function reading lectures to timetable from input file"""
@@ -158,8 +158,8 @@ class TimetableTest(unittest.TestCase):
         courseId = 'c0001'
         result = self.t.assignedLectures(courseId)
         self.assertEqual(len(result), 2)
-        self.assertTrue(all(map(lambda x: x.courseId == courseId, result)))
-        self.assertSequenceEqual(map(lambda x: x.roomId, result), ['B', 'E'])
+        self.assertTrue(all(map(lambda x: x[0] == courseId, result)))
+        self.assertSequenceEqual(map(lambda x: x[1], result), ['B', 'E'])
         courseId = 'c0008'
         self.assertEqual(len(self.t.getTimeTable()[0]), 2)
 

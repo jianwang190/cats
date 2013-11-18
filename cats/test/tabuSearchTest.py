@@ -1,11 +1,12 @@
 import unittest
-from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
+from cats.adaptiveTabuSearch.tabuSearch import tabuSimpleNeighborhood
+from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
-from cats.adaptiveTabuSearch import tabuSearch, softConstraints
+from cats.adaptiveTabuSearch import tabuSearch, softConstraints2
 from cats.adaptiveTabuSearch.heuristics import initialSolution
 import time
 
-class MaximumMatchingTest(unittest.TestCase):
+class TabuSearchTest(unittest.TestCase):
     def setUp(self):
         self.c = CompetitionDictReader()
         self.data = self.c.readInstance(1)
@@ -19,16 +20,16 @@ class MaximumMatchingTest(unittest.TestCase):
         slot = 0
         coursesId = ['c0001', 'c0002', 'c0004', 'c0030', 'c0005', 'c0014', 'c0015', 'c0016']
         self.t.timeTable[slot] = tabuSearch.matchingRoomAllocations(self.t.getTimeTable(), slot, self.data, self.sortedRoomIdList)
-        listOfAssignedRooms = [x.roomId for x in self.t.timeTable[slot]]
+        listOfAssignedRooms = [x[1] for x in self.t.timeTable[slot]]
         self.assertEqual(listOfAssignedRooms, ['B', 'S', 'C', 'G', 'F'])
-        penalty =  softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
+        penalty =  softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
         self.assertEqual(penalty, 340)
 
         slot = 1
         self.t.timeTable[slot] = tabuSearch.matchingRoomAllocations(self.t.getTimeTable(), slot, self.data, self.sortedRoomIdList)
-        listOfAssignedRooms = [x.roomId for x in self.t.timeTable[slot]]
+        listOfAssignedRooms = [x[1] for x in self.t.timeTable[slot]]
         self.assertEqual(listOfAssignedRooms, ['G', 'S', 'E', 'B', 'C', 'F'])
-        penalty =  softConstraints.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
+        penalty = softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data)['penaltyRoomCapacity']
 
         self.assertEqual(penalty, 305)
 
@@ -42,12 +43,12 @@ class MaximumMatchingTest(unittest.TestCase):
         tabu = tabuSearch.TabuList(self.data.getAllCourses(), self.t.neighbourhoodList)
         assignedList = [(0, 'c0001', 'E'), (1, 'c0001', 'B'), (4, 'c0001', 'C'), (7, 'c0002', 'G'), (9, 'c0072', 'E')]
         self.t.addDataToTimetable(assignedList)
-        tabu.addTabuMove('c0001', 10, 'E')
-        tabu.addTabuMove('c0001', 12, 'E')
+        tabu.addTabuMove('c0001', 10, 'E', 1)
+        tabu.addTabuMove('c0001', 12, 'E', 1)
         result = tabu.tabuTenure('c0001', self.t.getTimeTable(), self.data)
-        self.assertEqual(result, 218.4)
+        self.assertEqual(result, 733.4)
 
-    #def testATS(self):
+    #def testAllInitialSolutions(self):
     #    for i in range(1,22):
     #        self.data = self.c.readInstance(i)
     #        self.t = TimeTableFactory.getTimeTable(self.data)
@@ -55,6 +56,14 @@ class MaximumMatchingTest(unittest.TestCase):
     #        initialSolution(self.t, self.data)
     #        print "[%d] ATS INITIAL PHASE" % i, time.time() - start
     #        self.assertSequenceEqual(self.data.getUnfinishedCourses(), [])
+
+    def testSimpleNeighborhood(self):
+        initialSolution(self.t, self.data)
+        tabuSimpleNeighborhood(self.t, self.data, 20)
+
+
+
+
 
 if __name__=="__main__":
     unittest.main()

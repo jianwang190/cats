@@ -1,4 +1,3 @@
-__author__ = 'tomek'
 from unittest import TestCase
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.utils.timetable import TimeTable, TimeTableFactory
@@ -45,14 +44,33 @@ class AdvancedNeighborhoodTest(TestCase):
         a = AdvancedNeighborhood()
         chains = a.generateChains(self.t, 0, 1)
         pairs = a.generatePossibleSwappingPairs(self.t, chains)
-        print pairs
+
 
     def testKempeSwap(self):
         a = AdvancedNeighborhood()
         chains = a.generateChains(self.t, 0, 1)
-        n = a.kempeSwap(self.t, 0, 1 ,(set(chains[2]), set(chains[3])))
-        for i in n[0]:
-            print i.courseId, i.roomId
-        print
-        for i in n[1]:
-            print i.courseId, i.roomId
+        n = a.kempeSwap(self.t, 0, 1 ,\
+                        (chains[2], chains[3])\
+        )
+        expectedChain1 = ["c0059", "c0033", "c0061", "c0030", "c0058", "c0071"]
+        expectedChain2 = ["c0065", "c0032", "c0062", "c0031", "c0067", "c0057"]
+
+        self.assertSequenceEqual(sorted(map(lambda x: x[0], n["newPeriods"][0])), sorted(expectedChain1))
+        self.assertSequenceEqual(sorted(map(lambda x: x[0], n["newPeriods"][1])), sorted(expectedChain2))
+        # TODO: tests for single swap
+        m = a.kempeSwap(self.t, 0,1,(chains[1], set()))
+
+        expectedSingle1 = sorted(["c0031", "c0032", "c0065", "c0062", "c0058", "c0057"])
+        expectedSingle2 = sorted(["c0030", "c0033", "c0059", "c0067", "c0061", "c0071"])
+
+        self.assertSequenceEqual(sorted(map(lambda x: x[0], m["newPeriods"][0])), expectedSingle1)
+        self.assertSequenceEqual(sorted(map(lambda x: x[0], m["newPeriods"][1])), expectedSingle2)
+
+        for a in m["moves"]:
+            print a[0], a[1]
+
+
+    def testExploreNeighborhood(self):
+        a = AdvancedNeighborhood()
+        #a.exploreNeighborhood(self.t, self.data)
+

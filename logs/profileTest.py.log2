@@ -1,0 +1,131 @@
+
+##### INITIAL SOLUTION FINISHED #####
+>>> UNASSIGNED COURSES:
+	id	lectureNum	assigned
+Wrote profile results to profileTest.py.lprof
+Timer unit: 1e-06 s
+
+File: cats/adaptiveTabuSearch/heuristics.py
+Function: feasibleInsertion at line 34
+Total time: 9.62537 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    34                                           @profile
+    35                                           def feasibleInsertion(partialTimeTable, courseId, data):
+    36
+    37       160          459      2.9      0.0      availablePairs = []
+    38
+    39       160        66134    413.3      0.7      periods = partialTimeTable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriods"]
+    40      2928         8176      2.8      0.1      for p in periods:
+    41     13266       119589      9.0      1.2          for r in partialTimeTable.availableRoomsList(p, data):
+    42     10498        31293      3.0      0.3              availablePairs.append((p,r))
+    43
+    44                                               solutionRankings = \
+    45       160          511      3.2      0.0          map(lambda x: (UAC_CONST*partialTimeTable.unavailableUnfinishedCoursesLectureNum(x[0], courseId, data) \
+    46                                                       + SOFT_CONST*totalSoftConstraintsPenalty(partialTimeTable.getTimeTable(), data, courseId), x), \
+    47       160      9384731  58654.6     97.5              availablePairs)
+    48
+    49       160        10166     63.5      0.1      solutionRankings.sort(key = lambda x: x[0])
+    50       160          531      3.3      0.0      if len(solutionRankings)>0:
+    51       160          471      2.9      0.0          period = solutionRankings[0][1][0]
+    52       160          446      2.8      0.0          room = solutionRankings[0][1][1]
+    53                                                   #print solutionRankings[0][0]
+    54                                                   # assign matching course-room to period
+    55       160          715      4.5      0.0          partialTimeTable.getTimeTable()[period].append(
+    56       160         1296      8.1      0.0              CellOfTimeTable(courseId, room))
+    57                                                   # update course assigned lecture number
+    58       160          848      5.3      0.0          data.popCourse(courseId)
+    59                                               else:
+    60                                                   return False
+
+File: cats/adaptiveTabuSearch/heuristics.py
+Function: costFunctionStage1 at line 64
+Total time: 1.2512 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    64                                           @profile
+    65                                           def costFunctionStage1(partialTimetable, data, courseId):
+    66      3288      1223178    372.0     97.8      apd = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriodsNum"]
+    67      3288        16712      5.1      1.3      nl = data.getCourse(courseId).lectureNum - data.getCourse(courseId).assignedLectureNum
+    68
+    69      3288        11310      3.4      0.9      return float(apd) / math.sqrt(nl)
+
+File: cats/adaptiveTabuSearch/heuristics.py
+Function: costFunctionStage2 at line 71
+Total time: 0.059835 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    71                                           @profile
+    72                                           def costFunctionStage2(partialTimetable, data, courseId):
+    73       141        58609    415.7     98.0      aps = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)
+    74       141          732      5.2      1.2      nl = data.getCourse(courseId).lectureNum - data.getCourse(courseId).assignedLectureNum
+    75
+    76       141          494      3.5      0.8      return float(aps["availablePairsNum"])/math.sqrt(nl)
+
+File: cats/adaptiveTabuSearch/heuristics.py
+Function: getNextCourse at line 81
+Total time: 1.3879 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    81                                           @profile
+    82                                           def getNextCourse(partialTimetable, data):
+    83       160          626      3.9      0.0      courses = sorted([(x, costFunctionStage1(partialTimetable, data, x.id)) \
+    84      3448      1312802    380.7     94.6                        for x in data.getUnfinishedCourses()], \
+    85       160         4827     30.2      0.3                       key=lambda x: x[1])
+    86
+    87       160         3983     24.9      0.3      selectedStage1 = filter(lambda x: x[1] == courses[0][1], courses)
+    88
+    89       160          645      4.0      0.0      if len(selectedStage1) > 1:
+    90        57          194      3.4      0.0          selectedStage2 = sorted( \
+    91        57        62466   1095.9      4.5              map(lambda x: (x[0], costFunctionStage2(partialTimetable, data, x[0].id)), selectedStage1),
+    92        57          637     11.2      0.0              key=lambda x: x[1])
+    93        57          612     10.7      0.0          selectedStage2 = map(lambda x: x[0], filter(lambda x: x[1] == selectedStage2[0][1], selectedStage2))
+    94        57          218      3.8      0.0          if len(selectedStage2) > 1:
+    95                                                       #print "DRAW",
+    96        36          464     12.9      0.0              return sorted(selectedStage2, key=lambda x: partialTimetable.conflictingCourses(x.id))[0]
+    97                                                   else:
+    98                                                       #print "STAGE2",
+    99        21           69      3.3      0.0              return selectedStage2[0]
+   100                                               else:
+   101                                                   #print "STAGE1", [(c[0].id, round(c[1],2)) for c in courses[:4]],
+   102       103          358      3.5      0.0          return selectedStage1[0][0]
+
+File: cats/utils/data.py
+Function: getUnfinishedCourses at line 87
+Total time: 0.308717 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    87                                               @profile
+    88                                               def getUnfinishedCourses(self):
+    89     10820       308717     28.5    100.0          return filter(lambda x: x.lectureNum>x.assignedLectureNum, self.getAllCourses())
+
+File: cats/utils/timetable.py
+Function: unavailableUnfinishedCoursesLectureNum at line 121
+Total time: 1.92293 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   121                                               @profile
+   122                                               def unavailableUnfinishedCoursesLectureNum(self, period, courseId, data):
+   123     10498        22331      2.1      1.2          result = 0
+   124    243854       832356      3.4     43.3          for course in data.getUnfinishedCourses():
+   125    233356       496783      2.1     25.8              if self.neighbourhoodList.has_key(courseId) and \
+   126    233356       490621      2.1     25.5                  course.id in self.neighbourhoodList[courseId]:
+   127     29335        61489      2.1      3.2                  result += course.lectureNum - course.assignedLectureNum
+   128     10498        19346      1.8      1.0          return result
+
+File: cats/utils/timetable.py
+Function: availableRoomsList at line 129
+Total time: 0.05036 s
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   129                                               @profile
+   130                                               def availableRoomsList(self, period, data):
+   131      2768        28214     10.2     56.0          return list(set(map(lambda x: x.id, data.getAllRooms())) \
+   132      2768        22146      8.0     44.0                 - set(map(lambda x: x.roomId, self.getTimeTable()[period])))
