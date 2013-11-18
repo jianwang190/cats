@@ -16,6 +16,12 @@ class GeneticAlgorithm(object):
         self.fitnessSum = 0
         self.iterationsMax = iterations
 
+    def hardyFunkcja(self):
+        #konflikty
+        #czy wszystkie przydzielone
+        pass
+
+
     def generateInitialSolutions(self):
         """Courses sorted by the amount o students attending"""
         sortedCourses = sorted(self.data.courses.values(), key = lambda course : course.studentsNum, reverse=True)
@@ -96,6 +102,12 @@ class GeneticAlgorithm(object):
         return child
 
     def mutate(self, population, fitnessTable):
+        """
+
+        :param population:
+        :param fitnessTable:
+        :return:
+        """
         for i in range(int(math.ceil(self.mutationIndex * len(population)))):
             """
                 Prevent the top solution from a potential regression
@@ -126,7 +138,7 @@ class GeneticAlgorithm(object):
             parent2 = self.getTournamentParentIndex(len(population), fitnessTable)
             if int(parent1) != int(parent2):
                 break
-
+        #zmiana na tuple
         return [population[parent1], population[parent2]]
 
     def rouletteSelect(self, population, fitnessTable):
@@ -153,7 +165,7 @@ class GeneticAlgorithm(object):
         index = 0
         tempValue = 0
         while(tempValue < rouletteValue):
-            tempValue += (1000/fitnessTable[index])
+            tempValue += (1000/fitnessTable[index]) #float()
             index+=1
 
         return index-1
