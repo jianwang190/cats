@@ -1,10 +1,12 @@
 import itertools, math, random
 from cats.utils.data import Data
-from cats.utils.timetable import TimeTable, CellOfTimeTable, TimeTableFactory
+from cats.utils.timetable import TimeTable, TimeTableFactory
+from cats.adaptiveTabuSearch.softConstraints2 import totalSoftConstraintsForTimetable
+from cats.adaptiveTabuSearch.heuristics import initialSolutionWithReturn
 
 class GeneticAlgorithm(object):
 
-    def __init__(self, data, timeTables, populationSize = 100, mutationIndex = 0.01, tournamentSelcetionIndex = 4):
+    def __init__(self, data, timeTables, populationSize = 100, mutationIndex = 0.01, tournamentSelcetionIndex = 4, iterations = 100):
         self.data = data
         self.timeTables = timeTables
         self.fitnessTable = dict()
@@ -12,28 +14,45 @@ class GeneticAlgorithm(object):
         self.mutationIndex = mutationIndex
         self.tournamentSelectionIndex = tournamentSelcetionIndex
         self.fitnessSum = 0
+        self.iterationsMax = iterations
 
     def generateInitialSolutions(self):
+        """Courses sorted by the amount o students attending"""
+        sortedCourses = sorted(self.data.courses.values(), key = lambda course : course.studentsNum, reverse=True)
         for populationId in range(self.populationSize):
             self.timeTables[populationId] = TimeTableFactory.getTimeTable(self.data)
-            for course in self.data.courses:
+            for course in sortedCourses:
                 # promote early classes - random.paretovariate
-                periods = self.timeTables[populationId].availablePeriodsRooms(self.data.constraints, course.id)
-                slots = random.sample(periods['availablePairs'].keys(), course.lectureNum)
+                pairs = self.timeTables[populationId].availableSlotRoomPairs(self.data, course.id)
+                sortedPairs = sorted(pairs.iteritems(), key = lambda x : len(x[1]))
+                print "pary, lectureNum, courseId : ", len(pairs.keys()),\
+                    self.data.getCourse(course.id).lectureNum, course.id
+                #slots = random.sample(pairs.keys(), self.data.getCourse(course.id).lectureNum)
+                if self.data.getCourse(course.id).lectureNum > len(sortedPairs):
+                    print "Bedzie brakowac zajec!"
+                slots = sortedPairs[:self.data.getCourse(course.id).lectureNum]
                 assignedList = list()
                 for slot in slots:
-                    assignedList.append([slot, course.id, periods['availablePairs'][slot]])
+                    assignedList.append((slot[0], course.id, self.data.getBestRoom(slot[1]).id))
                 self.timeTables[populationId].addDataToTimetable(assignedList)
 
         return self.timeTables
 
-    def nextGeneration(self, population, selectionMethod):
+    def generateFirstSolutions(self, solutions):
+        self.sortedRoomIdList = sorted(self.data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
+        for populationId in range(len(solutions)):
+            self.data.clearAssignedLectures(self.data.getAllCourses())
+            self.timeTables[populationId] = initialSolutionWithReturn(solutions[populationId], self.data)
+
+        return self.timeTables
+
+    def nextGeneration(self, population, fitnessTable, selectionMethod):
         newGeneration = dict()
         for i in range(len(population)):
             if selectionMethod == "tournament":
-                parents = self.tournamentSelect(population, self.fitnessTable)
+                parents = self.tournamentSelect(population, fitnessTable)
             elif selectionMethod == "roulette":
-                parents = self.rouletteSelect(population, self.fitnessTable)
+                parents = self.rouletteSelect(population, fitnessTable)
             elif selectionMethod == "random":
                 parents = self.randomSelect(population)
             else:
@@ -41,6 +60,7 @@ class GeneticAlgorithm(object):
             child = self.Crossing(parents[0], parents[1])
             newGeneration[i] = child
 
+        """Dorzucic wybieranie najlepszych z dzieci i rodzicow naraz"""
         return newGeneration
 
     def estimateFitness(self, population):
@@ -54,7 +74,7 @@ class GeneticAlgorithm(object):
         return fitnessTable
 
     def fitness(self, solution):
-        return random.randint(20, 200)
+        return totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
 
     def getTopSolution(self, solutionsFitness):
         return min(solutionsFitness.iterkeys(), key=lambda k: solutionsFitness[k])
@@ -62,56 +82,71 @@ class GeneticAlgorithm(object):
     def Crossing(self, mother, father):
         child = TimeTableFactory.getTimeTable(self.data)
 
-        for course in self.data.courses:
-            if int(course.id[1:]) % 2 == 0:
-                lectures = mother.assignedLectures(course.id)
+        for courseId in self.data.courses.keys():
+            if int(courseId[1:]) % 2 == 0:
+                lectures = mother.assignedLectures(courseId)
             else:
-                lectures = father.assignedLectures(course.id)
+                lectures = father.assignedLectures(courseId)
             assignedList = list()
             for slot in lectures.keys():
                 for lecture in lectures[slot]:
-                    assignedList.append([slot, lecture.courseId, lecture.roomId])
+                    assignedList.append((slot, lecture[0], lecture[1]))
             child.addDataToTimetable(assignedList)
 
         return child
 
-    def mutate(self, population):
+    def mutate(self, population, fitnessTable):
         for i in range(int(math.ceil(self.mutationIndex * len(population)))):
-            solutionId = random.randint(0, len(population)-1)
-            course = random.choice(self.data.courses)
+            """
+                Prevent the top solution from a potential regression
+            """
+            while True:
+                solutionId = random.randint(0, len(population)-1)
+                if int(fitnessTable[solutionId]) < int(fitnessTable[self.getTopSolution(fitnessTable)]):
+                    break
+            course = self.data.getRandomCourse()
             # delete whole old schedule of the course
             for slot, cells in population[solutionId].timeTable.iteritems():
                 for schedule in cells:
-                    if schedule.courseId == course.id:
+                    if schedule[0] == course.id:
                         population[solutionId].timeTable[slot].remove(schedule)
             periods = population[solutionId].availablePeriodsRooms(self.data.constraints, course.id)
             slots = random.sample(periods['availablePairs'].keys(), course.lectureNum)
             assignedList = list()
             for slot in slots:
-                assignedList.append([slot, course.id, periods['availablePairs'][slot]])
+                assignedList.append((slot, course.id, periods['availablePairs'][slot]))
             population[solutionId].addDataToTimetable(assignedList)
 
         return population
 
 
     def tournamentSelect(self, population, fitnessTable):
-        parent1 = population[self.getTournamentParentIndex(len(population), fitnessTable)]
-        parent2 = population[self.getTournamentParentIndex(len(population), fitnessTable)]
+        while True:
+            parent1 = self.getTournamentParentIndex(len(population), fitnessTable)
+            parent2 = self.getTournamentParentIndex(len(population), fitnessTable)
+            if int(parent1) != int(parent2):
+                break
 
-        return [parent1, parent2]
+        return [population[parent1], population[parent2]]
 
     def rouletteSelect(self, population, fitnessTable):
-        parent1 = population[self.getRouletteIndex(fitnessTable)]
-        parent2 = population[self.getRouletteIndex(fitnessTable)]
+        while True:
+            parent1 = self.getRouletteIndex(fitnessTable)
+            parent2 = self.getRouletteIndex(fitnessTable)
+            if int(parent1) != int(parent2):
+                break
 
-        return [parent1, parent2]
+        return [population[parent1], population[parent2]]
 
 
     def randomSelect(self, population):
-        parent1 = random.choice(population)
-        parent2 = random.choice(population)
+        while True:
+            parent1 = random.choice(population.keys())
+            parent2 = random.choice(population.keys())
+            if int(parent1) != int(parent2):
+                break
 
-        return [parent1, parent2]
+        return [population[parent1], population[parent2]]
 
     def getRouletteIndex(self, fitnessTable):
         rouletteValue = random.randint(0, self.fitnessSum)

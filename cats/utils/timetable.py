@@ -75,6 +75,9 @@ class TimeTable(object):
         key = self.getKey(constraint.day, constraint.dayPeriod)
         return key
 
+    def getAllSlots(self):
+        return self.timeSlots
+
     def createListOfRooms(self, roomList, courseStudentsNum):
         """
         Create list of rooms for course with appropriate capacity of room for course (considering number of students attending course)
@@ -109,8 +112,8 @@ class TimeTable(object):
     """Count number of available slots for course, function considers neighourhood, count available positions - periods (slot, room)"""
     """availablePeriodsNum - the total number of available periods for course, availablePeriods - list of available periods"""
     """availablePairsNum - the total number of available positions (period and room pairs), availablePairs - list of available pairs (period- room)"""
-    def availablePeriodsRooms(self, constraintsList, courseId):
-        keysConstraintsOfCourse = set(self.getKeyConstraintsOfCourse(constraintsList, courseId))
+    def availablePeriodsRooms(self, constraintsDict, courseId):
+        keysConstraintsOfCourse = set(self.getKeyConstraintsOfCourse(constraintsDict, courseId))
         availablePeriods = set()
         availablePairs = {}
         for slot in self.timeSlots:
@@ -126,10 +129,43 @@ class TimeTable(object):
                 'availablePeriods' : availablePeriods, \
                 'availablePairs' : availablePairs }
 
+    def availableSlotRoomPairs(self, data, courseId):
+        rooms = dict()
+        for slot in self.getTimeTable().keys():
+            rooms[slot] = self.availableRoomsForCourseAndSlot(data, courseId, slot)
+        possibleSlots = self.availableSlotsForCourse(data, courseId)
+        pairs = dict()
+        for slot in possibleSlots:
+            if len(rooms[slot]) > 0:
+                pairs[slot] = rooms[slot]
+
+        return pairs
+
+
+    """Returns list of rooms which are available for a specified courseId in a particular slot """
+    def availableRoomsForCourseAndSlot(self, data, courseId, slot):
+        return list(set(self.roomsIdListForCourses[courseId]).intersection(self.availableRoomsList(slot, data)))
+
+    def availableSlotsForCourse(self, data, courseId):
+        bannedSlots = list()
+        for constraint in data.getConstraintsForCourse(courseId):
+            bannedSlots.append(self.getKey(constraint.day, constraint.dayPeriod))
+        possibleSlots = list(set(self.getAllSlots()) - set(bannedSlots))
+        bannedSlots = list()
+        for slot in possibleSlots:
+            for lecture in self.getTimeTable()[slot]:
+               if lecture[0] in self.neighbourhoodList[courseId]:
+                   bannedSlots.append(slot)
+                   continue
+        possibleSlots = list(set(possibleSlots) - set(bannedSlots))
+
+        return possibleSlots
+
+
     def assignedLectures(self, courseId):
-        sum = []
+        sum = dict()
         for slot, cells in self.getTimeTable().iteritems():\
-            sum += filter(lambda x: x[0] == courseId, cells)
+            sum[slot] = filter(lambda x: x[0] == courseId, cells)
         return sum
 
     def readLecturesToTimetable(self, path):

@@ -1,3 +1,5 @@
+import random
+
 class IData(object):
     instanceName = ""
     daysNum = 0
@@ -78,7 +80,10 @@ class DictData(IData):
     def getCurriculum(self, id):
         return self.curricula[id]
     def getConstraintsForCourse(self, id):
-        return self.constraints[id]
+        if id not in self.constraints:
+            return dict()
+        else:
+            return self.constraints[id]
 
     def getCurriculumForCourseId(self, courseId):
         return self.curriculumLookup[courseId] if courseId in self.curriculumLookup else set()
@@ -91,6 +96,14 @@ class DictData(IData):
     def getUnfinishedCourses(self):
         return filter(lambda x: x.lectureNum>x.assignedLectureNum, self.getAllCourses())
 
-    def getBestRoom(self, roomsList):
-        for room in roomsList:
-            pass
+    def getRandomCourse(self):
+        courseId = random.choice(self.courses.keys())
+        return self.courses[courseId]
+
+    def getBestRoom(self, roomIdList):
+        roomList = filter(lambda x : x.id in roomIdList, self.getAllRooms())
+        return min(roomList, key = lambda x : x.capacity)
+
+    def clearAssignedLectures(self, coursesList):
+        for course in coursesList:
+            course.assignedLectureNum = 0

@@ -14,7 +14,7 @@ class GeneticTest(object):
         for it in range(self.populationSize):
             self.solutions[it] = TimeTableFactory.getTimeTable(self.data)
 
-        self.ga = GeneticAlgorithm(self.data, self.solutions, self.populationSize, 0.1)
+        self.ga = GeneticAlgorithm(self.data, self.solutions, self.populationSize, 0.01)
         self.solutions = self.ga.generateInitialSolutions()
         self.fitnessTable = self.ga.estimateFitness(self.solutions)
 
@@ -28,8 +28,8 @@ class GeneticTest(object):
             print "SolutionId: ", solutionId
             for slot in self.solutions[solutionId].timeTable.keys():
                 print "Slot id:", slot
-                for pair in self.solutions[solutionId].timeTable[slot]:
-                    print pair.courseId, pair.roomId
+                for pair in self.solutions[solutionId].   timeTable[slot]:
+                    print pair[0], pair[1]
 
 
 
