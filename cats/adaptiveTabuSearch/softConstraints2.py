@@ -61,6 +61,11 @@ def totalSoftConstraintsForTimetable(partialTimetable, data):
     return softConstraintsPenalty(partialTimetable, data)['totalPenalty']
 
 
+def totalSoftConstraintsForTimetable2(partialTimetable, data):
+    result = softConstraintsPenalty(partialTimetable, data)
+    return result['penaltyMinWorkingDays'] + result['penaltyCurriculumCompactness']
+
+
 def softConstraintsPenalty(partialTimetable, data, perturbation = None):
     """
     Count soft penalty for timetable

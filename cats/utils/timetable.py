@@ -20,6 +20,15 @@ class TimeTableFactory(object):
 
 
 class TimeTable(object):
+    def copy(self):
+        other = TimeTable()
+        other.periodsPerDay, other.daysNum, other.timeSlots = self.periodsPerDay, self.daysNum, self.timeSlots
+        other.timeTable = {x: self.getTimeTable()[x][:] for x in self.getTimeTable().keys()}
+        other.neighbourhoodList = self.neighbourhoodList
+        other.roomsIdListForCourses = self.roomsIdListForCourses
+        return other
+
+
     def getTimeTable(self):
         return self.timeTable
 
