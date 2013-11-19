@@ -7,6 +7,7 @@ from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
 from cats.adaptiveTabuSearch import tabuSearch, softConstraints2
 from cats.adaptiveTabuSearch.heuristics import initialSolution
+from cats.adaptiveTabuSearch import perturbation
 import time
 
 class TabuSearchTest(unittest.TestCase):
@@ -52,19 +53,19 @@ class TabuSearchTest(unittest.TestCase):
         self.assertEqual(result, 733.4)
 
 
-    def test_advancedList(self):
-        initialSolution(self.t, self.data)
-
-        tabuList = tabuLists.AdvancedTabuList(self.data.getAllCourses(), self.t.neighbourhoodList)
-        tabuList.addTabuMove("c0068", 0, 1)
-
-        b = AdvancedNeighborhood()
-        tabuTenure = {x.id : tabuList.tabuTenure(x.id, self.t.getTimeTable(), self.data) for x in self.data.getAllCourses()}
-        for (periods, swaps) in b.exploreNeighborhood(self.t, self.data):
-            #print map(lambda y: tabuList.isTabuMove(y[0], x[1]["moves"][0], 1, tabuTenure[y[0]]), x[1]["moves"][0][1])
-            #print map(lambda y: tabuList.isTabuMove(y[0], x[1]["moves"][1], 1, tabuTenure[y[0]]), x[1]["moves"][1][1])
-            print swaps["moves"]
-            print map(lambda y: tabuList.isTabuMove(y[0], swaps["moves"][0][0], 1,tabuTenure[y[0]]), swaps["moves"][0][1])
+    #def test_advancedList(self):
+    #    initialSolution(self.t, self.data)
+    #
+    #    tabuList = tabuLists.AdvancedTabuList(self.data.getAllCourses(), self.t.neighbourhoodList)
+    #    tabuList.addTabuMove("c0068", 0, 1)
+    #
+    #    b = AdvancedNeighborhood()
+    #    tabuTenure = {x.id : tabuList.tabuTenure(x.id, self.t.getTimeTable(), self.data) for x in self.data.getAllCourses()}
+    #    for (periods, swaps) in b.exploreNeighborhood(self.t, self.data):
+    #        #print map(lambda y: tabuList.isTabuMove(y[0], x[1]["moves"][0], 1, tabuTenure[y[0]]), x[1]["moves"][0][1])
+    #        #print map(lambda y: tabuList.isTabuMove(y[0], x[1]["moves"][1], 1, tabuTenure[y[0]]), x[1]["moves"][1][1])
+    #        print swaps["moves"]
+    #        print map(lambda y: tabuList.isTabuMove(y[0], swaps["moves"][0][0], 1,tabuTenure[y[0]]), swaps["moves"][0][1])
 
 
     #def testSimpleNeighborhood(self):
@@ -79,6 +80,13 @@ class TabuSearchTest(unittest.TestCase):
     #def testTabuSearch(self):
     #    initialSolution(self.t, self.data)
     #    t = tabuSearch.tabuSearch(self.t, self.data, 10)
+
+    #def testPerturbation(self):
+    #    initialSolution(self.t, self.data)
+    #    n = 20
+    #    q = 40
+    #    perturbation.produceRandomlySimpleOrKempeSwap(self.t, self.data, n, q)
+
 
 
 

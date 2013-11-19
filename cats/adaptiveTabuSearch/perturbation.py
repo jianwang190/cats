@@ -1,6 +1,9 @@
 import random
-from cats.adaptiveTabuSearch.softConstraints2 import softConstraintsPenalty
+from cats.adaptiveTabuSearch.softConstraints2 import softConstraintsPenalty, totalSoftConstraintsForTimetable
+from cats.adaptiveTabuSearch.basicNeighborhood import BasicNeighborhood
+from cats.adaptiveTabuSearch.advancedNeighborhood import AdvancedNeighborhood
 from operator import itemgetter
+from cats.adaptiveTabuSearch import tabuSearch
 """Perturbation"""
 PERTURBATION_STRENGTH_MIN = 4
 PERTURBATION_STRENGTH_MAX = 15
@@ -24,15 +27,56 @@ def rankingOfLectures(partialTimetable, data, n, q):
     selectedLectures = selectRandom(listItems, n)
     return selectedLectures
 
-"""TODO: write envoking moves"""
-def produceRandomlySimpleOrKempeSwap(selectedLectures):
-     """
-     n feasible moves of SimpleSwap or KempeSwap are randomly and sequentially produces each
-     invloving at least one of selected n lectures
-    :param selectedLectures: list of selected lectures to swap
+
+def checkIfAllDone(selectedLecturesDict):
+    for x in selectedLecturesDict.keys():
+        if selectedLecturesDict[x] == 0:
+            return False
+    return True
+
+def getFirstUndone(selectedLecturesDict):
+    for x in selectedLecturesDict.keys():
+        if selectedLecturesDict[x] == 0:
+            return x
+
+
+def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
     """
-     choice = random.choice(['kempeSwap', 'simpleSwap'])
-     # check if lecture is not in tabu list and run simpleSwap or kempeSwap
+    n feasible moves of SimpleSwap or KempeSwap are randomly and sequentially produces each
+     involving at least one of selected n lectures
+    :param selectedLectures: list of selected lectures to swa
+    """
+    initialSolution = timetable.copy()
+    selectedLectures = rankingOfLectures(initialSolution.getTimeTable(), data, n, q)
+    print "INITIAL PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+
+    # 0 denote that was no move with this lecture
+    selectedLecturesDict = {x: 0 for x in selectedLectures}
+    b = BasicNeighborhood()
+    a = AdvancedNeighborhood()
+
+    while checkIfAllDone(selectedLecturesDict) == False:
+        choice = random.choice(['kempeSwap', 'simpleSwap'])
+        lecture = getFirstUndone(selectedLecturesDict)
+
+        if choice == 'simpleSwap':
+            b.clearBasicList()
+            b.simpleSwap(timetable.getTimeTable(), initialSolution.neighbourhoodList, len(data.getAllRooms()))
+            possibleSwaps = filter(lambda swap: (swap[0].courseId == lecture[0] and swap[0].period == lecture[2])\
+                or (swap[1].courseId == lecture[0] and swap[1].period == lecture[2]), b.getBasicList())
+
+
+            if len(possibleSwaps) > 0:
+                selectedSwap = random.choice(possibleSwaps)
+                print selectedSwap
+                initialSolution.timeTable = tabuSearch.doSimpleSwap(initialSolution.getTimeTable(), selectedSwap)
+                selectedLecturesDict[lecture] = 1
+            print "SIMPLE", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+        else:
+            print "KEMPE"
+
+    print "AFTER SIMPLE RANDOM SWAP", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+
 
 
 def selectRandom(listItems, numberOfSelectedItems):

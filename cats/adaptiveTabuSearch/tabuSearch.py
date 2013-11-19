@@ -151,7 +151,6 @@ def tabuSearch(initialSolution, data, theta):
     bestSolution= initialSolution.copy()
     bestQuality = softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data)
     while improved:
-
         simpleNeighborhood = tabuSimpleNeighborhood(initialSolution.copy(), data, theta)
 
         advancedNeighborhood = tabuAdvancedNeighborhood(simpleNeighborhood.copy(), data, theta/3)
