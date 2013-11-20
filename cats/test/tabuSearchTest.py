@@ -81,11 +81,11 @@ class TabuSearchTest(unittest.TestCase):
     #    initialSolution(self.t, self.data)
     #    t = tabuSearch.tabuSearch(self.t, self.data, 10)
 
-    #def testPerturbation(self):
-    #    initialSolution(self.t, self.data)
-    #    n = 20
-    #    q = 40
-    #    perturbation.produceRandomlySimpleOrKempeSwap(self.t, self.data, n, q)
+    def testPerturbation(self):
+        initialSolution(self.t, self.data)
+        n = 20
+        q = 40
+        perturbation.produceRandomlySimpleOrKempeSwap(self.t, self.data, n, q)
 
 
 

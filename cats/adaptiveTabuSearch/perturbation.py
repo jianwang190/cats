@@ -61,7 +61,7 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
 
         if choice == 'simpleSwap':
             b.clearBasicList()
-            b.simpleSwap(timetable.getTimeTable(), initialSolution.neighbourhoodList, len(data.getAllRooms()))
+            b.simpleSwap(initialSolution.getTimeTable(), initialSolution.neighbourhoodList, len(data.getAllRooms()))
             possibleSwaps = filter(lambda swap: (swap[0].courseId == lecture[0] and swap[0].period == lecture[2])\
                 or (swap[1].courseId == lecture[0] and swap[1].period == lecture[2]), b.getBasicList())
 
@@ -73,6 +73,11 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
                 selectedLecturesDict[lecture] = 1
             print "SIMPLE", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
         else:
+            neighborhood = a.exploreNeighborhood(initialSolution, data)
+            neighborhood = filter(lambda x: x[0][0]==lecture[1] or x[0][1]==lecture[1] , neighborhood)
+            neighborhood = filter(lambda x: lecture[0] in x[1]["moves"][0][1] or lecture[0] in x[1]["moves"][1][1], neighborhood)
+            for i in neighborhood:
+                print i
             print "KEMPE"
 
     print "AFTER SIMPLE RANDOM SWAP", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
