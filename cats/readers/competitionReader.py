@@ -13,7 +13,6 @@ class CompetitionReader(object):
     def readInstance(self, instanceNr):
         """Return data object with data from instance file"""
 
-
         self.buffer = self.readFile(instanceNr)
 
         self.getHeader()
@@ -21,6 +20,7 @@ class CompetitionReader(object):
         self.getRooms()
         self.getCurricula()
         self.getConstraints()
+
         return self.data
 
     def readFile(self, instanceNr):
