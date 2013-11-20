@@ -4,6 +4,7 @@ from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.adaptiveTabuSearch.softConstraints2 import totalSoftConstraintsForTimetable
 from cats.adaptiveTabuSearch.heuristics import initialSolutionWithReturn
 
+#noinspection PyPep8Naming
 class GeneticAlgorithm(object):
 
     def __init__(self, data, timeTables, populationSize = 100, mutationIndex = 0.01, tournamentSelcetionIndex = 3, iterations = 100):
@@ -53,6 +54,13 @@ class GeneticAlgorithm(object):
         return self.timeTables
 
     def nextGeneration(self, population, fitnessTable, selectionMethod):
+        """
+
+        :param population:
+        :param fitnessTable:
+        :param selectionMethod: "tournament" || "random" || "roulette"
+        :return:
+        """
         newGeneration = dict()
         for i in range(len(population)):
             if selectionMethod == "tournament":
@@ -70,6 +78,11 @@ class GeneticAlgorithm(object):
         return newGeneration
 
     def estimateFitness(self, population):
+        """
+        Estimating fitness function for all individuals in population
+        :param population:
+        :return: dict { solutionId -> fitness[solution] }
+        """
         fitnessTable = dict()
         fitnesSum = 0.0
         for solutionId in population.keys():
@@ -80,30 +93,56 @@ class GeneticAlgorithm(object):
         return fitnessTable
 
     def fitness(self, solution):
+        """
+        Counts penalties for hard and soft constraints
+        :param solution:
+        :return: fitness value for solution
+        """
         return totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
 
     def getTopSolution(self, solutionsFitness):
+        """
+        Returns a solution with minimal fitness value
+        :param solutionsFitness:
+        :return:
+        """
         return min(solutionsFitness.iterkeys(), key=lambda k: solutionsFitness[k])
 
-    def Crossing(self, mother, father):
-        child = TimeTableFactory.getTimeTable(self.data)
+    def Crossover(self, mother, father):
+        """
+        Perform a crossover over a given mother and father. Generate 2 children
+        :param mother:
+        :param father:
+        :return:new child - the better one
+        """
+        child1 = TimeTableFactory.getTimeTable(self.data)
+        child2 = TimeTableFactory.getTimeTable(self.data)
 
         for courseId in self.data.courses.keys():
             if int(courseId[1:]) % 2 == 0:
-                lectures = mother.assignedLectures(courseId)
+                lectures1 = mother.assignedLectures(courseId)
+                lectures2 = mother.assignedLectures(courseId)
             else:
-                lectures = father.assignedLectures(courseId)
-            assignedList = list()
-            for slot in lectures.keys():
-                for lecture in lectures[slot]:
-                    assignedList.append((slot, lecture[0], lecture[1]))
-            child.addDataToTimetable(assignedList)
+                lectures1 = father.assignedLectures(courseId)
+                lectures2 = father.assignedLectures(courseId)
+            assignedList1 = list()
+            assignedList2 = list()
+            for slot in lectures1.keys():
+                for lecture in lectures1[slot]:
+                    assignedList1.append((slot, lecture[0], lecture[1]))
+                for lecture in lectures2[slot]:
+                    assignedList2.append((slot, lecture[0], lecture[1]))
+            child1.addDataToTimetable(assignedList1)
+            child2.addDataToTimetable(assignedList2)
 
-        return child
+        if self.fitness(child1) < self.fitness(child2):
+            return child1
+        else:
+            return child2
 
     def mutate(self, population, fitnessTable):
         """
-
+        Mutate
         :param population:
         :param fitnessTable:
         :return:
@@ -138,8 +177,8 @@ class GeneticAlgorithm(object):
             parent2 = self.getTournamentParentIndex(len(population), fitnessTable)
             if int(parent1) != int(parent2):
                 break
-        #zmiana na tuple
-        return [population[parent1], population[parent2]]
+
+        return (population[parent1], population[parent2])
 
     def rouletteSelect(self, population, fitnessTable):
         while True:
@@ -148,7 +187,7 @@ class GeneticAlgorithm(object):
             if int(parent1) != int(parent2):
                 break
 
-        return [population[parent1], population[parent2]]
+        return (population[parent1], population[parent2])
 
 
     def randomSelect(self, population):
@@ -158,7 +197,7 @@ class GeneticAlgorithm(object):
             if int(parent1) != int(parent2):
                 break
 
-        return [population[parent1], population[parent2]]
+        return (population[parent1], population[parent2])
 
     def getRouletteIndex(self, fitnessTable):
         rouletteValue = random.randint(0, self.fitnessSum)
