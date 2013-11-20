@@ -29,15 +29,39 @@ def rankingOfLectures(partialTimetable, data, n, q):
 
 
 def checkIfAllDone(selectedLecturesDict):
+    """
+    Check if all selected lectures occurred in at least one swap
+    :param selectedLecturesDict:
+    :return:
+    """
     for x in selectedLecturesDict.keys():
-        if selectedLecturesDict[x] == 0:
+        if selectedLecturesDict[x] in [(0, 0), (0, 1), (1, 0)]:
             return False
     return True
 
 def getFirstUndone(selectedLecturesDict):
+    """
+    Get first lecture which does not occurred in at least one swap
+    :param selectedLecturesDict:
+    :return:
+    """
     for x in selectedLecturesDict.keys():
-        if selectedLecturesDict[x] == 0:
+        if selectedLecturesDict[x] in [(0, 0), (0, 1), (1, 0)]:
             return x
+
+def checkIfOtherLecturesWillBeSwap(selectedLecturesDict, selectedKempeSwap):
+    """
+    Check if during kempe swap we swapped other lecture which was selected to be swapped
+    :param selectedLecturesDict:
+    :param selectedKempeSwap:
+    :return:
+    """
+    for lecture in selectedLecturesDict.keys():
+        if selectedKempeSwap[0][0] == lecture[2] or selectedKempeSwap[0][1] == lecture[2]:
+            tuple = (lecture[0], lecture[1])
+            if tuple in selectedKempeSwap[1]["moves"][0][1] or tuple in selectedKempeSwap[1]["moves"][1][1]:
+                selectedLecturesDict[lecture] = (1, 1)
+    return selectedLecturesDict
 
 
 def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
@@ -50,37 +74,69 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
     selectedLectures = rankingOfLectures(initialSolution.getTimeTable(), data, n, q)
     print "INITIAL PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
 
-    # 0 denote that was no move with this lecture
-    selectedLecturesDict = {x: 0 for x in selectedLectures}
+    # 0 denote that was no move with this lecture (0, 0) - (simple, kempe)
+    # ex. (1, 0) denotes there was try to do simpleSwa
+    selectedLecturesDict = {x: (0, 0) for x in selectedLectures}
     b = BasicNeighborhood()
     a = AdvancedNeighborhood()
 
     while checkIfAllDone(selectedLecturesDict) == False:
         choice = random.choice(['kempeSwap', 'simpleSwap'])
         lecture = getFirstUndone(selectedLecturesDict)
-
+        print "LECTURE", lecture
         if choice == 'simpleSwap':
             b.clearBasicList()
             b.simpleSwap(initialSolution.getTimeTable(), initialSolution.neighbourhoodList, len(data.getAllRooms()))
             possibleSwaps = filter(lambda swap: (swap[0].courseId == lecture[0] and swap[0].period == lecture[2])\
                 or (swap[1].courseId == lecture[0] and swap[1].period == lecture[2]), b.getBasicList())
 
-
             if len(possibleSwaps) > 0:
                 selectedSwap = random.choice(possibleSwaps)
-                print selectedSwap
                 initialSolution.timeTable = tabuSearch.doSimpleSwap(initialSolution.getTimeTable(), selectedSwap)
-                selectedLecturesDict[lecture] = 1
-            print "SIMPLE", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+                selectedLecturesDict[lecture] = (1, 1)
+            else:
+                selectedLecturesDict[lecture] = (1, 1) if selectedLecturesDict[lecture] == (0, 1) else (1, 0)
+                if selectedLecturesDict[lecture] == (1, 1):
+                    print "unable to move this lecture:", lecture
+                else:
+                    print "SIMPLE: unable to do simple swap", lecture
+
+            print "SIMPLE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
         else:
             neighborhood = a.exploreNeighborhood(initialSolution, data)
-            neighborhood = filter(lambda x: x[0][0]==lecture[1] or x[0][1]==lecture[1] , neighborhood)
-            neighborhood = filter(lambda x: lecture[0] in x[1]["moves"][0][1] or lecture[0] in x[1]["moves"][1][1], neighborhood)
-            for i in neighborhood:
-                print i
-            print "KEMPE"
+            neighborhood = filter(lambda x: x[0][0] == lecture[2] or x[0][1] == lecture[2], neighborhood)
+            period = lecture[2]
+            tuple = (lecture[0], lecture[1])
+            possibleKempeSwapsFirst = filter(lambda x: x[1]["moves"][0][0] == period and tuple in x[1]["moves"][0][1],\
+                                             neighborhood)
 
-    print "AFTER SIMPLE RANDOM SWAP", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+            possibleKempeSwapsSecond = filter(lambda x: x[1]["moves"][1][0] == period and tuple in x[1]["moves"][1][1],\
+                                             neighborhood)
+
+            if len(possibleKempeSwapsFirst) != 0:
+                choice = random.randint(0, len(possibleKempeSwapsFirst) - 1)
+                initialSolution.timeTable = tabuSearch.doKempeSwap(possibleKempeSwapsFirst[choice], initialSolution.getTimeTable())
+                selectedLecturesDict[lecture] = (1, 1)
+                selectedLecturesDict = checkIfOtherLecturesWillBeSwap(selectedLecturesDict, possibleKempeSwapsFirst[choice])
+            elif len(possibleKempeSwapsSecond) != 0:
+                choice = random.randint(0, len(possibleKempeSwapsSecond) - 1)
+                initialSolution.timeTable = tabuSearch.doKempeSwap(possibleKempeSwapsSecond[choice], initialSolution.getTimeTable())
+                selectedLecturesDict[lecture] = (1, 1)
+                selectedLecturesDict = checkIfOtherLecturesWillBeSwap(selectedLecturesDict, possibleKempeSwapsSecond[choice])
+            else:
+                selectedLecturesDict[lecture] = (1, 1) if selectedLecturesDict[lecture] == (1, 0) else (0, 1)
+                if selectedLecturesDict[lecture] == (1, 1):
+                    print "unable to move this lecture", lecture
+                else:
+                    print "KEMPE: unable to do kempe swap", lecture
+
+            print "KEMPE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+
+    sortedRoomIdList = sorted(data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
+    for x in initialSolution.timeTable.keys():
+        initialSolution.timeTable[x] = tabuSearch.matchingRoomAllocations(initialSolution.timeTable, x, data, sortedRoomIdList)
+
+    print "cost after perturbation", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
 
 
 
