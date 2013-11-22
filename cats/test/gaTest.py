@@ -2,33 +2,35 @@ __author__ = 'filip'
 from cats.ga.geneticAlgorithm import GeneticAlgorithm
 from cats.utils.timetable import TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
+import sys
 
 class GATest(object):
     def setUp(self):
         self.c = CompetitionDictReader()
-        self.data = self.c.readInstance(1)
+        self.data = self.c.readInstance(2)
         self.solutions = dict()
         self.fitnessTable = dict()
-        self.populationSize = 3
+        self.populationSize = 10
         for it in range(self.populationSize):
             self.solutions[it] = TimeTableFactory.getTimeTable(self.data)
 
-        self.ga = GeneticAlgorithm(self.data, self.solutions, self.populationSize, 0.01)
-        self.solutions = self.ga.generateFirstSolutions(self.solutions)
-        self.fitnessTable = self.ga.estimateFitness(self.solutions)
+        self.ga = GeneticAlgorithm(self.data, self.solutions, self.populationSize, 0.01, 7)
+        self.ga.generateInitialSolutions()
+        self.ga.estimateFitness()
 
-        for epoch in range(int(self.ga.iterationsMax)):
-            self.solutions = self.ga.nextGeneration(self.solutions, self.fitnessTable, "tournament")
-            self.solutions = self.ga.mutate(self.solutions, self.fitnessTable)
-            self.fitnessTable = self.ga.estimateFitness(self.solutions)
-            print self.fitnessTable[self.ga.getTopSolution(self.fitnessTable)]
+        for epoch in range(10):
+            self.ga.nextGeneration("tournament")
+            self.ga.mutate()
+            self.ga.estimateFitness()
+            print "Epoka:", epoch, "najlepszy wynik:", self.ga.fitnessTable[self.ga.getTopSolution(self.ga.fitnessTable)]
 
         for solutionId in self.solutions.keys():
             print "SolutionId: ", solutionId
             for slot in self.solutions[solutionId].timeTable.keys():
-                print "Slot id:", slot
+                sys.stdout.write("Slot id: " + str(slot))
                 for pair in self.solutions[solutionId].timeTable[slot]:
-                    print pair[0], pair[1]
+                    sys.stdout.write(pair[0] + " " + pair[1] + "; ")
+                print " "
 
 
 if __name__=="__main__":

@@ -77,6 +77,8 @@ class DictData(IData):
         return self.curricula.values()
     def getAllConstraints(self):
         return sum(self.constraints.values(),[])
+    def getAllCourseIds(self):
+        return self.courses.keys()
 
 
 
@@ -114,3 +116,10 @@ class DictData(IData):
     def clearAssignedLectures(self, coursesList):
         for course in coursesList:
             course.assignedLectureNum = 0
+
+    def getAllLecturesCount(self):
+        lecturesSum = 0
+        for course in self.getAllCourses():
+            lecturesSum += self.getCourse(course.id).lectureNum
+
+        return lecturesSum
