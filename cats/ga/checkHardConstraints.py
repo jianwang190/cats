@@ -9,7 +9,7 @@ def countHardConstraints(solution, data):
     penalty += countRoomOccupancy(solution)
     penalty += countConstraintsList(solution, solution.getTimeTable().keys(), data)
     penalty += countTeachersConflicts(solution, solution.getTimeTable().keys(), data)
-    print "Hard Penalty: ", penalty
+    #print "Hard Penalty: ", penalty
 
     return penalty
 

@@ -83,7 +83,7 @@ class GeneticAlgorithm(object):
         for solutionId in self.timeTables.keys():
             self.fitnessTable[solutionId] = self.fitness(self.timeTables[solutionId])
             fitnesSum += (1000/float(self.fitnessTable[solutionId]))
-            print "ID Fitness:", solutionId, self.fitnessTable[solutionId]
+            #print "ID Fitness:", solutionId, self.fitnessTable[solutionId]
 
         self.fitnessSum = fitnesSum
 
@@ -96,13 +96,13 @@ class GeneticAlgorithm(object):
         return countHardConstraints(solution, self.data) + \
                totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
 
-    def getTopSolution(self, solutionsFitness):
+    def getTopSolutionIndex(self):
         """
         Returns a solution with minimal fitness value
         :param solutionsFitness:
         :return:
         """
-        return min(solutionsFitness.iterkeys(), key=lambda k: solutionsFitness[k])
+        return min(self.fitnessTable.iterkeys(), key=lambda k: self.fitnessTable[k])
 
     def crossover(self, mother, father):
         """
@@ -245,7 +245,7 @@ class GeneticAlgorithm(object):
             """ Prevent the top solution from a potential regression """
             while True:
                 solutionId = random.choice(self.timeTables.keys())
-                if int(self.fitnessTable[solutionId]) > int(self.fitnessTable[self.getTopSolution(self.fitnessTable)]):
+                if int(self.fitnessTable[solutionId]) > int(self.fitnessTable[self.getTopSolutionIndex()]):
                     break
 
             course = self.data.getRandomCourse()
@@ -370,3 +370,7 @@ class GeneticAlgorithm(object):
             candidates[i] = random.randint(0, populationSize-1)
 
         return min(candidates, key = lambda k: fitnessTable[k])
+
+    def saveBestTimeTableToFile(self, fileName):
+        bestSolutionId = self.getTopSolutionIndex()
+        self.timeTables[bestSolutionId].saveResultsToFile(fileName)

@@ -278,3 +278,12 @@ class TimeTable(object):
             return True
         else:
             return False
+
+    def saveResultsToFile(self, fileName):
+        f = open(fileName,'w')
+        for slot in self.getTimeTable().keys():
+            for lecture in self.getTimeTable()[slot]:
+                line = lecture[0] + ' ' + lecture[1] + ' ' + str(self.getPeriodPair(slot)[0]) + ' ' + \
+                       str(self.getPeriodPair(slot)[1]) + '\n'
+                f.write(line)
+        f.close()

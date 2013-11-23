@@ -22,7 +22,7 @@ class GeneticTest(object):
             self.solutions = self.ga.nextGeneration(self.solutions, "random")
             self.solutions = self.ga.mutate(self.solutions)
             self.fitnessTable = self.ga.estimateFitness(self.solutions)
-            print self.fitnessTable[self.ga.getTopSolution(self.fitnessTable)]
+            print self.fitnessTable[self.ga.getTopSolutionIndex()]
 
         for solutionId in self.solutions.keys():
             print "SolutionId: ", solutionId
