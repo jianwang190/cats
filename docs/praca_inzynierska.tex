@@ -1,0 +1,45 @@
+\documentclass[11pt]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\selectlanguage{polish}
+\usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
+
+\title{Tytuł naszej pracy inżynierskiej}
+
+\begin{document}
+
+%
+% przeczytaj: http://en.wikibooks.org/wiki/LaTeX/Document_Structure
+%
+
+\maketitle
+\tableofcontents
+
+\chapter{Wstęp}
+\section{Kontekst zagadnienia}
+\cite{mgrB}[113]
+\section{Cel pracy}
+\section{Zakres pracy}
+\section{Podział zadań i obowiązków}
+\chapter{Opis problemu układania planu zajęć}
+\chapter{Specyfikacja naszego przypadku}
+\chapter{Opis zrealizowanych algorytmów}
+\section{Adaptive tabu search}
+\section{Particle Swarm Optimization}
+\section{Genetic Algorithm}
+\chapter{Projekt systemu}
+\chapter{Testy}
+\chapter{Porównanie algorytmów}
+\chapter{Sposób użytkowania systemu}
+\chapter{Podsumowanie}
+
+\begin{thebibliography}{2}
+\bibitem{mgrB}
+    Pan Magister,
+    \emph{Moja praca magisterska}
+\end{thebibliography}
+
+\end{document}
