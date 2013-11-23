@@ -19,15 +19,31 @@
 \tableofcontents
 
 \chapter{Wstęp}
+
 \section{Kontekst zagadnienia}
-\cite{mgrB}[113]
+\par Problem układania planu zajęć dotyczy wielu instytucji głównie związanych ze szkolnictwem, od szkoły podstawowej aż to szkół wyższych. Zadanie sprowadza się do przygotowania graficznego rozkładu zajęć np. dla poszczególnych klas - uczniów uczęszczających do danej klasy, planu zajęć dla każdego z uczących nauczycieli oraz rozkładu zajęć dla każdej sali. Układanie planów zajęć nawet dla niewielkiej szkoły wymaga dużego wysiłku oraz nakładu czasowego. Problem staje jeszcze bardziej skomplikowany dla szkół ponadgimnazjalnych, do których uczęszcza więcej uczniów, tym samym jest więcej klas, nauczycieli oraz realizowanych przedmiotów. Ponadto zagadnienie ułożenia planu zajęć dla szkół wyższych, w których studenci mogą sami wybierać przedmioty w znacznym stopniu komplikuje te zagadnienie. Wynika to z tego, że aby dany plan zajęć był właściwy musi on spełniać podstawowe kryteria: dwa różne zajęcia na które jest zapisany minimum jeden student nie mogą się odbywać w tym samym czasie, dwa różne zajęcia w tym samym czasie nie mogą odbywać się w tej samej sali oraz nauczyciel w danym momencie może nauczać tylko jednego przedmiotu. Rozszerzeń tych ograniczeń jest wiele, a uwzględnienie każdego z nich, często konieczne do stworzenia realnego planu zajęć jest niezbędne. Wprowadzanie kolejnych ograniczeń znacznie utrudnia problem, który i tak jest stosunkowo skomplikowany.
+\par Pomysł tematu pracy inżynierskiej wyniknął z przyglądania się na przestrzeni naszej edukacji planom zajęć które często odbiegały od idealnego według naszej opini. Plan zajęć często zawierał sporo przerw między obowiązkowymi zajęciami, zajęcia zaczynały się bardzo wcześnie lub kończyły bardzo późno, co w znacznym stopniu utrudniało powrót do domu bądź też dopasowanie innych poza uczelnianych zajęć do naszego planu.
+\par Problem ułożenia planu zajęć podejmowany był w wielu pracach naukowych również na Politechnice Gdańskiej, co świadczy o tym że ułożenie bezkonfliktowego planu zajęć jest problemem stosunkowo trudnym do rozwiązania a zarazem bardzo ciekawym, ponieważ w bezpośredni sposób dotyczy każdej uczącej się osoby. Dlatego też na przestrzeni wielu lat powstało wiele różnych podejść do tego problemu od algorytmów klasycznych poprzez różnego typu algorytmy sztucznej inteligencji.
+\par Problem układania graficznych rozkładów nie tylko związany jest ze szkolnictwem, ale również dotyczy konieczności ułożenia rozkładów jazdy komunikacji miejskiej \cite{com}
+, planu zajęć dla pracowników \cite{worker} oraz terminarza zawodów sportowych \cite{sport}.
 \section{Cel pracy}
+\par Celem pracy jest zapoznanie się z problemem układania planów zajęć oraz przegląd różnych sposobów rozwiązania tego problemu. Jak również opracowanie, implementacja oraz porównanie działania wybranych przez nas algorytmów do układania planów zajęć : Algorytm Symulowanego wyżarzania (Particle Swarm Optimization), Algorytm Genetyczny (Genetic Algorithm) oraz Adaptacyjny Algotym Tabu (Adaptive Tabu Search). Stworzone algorytmy mają układać plan zajęć dla wyspecyfikowanego problemu, uwzględniając ograniczenia miękkie oraz ograniczenia twarde. 
+\par Dodatkowo podjęliśmy się implementacji systemu w którym użytkownik będzie miał możliwość wygenerowania planu zajęć wybranym przez siebie algorytmem oraz wyświetlenia stworzonego planu zajęć w Google Calendar.
+\par W ramach projektu planowane jest również dostosowanie realnych danych ze szkoly ponadgimnazjalnej do zaimplementowanych przez nas algorytmów.
 \section{Zakres pracy}
 \section{Podział zadań i obowiązków}
 \chapter{Opis problemu układania planu zajęć}
-\chapter{Specyfikacja naszego przypadku}
+\chapter{Specyfikacja problemu}
 \chapter{Opis zrealizowanych algorytmów}
 \section{Adaptive tabu search}
+\subsection{Ogólny opis algorytmu}
+\par Opis zaimplementowanego przez nas algorytmu został zaczerpnięty z pracy 'Adaptive TabuSearch for Course Timetabling' \cite{tabu}
+\par Na całość algorytmu składają się trzy fazy: faza inicjalizacji podczas której tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki, faza intensyfikacji, która jest właściwą fazą algorytmu Tabu Search, której celem jest optymalizacja funkcji oceny ograniczeń miękkich. Końcowa faza - faza dywersyfikacji gdzie dokonywana jest redukcja naruszeń miękkich, tak aby nie łamać twardych ograniczeń. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
+\subsection{Fazy algorytmu}
+\subsubsection{Faza inicjalizacji}
+
+\subsubsection{Faza intensyfikacji}
+\subsubsection{Faza dywersyfikacji}
 \section{Particle Swarm Optimization}
 \section{Genetic Algorithm}
 \chapter{Projekt systemu}
@@ -37,9 +53,10 @@
 \chapter{Podsumowanie}
 
 \begin{thebibliography}{2}
-\bibitem{mgrB}
-    Pan Magister,
-    \emph{Moja praca magisterska}
+\bibitem{tabu} Zhipeng Lu, Jin-Kao Hao. Adaptive TabuSearch for Course Timetabling.  \emph{European Journal of Operational Research}, 200(1):235-244, 2010.
+\bibitem{com} U. Brannlund, P. ). Lindberg, A. Nou, J. E. Nilsson. Timetabling using lagrangian relaxation Transportation Science 32, 358-369, 1998
+\bibitem{sport} J. A. M. Schreuder. Constructing timetables for sport competitions. \emph{Mathematical Programming Study 13}, 58-67, 1980
+\bibitem{worker} M. Chiarandini, A. Schaerf, F. Tiozzo. Solving employee timetabling problems with flexible workload using tabu search. \emph{Proceedings of the 3rd PATAT Conference}, 2013
 \end{thebibliography}
 
 \end{document}
