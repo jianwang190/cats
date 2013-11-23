@@ -63,8 +63,10 @@ class AdvancedNeighborhood(object):
                     )
 
         # room allocation violation
-        filter(lambda x: len(x[1]["newPeriods"][0])<=len(data.rooms) \
-            and len(x[1]["newPeriods"][1])<len(data.rooms), result)
+
+        
+        result = filter(lambda x: len(x[1]["newPeriods"][0])<=len(data.rooms) and len(x[1]["newPeriods"][1])<=len(data.rooms), result)
+
         return result
 
 
@@ -87,7 +89,8 @@ class AdvancedNeighborhood(object):
                             | set(filter(lambda x: x[0] in (chains[0] | chains[1]), coursesSecond))
         newCoursesSecond = set(filter(lambda x: x[0] not in (chains[0] | chains[1]), coursesSecond)) \
                             | set(filter(lambda x: x[0] in (chains[0] | chains[1]), coursesFirst))
+
         return { "newPeriods": (newCoursesFirst, newCoursesSecond), \
-                "moves": (coursesFirst - newCoursesFirst)|(coursesSecond-newCoursesSecond)}
+                "moves": ((period1, (coursesFirst - newCoursesFirst)), (period2, (coursesSecond-newCoursesSecond)))}
 
 
