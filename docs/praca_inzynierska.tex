@@ -34,6 +34,35 @@
 \section{Podział zadań i obowiązków}
 \chapter{Opis problemu układania planu zajęć}
 \chapter{Specyfikacja problemu}
+\section{Sformułowanie problemu}
+Celem jest stworzenie tygodniowego harmonogramu wykładów dla kilku kursów, z określoną liczbą dostępnych sal i przedziałów czasowych, w których mogą odbywać się zajęcia. Każdy wykład będący w programie danego kursu musi być przypisany do określonego przedziału czasu i sali tak by spełniał wejściowe ograniczenia. 
+\subsection{Jednostki problemu}
+\begin{itemize}
+\item \textbf{Dni, przedziały, okresy} - dzień podzielony jest na określoną liczbę przedziałów czasowych, okres para złożona z dnia i przedziału czasowego.
+\item \textbf{Kursy i wykładowcy} - każdy kurs składa się z określonej liczby wykładów, które muszą być rozłożone w różnym czasie, na które uczęszcza określona liczna studentów i prowadzone są one przez wykładowcę. Dla każdego kursu jest określona minimalna liczba dni w których te wykłady muszą się odbyć, oraz okresy w których dane wykłady nie mogą się odbywać.
+\item \textbf{Sale wykładowe} - sale wykładowe mają ograniczoną liczbę dostępnych miejsc w pomieszczeniu.
+\item \textbf{Program nauczania} - składa się z kilku kursów, na które uczęszcza grupa studentów.
+\end{itemize}
+\subsection{Ograniczenia}
+\subsubsection{Ograniczenia twarde}
+Plan jest wykonywalny - czyli możliwy do realizacji, jeżeli żadne z wymienionych poniżej ograniczeń nie jest naruszone.
+\begin{itemize}
+\item  ${H_{1}}$ \textbf{Wykłady} - każdy kurs wchodzący w skład programu nauczania musi być przypisany do różnego okresu.
+\item  ${H_{2}}$ \textbf{Zajętość sali} - żadne dwa wykłady nie mogą odbywać się w tym samym okresie w jednym pomieszczeniu.
+\item  ${H_{3}}$ \textbf{Konflikty pomiędzy kursami} - zajęcia z tego samego programu nauczania bądź nauczanie przez tego samego wykładowcę muszą odbywać się w różnym czasie.
+\item  ${H_{4}}$ \textbf{Dostępność wykładowcy} - zajęcia nie mogą się odbywać w czasie, w którym dany wykładowca nie może prowadzić zajęć.
+\end{itemize}
+\subsubsection{Ograniczenia miękkie}
+Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zajęć, ale na jego jakość uwzględniając poniższe kryteria, które wpływają na funkcję oceny wygenerowanego planu zajęć.
+\begin{itemize}
+\item  ${S_{1}}$ \textbf{Wielkość sali} - liczba studentów uczęszczajacych na zajęcia w danej sali musi być mniejsza bądź równa liczbie dostępnych miejsc.
+\item  ${S_{2}}$ \textbf{Stabilność pomieszczenia} - zajęcia wchodzące w skład jednego kursu powinny odbywać się w jednej tej samej sali, jeżeli jest to niemożliwe liczba sal w których obdywają się te zajęcia powinna być jak najmniejsza.
+\item  ${S_{3}}$ \textbf{Minimalna liczba dni} - minimalna liczba dni na które powinny być rozłożone zajęcia z danego kursu.
+\item  ${S_{4}}$ \textbf{Zwartość zajęć} - zajęcia wchodzące w skład jednego kierunku powinny być w jak najmniejszych odstępach czasu pomiędzy sobą.
+\end{itemize}
+\subsection{Matematyczne sformułowanie problemu} \cite{tabu}
+\par Na problem składa się ${n}$ kursów ${C = \{c_{1}, c_{2},...,c_{n}\}}$ które powinny być przydzielone do ${p}$ różnych okresów ${T = \{t_{1}, t_{2},...,t_{p}\}}$ oraz ${m}$ pomieszczeń w których mogą odbywać się zajęcia ${R = \{r_{1}, r_{2},...,r_{m}\}}$. Okres jest to para składająca się z dnia i przedziału czasowego (${d}$ - liczba dni a ${h}$ - liczba dziennych przedziałów czasowych, czyli ${p = d * h}$). Każdy z kursów składa się z ${n}$ zajęć ${L = \{l_{1},l_{2},...,l_{n}\}}$. Kursy wchodzą w skład ${s}$ programów nauczania ${CR = \{cr_{1}, cr_{2}, ..., cr_{s}\}}$, na program nauczania składają się kursy, na które uczęszczają ci sami studenci. 
+\par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p * m}$ gdzie ${x_{i,j}}$ który definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
 \chapter{Opis zrealizowanych algorytmów}
 \section{Adaptive tabu search}
 \subsection{Ogólny opis algorytmu}
