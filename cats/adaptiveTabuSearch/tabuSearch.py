@@ -1,8 +1,10 @@
 import operator
-from cats.adaptiveTabuSearch.advancedNeighborhood import AdvancedNeighborhood
+from cats.adaptiveTabuSearch import perturbation
+from cats.adaptiveTabuSearch.heuristics import initialSolution
+from cats.adaptiveTabuSearch.advancedNeighborhood import AdvancedNeighborhood, doKempeSwap
 from cats.adaptiveTabuSearch.tabuLists import TabuList, AdvancedTabuList
 from cats.adaptiveTabuSearch import softConstraints2
-from cats.adaptiveTabuSearch.basicNeighborhood import BasicNeighborhood
+from cats.adaptiveTabuSearch.basicNeighborhood import BasicNeighborhood, doSimpleSwap
 import time
 from cats.utils.timetable import TimeTable
 
@@ -10,19 +12,12 @@ from cats.utils.timetable import TimeTable
 """Period related costs - sum(minimumWorkingDays, curriculumCompactness)"""
 """Room related costs - sum(roomCapacity, roomStability)"""
 
-PERIOD_RELATED_COST_TAU = 2
-DEPTH_OF_TABU_SEARCH = 10
+INITIAL_TABU_DEPTH = 10
+INITIAL_PERTURBATION_STRENGTH = 4
+MAX_PERTURBATION_STRENGTH = 15
+LAMBDA = 0.3
+INITIAL_ITERATIONS_WITHOUT_CHANGE = 2
 
-
-def doSimpleSwap(timetable, (swap1, swap2)):
-    newTimetable = {x: timetable[x][:] for x in timetable.keys()}
-    if(swap2.index == []):
-        newTimetable[swap2.period].append(newTimetable[swap1.period][swap1.index])
-        del newTimetable[swap1.period][swap1.index]
-    else:
-        newTimetable[swap1.period][swap1.index], newTimetable[swap2.period][swap2.index] = \
-            newTimetable[swap2.period][swap2.index], newTimetable[swap1.period][swap1.index]
-    return newTimetable
 
 def tabuSimpleNeighborhood(timetable, data, theta):
 
@@ -32,6 +27,8 @@ def tabuSimpleNeighborhood(timetable, data, theta):
     b = BasicNeighborhood()
     currentBestSolution = initialSolution.getTimeTable()
     currentBestQuality = softConstraints2.totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+    print "SIMPLE TABU", currentBestQuality, "THETA:", theta
+
     for i in xrange(theta):
         b.clearBasicList()
 
@@ -83,18 +80,14 @@ def tabuSimpleNeighborhood(timetable, data, theta):
     for x in currentBestSolution.keys():
         currentBestSolution[x] = matchingRoomAllocations(currentBestSolution, x, data, sortedRoomIdList)
 
-    print "KARA ", softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data)
+    print "SIMPLE TABU END:", softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data)
 
     initialSolution.timeTable = currentBestSolution
     return initialSolution
 
 
 
-def doKempeSwap(((period1, period2), swap), timetable):
-    newTimetable = {x: timetable[x][:] for x in timetable.keys()}
-    newTimetable[period1] = [x for x in swap["newPeriods"][0]]
-    newTimetable[period2] = [x for x in swap["newPeriods"][1]]
-    return newTimetable
+
 
 def tabuAdvancedNeighborhood(timetable, data, theta):
 
@@ -104,7 +97,7 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
     b= AdvancedNeighborhood()
     currentBestSolution = initialSolution.getTimeTable()
     currentBestQuality = softConstraints2.totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
-
+    print "ADVANCED TABU", currentBestQuality, "THETA:", theta
 
     for i in xrange(theta):
 
@@ -116,18 +109,17 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
             b.exploreNeighborhood(initialSolution, data))
 
         candidates = map(lambda x: doKempeSwap(x, initialSolution.getTimeTable()), neighborhood)
-        candidates = sorted(map(lambda x: (x, softConstraints2.totalSoftConstraintsForTimetable2(x, data)), candidates), key=lambda x: x[1])
+        candidates = sorted(map(lambda x: (x, softConstraints2.totalSoftConstraintsForTimetable(x, data)), candidates), key=lambda x: x[1])
 
         bestCandidate, bestCandidateQuality = candidates[0]
 
         initialSolution.timeTable = {x: bestCandidate[x][:] for x in bestCandidate.keys()}
-        #print bestCandidateQuality, len(neighborhood), softConstraints2.totalSoftConstraintsForTimetable2(initialSolution.getTimeTable(), data), \
-        #    softConstraints2.totalSoftConstraintsForTimetable(bestCandidate, data)
+        print bestCandidateQuality, len(neighborhood)
 
         if bestCandidateQuality<currentBestQuality:
             currentBestSolution = {x: bestCandidate[x][:] for x in bestCandidate.keys()}
             currentBestQuality = bestCandidateQuality
-            print softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data)
+            print softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data), bestCandidateQuality
 
 
     sortedRoomIdList = sorted(data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
@@ -138,7 +130,7 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
 
 
     initialSolution.timeTable = {x: currentBestSolution[x][:] for x in currentBestSolution.keys()}
-
+    print "ADVANCED TABU END:", softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data)
 
 
 
@@ -151,18 +143,64 @@ def tabuSearch(initialSolution, data, theta):
     bestSolution= initialSolution.copy()
     bestQuality = softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data)
     while improved:
-        simpleNeighborhood = tabuSimpleNeighborhood(initialSolution.copy(), data, theta)
+        simpleNeighborhood = tabuSimpleNeighborhood(initialSolution.copy(), data, int(theta))
 
-        advancedNeighborhood = tabuAdvancedNeighborhood(simpleNeighborhood.copy(), data, theta/3)
-
-        if softConstraints2.totalSoftConstraintsForTimetable(advancedNeighborhood.getTimeTable(), data) \
-                < bestQuality:
+        advancedNeighborhood = tabuAdvancedNeighborhood(simpleNeighborhood.copy(), data, int(theta)/3)
+        advancedQuality = softConstraints2.totalSoftConstraintsForTimetable(advancedNeighborhood.getTimeTable(), data)
+        if advancedQuality < bestQuality:
             improved = True
             bestSolution = advancedNeighborhood.copy()
-            initialSolution = advancedNeighborhood.copy()
-
+            bestQuality = advancedQuality
         else:
             improved = False
+        initialSolution = advancedNeighborhood.copy()
+    print "TABU SEARCH FINISHED", bestQuality
+    return bestSolution
+
+
+
+def adaptiveTabuSearch(timetable, data):
+    initialSolution(timetable, data)
+    print "INITIALSOLUTION", softConstraints2.totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
+    xi = 0
+    mju = 0.6
+    theta = INITIAL_TABU_DEPTH
+    eta = INITIAL_PERTURBATION_STRENGTH
+    solution = tabuSearch(timetable, data, theta)
+    bestSolution = solution.copy()
+    iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
+    while iterationsWithoutChange>0:
+        print "THETA: %f ETA: %f xi: %f F: %f" % (theta, eta, xi, softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data))
+        perturbedSolution = perturbation.produceRandomlySimpleOrKempeSwap(solution, data,  eta, 30)
+        perturbedTabu = tabuSearch(perturbedSolution, data, theta)
+
+        perturbedQuality = softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), data)
+        perturbedTabuQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), data)
+        solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), data)
+        print "PERTURBED", perturbedQuality, "PERTURBED_TABU", perturbedTabuQuality, "SOLUTION", solutionQuality
+        if perturbedTabuQuality <= solutionQuality+2:
+            while True:
+                print "RESTARTING", "PERTURBEDTABU", perturbedTabuQuality, "SOLUTION", solutionQuality
+                theta = (1+mju)*theta
+                perturbedQuality = softConstraints2.totalSoftConstraintsForTimetable(perturbedSolution.getTimeTable(), data)
+                perturbedSolution = tabuSearch(perturbedSolution, data, theta)
+                if perturbedQuality<=softConstraints2.totalSoftConstraintsForTimetable(perturbedSolution.getTimeTable(), data):
+                    break
+        if softConstraints2.totalSoftConstraintsForTimetable(perturbedSolution.getTimeTable(), data) < \
+            softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), data):
+            bestSolution = perturbedSolution.copy()
+            theta = INITIAL_TABU_DEPTH
+            eta = INITIAL_PERTURBATION_STRENGTH
+            iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
+        else:
+            theta = INITIAL_TABU_DEPTH
+            xi+=1
+            eta = max(INITIAL_PERTURBATION_STRENGTH+LAMBDA*xi, MAX_PERTURBATION_STRENGTH)
+            iterationsWithoutChange -=1
+
+
+
+
 
 def matchingRoomAllocations(timetable, slot, data, sortedRoomIdList):
     """
@@ -174,8 +212,6 @@ def matchingRoomAllocations(timetable, slot, data, sortedRoomIdList):
     :param sortedRoomIdList: sorted list of rooms regarding to capacity
     :return: timetable for slot with assigned rooms for each course
     """
-
-    #sortedRoomIdList.sort(key= lambda x: x.capacity, reverse=True)
     studentsForCourse= {x[0]: data.getCourse(x[0]).studentsNum for x in timetable[slot]}
     sortedStudentsForCourse = sorted(studentsForCourse.iteritems(), key=operator.itemgetter(1), reverse=True)
     size = len(timetable[slot])

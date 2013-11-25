@@ -80,6 +80,9 @@ class TabuSearchTest(unittest.TestCase):
     #def testTabuSearch(self):
     #    initialSolution(self.t, self.data)
     #    t = tabuSearch.tabuSearch(self.t, self.data, 10)
+    #
+    #def testAdaptiveTabuSearch(self):
+    #    t = tabuSearch.adaptiveTabuSearch(self.t, self.data)
 
     #def testPerturbation(self):
     #    initialSolution(self.t, self.data)

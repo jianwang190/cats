@@ -94,3 +94,10 @@ class AdvancedNeighborhood(object):
                 "moves": ((period1, (coursesFirst - newCoursesFirst)), (period2, (coursesSecond-newCoursesSecond)))}
 
 
+
+
+def doKempeSwap(((period1, period2), swap), timetable):
+    newTimetable = {x: timetable[x][:] for x in timetable.keys()}
+    newTimetable[period1] = [x for x in swap["newPeriods"][0]]
+    newTimetable[period2] = [x for x in swap["newPeriods"][1]]
+    return newTimetable

@@ -1,9 +1,9 @@
 import random
 from cats.adaptiveTabuSearch.softConstraints2 import softConstraintsPenalty, totalSoftConstraintsForTimetable
-from cats.adaptiveTabuSearch.basicNeighborhood import BasicNeighborhood
-from cats.adaptiveTabuSearch.advancedNeighborhood import AdvancedNeighborhood
+from cats.adaptiveTabuSearch.basicNeighborhood import BasicNeighborhood, doSimpleSwap
+from cats.adaptiveTabuSearch.advancedNeighborhood import AdvancedNeighborhood, doKempeSwap
 from operator import itemgetter
-from cats.adaptiveTabuSearch import tabuSearch
+
 """Perturbation"""
 PERTURBATION_STRENGTH_MIN = 4
 PERTURBATION_STRENGTH_MAX = 15
@@ -92,7 +92,7 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
 
             if len(possibleSwaps) > 0:
                 selectedSwap = random.choice(possibleSwaps)
-                initialSolution.timeTable = tabuSearch.doSimpleSwap(initialSolution.getTimeTable(), selectedSwap)
+                initialSolution.timeTable = doSimpleSwap(initialSolution.getTimeTable(), selectedSwap)
                 selectedLecturesDict[lecture] = (1, 1)
             else:
                 selectedLecturesDict[lecture] = (1, 1) if selectedLecturesDict[lecture] == (0, 1) else (1, 0)
@@ -115,12 +115,12 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
 
             if len(possibleKempeSwapsFirst) != 0:
                 choice = random.randint(0, len(possibleKempeSwapsFirst) - 1)
-                initialSolution.timeTable = tabuSearch.doKempeSwap(possibleKempeSwapsFirst[choice], initialSolution.getTimeTable())
+                initialSolution.timeTable = doKempeSwap(possibleKempeSwapsFirst[choice], initialSolution.getTimeTable())
                 selectedLecturesDict[lecture] = (1, 1)
                 selectedLecturesDict = checkIfOtherLecturesWillBeSwap(selectedLecturesDict, possibleKempeSwapsFirst[choice])
             elif len(possibleKempeSwapsSecond) != 0:
                 choice = random.randint(0, len(possibleKempeSwapsSecond) - 1)
-                initialSolution.timeTable = tabuSearch.doKempeSwap(possibleKempeSwapsSecond[choice], initialSolution.getTimeTable())
+                initialSolution.timeTable = doKempeSwap(possibleKempeSwapsSecond[choice], initialSolution.getTimeTable())
                 selectedLecturesDict[lecture] = (1, 1)
                 selectedLecturesDict = checkIfOtherLecturesWillBeSwap(selectedLecturesDict, possibleKempeSwapsSecond[choice])
             else:
@@ -132,12 +132,12 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
 
             print "KEMPE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
 
-    sortedRoomIdList = sorted(data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
-    for x in initialSolution.timeTable.keys():
-        initialSolution.timeTable[x] = tabuSearch.matchingRoomAllocations(initialSolution.timeTable, x, data, sortedRoomIdList)
+    #sortedRoomIdList = sorted(data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
+    #for x in initialSolution.timeTable.keys():
+    #    initialSolution.timeTable[x] = tabuSearch.matchingRoomAllocations(initialSolution.timeTable, x, data, sortedRoomIdList)
 
     print "cost after perturbation", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
-
+    return initialSolution
 
 
 def selectRandom(listItems, numberOfSelectedItems):

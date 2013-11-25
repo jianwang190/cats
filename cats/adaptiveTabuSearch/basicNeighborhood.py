@@ -96,3 +96,14 @@ class BasicNeighborhood(object):
             if((x[0].courseId == courseId and x[0].period == slot) or (x[1].courseId == courseId and x[1].period == slot)):
                 listForCourse.append(x)
         return listForCourse
+
+
+def doSimpleSwap(timetable, (swap1, swap2)):
+    newTimetable = {x: timetable[x][:] for x in timetable.keys()}
+    if(swap2.index == []):
+        newTimetable[swap2.period].append(newTimetable[swap1.period][swap1.index])
+        del newTimetable[swap1.period][swap1.index]
+    else:
+        newTimetable[swap1.period][swap1.index], newTimetable[swap2.period][swap2.index] = \
+            newTimetable[swap2.period][swap2.index], newTimetable[swap1.period][swap1.index]
+    return newTimetable
