@@ -75,7 +75,7 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
     print "INITIAL PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
 
     # 0 denote that was no move with this lecture (0, 0) - (simple, kempe)
-    # ex. (1, 0) denotes there was try to do simpleSwa
+    # ex. (1, 0) denotes there was a try to do simpleSwap
     selectedLecturesDict = {x: (0, 0) for x in selectedLectures}
     b = BasicNeighborhood()
     a = AdvancedNeighborhood()
@@ -83,7 +83,6 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
     while checkIfAllDone(selectedLecturesDict) == False:
         choice = random.choice(['kempeSwap', 'simpleSwap'])
         lecture = getFirstUndone(selectedLecturesDict)
-        print "LECTURE", lecture
         if choice == 'simpleSwap':
             b.clearBasicList()
             b.simpleSwap(initialSolution.getTimeTable(), initialSolution.neighbourhoodList, len(data.getAllRooms()))
@@ -96,41 +95,28 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
                 selectedLecturesDict[lecture] = (1, 1)
             else:
                 selectedLecturesDict[lecture] = (1, 1) if selectedLecturesDict[lecture] == (0, 1) else (1, 0)
-                if selectedLecturesDict[lecture] == (1, 1):
-                    print "unable to move this lecture:", lecture
-                else:
-                    print "SIMPLE: unable to do simple swap", lecture
 
             print "SIMPLE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
         else:
-            neighborhood = a.exploreNeighborhood(initialSolution, data)
-            neighborhood = filter(lambda x: x[0][0] == lecture[2] or x[0][1] == lecture[2], neighborhood)
-            period = lecture[2]
-            tuple = (lecture[0], lecture[1])
-            possibleKempeSwapsFirst = filter(lambda x: x[1]["moves"][0][0] == period and tuple in x[1]["moves"][0][1],\
+            neighborhood = filter(lambda x: x[0][0] == lecture[2] or x[0][1] == lecture[2],\
+                                  a.exploreNeighborhood(initialSolution, data))
+            possibleKempeSwaps = filter(lambda x: x[1]["moves"][0][0] == lecture[2] and (lecture[0], lecture[1]) in x[1]["moves"][0][1],\
+                                             neighborhood)
+            if len(possibleKempeSwaps) == 0:
+                possibleKempeSwaps = filter(lambda x: x[1]["moves"][1][0] == lecture[2] and (lecture[0], lecture[1]) in x[1]["moves"][1][1],\
                                              neighborhood)
 
-            possibleKempeSwapsSecond = filter(lambda x: x[1]["moves"][1][0] == period and tuple in x[1]["moves"][1][1],\
-                                             neighborhood)
 
-            if len(possibleKempeSwapsFirst) != 0:
-                choice = random.randint(0, len(possibleKempeSwapsFirst) - 1)
-                initialSolution.timeTable = doKempeSwap(possibleKempeSwapsFirst[choice], initialSolution.getTimeTable())
-                selectedLecturesDict[lecture] = (1, 1)
-                selectedLecturesDict = checkIfOtherLecturesWillBeSwap(selectedLecturesDict, possibleKempeSwapsFirst[choice])
-            elif len(possibleKempeSwapsSecond) != 0:
-                choice = random.randint(0, len(possibleKempeSwapsSecond) - 1)
-                initialSolution.timeTable = doKempeSwap(possibleKempeSwapsSecond[choice], initialSolution.getTimeTable())
-                selectedLecturesDict[lecture] = (1, 1)
-                selectedLecturesDict = checkIfOtherLecturesWillBeSwap(selectedLecturesDict, possibleKempeSwapsSecond[choice])
+            if len(possibleKempeSwaps) != 0:
+                choice = random.randint(0, len(possibleKempeSwaps) - 1)
+                initialSolution.timeTable = doKempeSwap(possibleKempeSwaps[choice], initialSolution.getTimeTable())
+                selectedLecturesDict = checkIfOtherLecturesWillBeSwap(selectedLecturesDict, possibleKempeSwaps[choice])
+
             else:
                 selectedLecturesDict[lecture] = (1, 1) if selectedLecturesDict[lecture] == (1, 0) else (0, 1)
-                if selectedLecturesDict[lecture] == (1, 1):
-                    print "unable to move this lecture", lecture
-                else:
-                    print "KEMPE: unable to do kempe swap", lecture
 
             print "KEMPE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+
 
     #sortedRoomIdList = sorted(data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
     #for x in initialSolution.timeTable.keys():
