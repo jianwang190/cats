@@ -187,7 +187,13 @@ class TimeTable(object):
         sum = dict()
         for slot, cells in self.getTimeTable().iteritems():
             sum[slot] = filter(lambda x: x[0] == courseId, cells)
-        return sum
+        return filter(lambda x : len(x[1]) > 0, sum.iteritems())
+
+    def getAssignedDays(self, courseId):
+        lectures = self.assignedLectures(courseId)
+        assignedDays = map(lambda x : self.getPeriodPair(x[0])[0], lectures)
+
+        return assignedDays
 
     def getAssignedLecturesSum(self, data):
         """
@@ -252,25 +258,25 @@ class TimeTable(object):
 
     def assignMissingLectures(self, data, courseId, amount):
         if amount <= 0:
-            return []
-        assignedList = list()
+            return
         for i in range(amount):
             while True:
                 slot = random.choice(self.timeSlots)
                 roomID = "-1"
+                #Discard the list of constraints
                 roomIDs = self.availableRoomsForCourseAndSlot(data, courseId, slot)
                 if len(roomIDs) > 0:
                     roomID = data.getBestRoom(roomIDs).id
                 else:
+                    #Discard the room capacity
                     freeRoomsIDs = self.availableRoomsList(slot, data)
                     if len(freeRoomsIDs) > 0:
                         roomID = random.choice(freeRoomsIDs)
                 if roomID != "-1":
                     break
 
-            assignedList.append((slot, courseId, roomID))
-
-        return assignedList
+            self.addDataToTimetable([(slot, courseId, roomID)])
+            print "Beda konflikty w initial solution!"
 
     def copySolution(self, data):
         newSolution = TimeTableFactory.getTimeTable(data)

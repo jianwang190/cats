@@ -123,3 +123,4 @@ class DictData(IData):
             lecturesSum += self.getCourse(course.id).lectureNum
 
         return lecturesSum
+

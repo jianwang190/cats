@@ -5,12 +5,13 @@ from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.adaptiveTabuSearch.softConstraints2 import totalSoftConstraintsForTimetable
 from cats.adaptiveTabuSearch.heuristics import initialSolutionWithReturn
 from cats.ga.checkHardConstraints import countHardConstraints, checkHardConstraintsForSlots
+import time
 
 #noinspection PyPep8Naming
 class GeneticAlgorithm(object):
 
-    def __init__(self, data, timeTables, populationSize = 100, mutationIndex = 0.01, \
-                 tournamentSelectionIndex = 4, iterations = 100):
+    def __init__(self, data, timeTables, populationSize = 100, iterations = 100, mutationIndex = 0.01, \
+                 tournamentSelectionIndex = 4, timeout = 600):
         self.data = data
         self.timeTables = timeTables
         self.fitnessTable = dict()
@@ -19,33 +20,79 @@ class GeneticAlgorithm(object):
         self.tournamentSelectionIndex = tournamentSelectionIndex
         self.fitnessSum = 0
         self.iterationsMax = iterations
+        self.bestSolutionIndex = -1
+        self.timeout = timeout
+        self.startTime = time.time()
 
+
+    def runAlgorithmLoop(self):
+        for epoch in range(self.iterationsMax):
+            self.nextGeneration("tournament")
+            self.mutate()
+            self.estimateFitness()
+            self.showSolutionStatus(epoch)
+            currentTime = time.time()
+            if int(currentTime - self.startTime) > self.timeout:
+                print "Loops:", epoch, "Execution timeout after", currentTime - self.startTime
+                return
+
+        print "Loops:", self.iterationsMax, "Execution time", currentTime - self.startTime
 
     def generateInitialSolutions(self):
-        """Courses sorted by the amount o students attending"""
-        #shuffledCourses = sorted(self.data.courses.values(), key = lambda course : course.studentsNum, reverse=True)
         for populationId in range(self.populationSize):
             shuffledCourses = self.data.getAllCourseIds()
             random.shuffle(shuffledCourses)
             self.timeTables[populationId] = TimeTableFactory.getTimeTable(self.data)
             for courseId in shuffledCourses:
-                pairs = self.timeTables[populationId].availableSlotRoomPairs(self.data, courseId)
-                sortedPairs = sorted(pairs.iteritems(), key = lambda x : len(x[1]))
-                #slots = random.sample(pairs.keys(), self.data.getCourse(course.id).lectureNum)
-                slots = sortedPairs[:self.data.getCourse(courseId).lectureNum]
-                assignedList = list()
-                for slot in slots:
-                    assignedList.append((slot[0], courseId, self.data.getBestRoom(slot[1]).id))
-                additionalList = self.timeTables[populationId].assignMissingLectures(self.data, courseId, \
-                                                            (self.data.getCourse(courseId).lectureNum \
-                                                             - len(sortedPairs)))
-                self.timeTables[populationId].addDataToTimetable(assignedList)
-                if len(additionalList) > 0:
-                    if self.data.getCourse(courseId).lectureNum > (len(sortedPairs) + len(additionalList)):
-                        print "Bedzie brakowac zajec!", courseId, self.data.getCourse(courseId).lectureNum -\
-                                                        (len(sortedPairs) + len(additionalList))
-                    self.timeTables[populationId].addDataToTimetable(additionalList)
+                unassignedLecturesNum = 0
+                for i in range(self.data.getCourse(courseId).lectureNum):
+                    slotRoomPair = self.chooseBestRoom(populationId, courseId)
+                    if len(slotRoomPair) > 0:
+                        self.timeTables[populationId].addDataToTimetable([(slotRoomPair[0], courseId, slotRoomPair[1])])
+                    else:
+                        unassignedLecturesNum += 1
+                self.timeTables[populationId].assignMissingLectures(self.data, courseId, unassignedLecturesNum)
 
+
+    def chooseBestRoom(self, populationId, courseId):
+        pairs = dict()
+        roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(), \
+                                                                      [self.data.getCourse(courseId)])[courseId]
+        #Take MinWorkingDays into account
+        while len(pairs) == 0:
+            bestRoom = self.data.getBestRoom(roomList)
+            pairs = self.timeTables[populationId].availableSlotRoomPairs(self.data, courseId)
+            pairs = filter(lambda x : bestRoom.id in x[1], pairs.iteritems())
+            assignedDays = self.timeTables[populationId].getAssignedDays(courseId)
+            sortedPairs = sorted(pairs, key = lambda x : len(x[1]), reverse = True)
+            index = 0
+            if len(sortedPairs) > 0:
+                if self.data.getCourse(courseId).minWorkingDays > len(set(assignedDays)):
+                    while sortedPairs[index][0] in assignedDays:
+                        index += 1
+                        if index >= len(sortedPairs):
+                            sortedPairs == list()
+                            break
+            roomList.remove(bestRoom.id)
+            if len(roomList) == 0:
+                break
+
+        if len(sortedPairs) > 0:
+            return (sortedPairs[index][0], bestRoom.id)
+        #Discard MinWorkingDays
+        roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(), \
+                                                                      [self.data.getCourse(courseId)])[courseId]
+        pairs = dict()
+        while len(pairs) == 0:
+            bestRoom = self.data.getBestRoom(roomList)
+            pairs = self.timeTables[populationId].availableSlotRoomPairs(self.data, courseId)
+            pairs = filter(lambda x : bestRoom.id in x[1], pairs.iteritems())
+            sortedPairs = sorted(pairs, key = lambda x : len(x[1]), reverse = True)
+            roomList.remove(bestRoom.id)
+            if len(roomList) == 0:
+                return ()
+
+        return (sortedPairs[0][0], bestRoom.id)
 
     def nextGeneration(self, selectionMethod):
         """
@@ -55,6 +102,7 @@ class GeneticAlgorithm(object):
         :param selectionMethod: "tournament" || "random" || "roulette"
         :return:
         """
+
         newGeneration = dict()
         for i in range(len(self.timeTables)/2):
             if selectionMethod == "tournament":
@@ -121,11 +169,11 @@ class GeneticAlgorithm(object):
         for courseId in courses:
             lectures1 = father.assignedLectures(courseId)
             if insertedLectures < allLecturesCount/2:
-                for slot in lectures1.keys():
+                for slotItem in lectures1:
                     if insertedLectures < allLecturesCount/2:
-                        for lecture in lectures1[slot]:
-                            if not self.insertGeneWithHardCheck(slot, lecture, child1):
-                                if not self.geneticRepair(slot, lecture, child1):
+                        for lecture in slotItem[1]:
+                            if not self.insertGeneWithHardCheck(slotItem[0], lecture, child1):
+                                if not self.geneticRepair(slotItem[0], lecture, child1):
                                     continue
                             insertedLectures += 1
                             if insertedLectures >= allLecturesCount/2:
@@ -143,11 +191,11 @@ class GeneticAlgorithm(object):
         for courseId in courses:
             lectures2 = mother.assignedLectures(courseId)
             if insertedLectures < allLecturesCount/2:
-                for slot in lectures2.keys():
+                for slotItem in lectures2:
                     if insertedLectures < allLecturesCount/2:
-                        for lecture in lectures2[slot]:
-                            if not self.insertGeneWithHardCheck(slot, lecture, child2):
-                                if not self.geneticRepair(slot, lecture, child2):
+                        for lecture in slotItem[1]:
+                            if not self.insertGeneWithHardCheck(slotItem[0], lecture, child2):
+                                if not self.geneticRepair(slotItem[0], lecture, child2):
                                     continue
                             insertedLectures += 1
                             if insertedLectures >= allLecturesCount/2:
@@ -185,14 +233,11 @@ class GeneticAlgorithm(object):
 
     def geneticRepair(self, slot, lecture, solution):
         #If a gene to insert is not empty, delete its random equivalent at first
-        if lecture != []:
-            assignedLectures = filter(lambda x: x[1] != [], (solution.assignedLectures(lecture[0]).items()))
+        if lecture != ():
+            assignedLectures = solution.assignedLectures(lecture[0])
             lectureKeys = list()
             for item in assignedLectures:
                 lectureKeys.append(item[0])
-            if len(lectureKeys) == 0:
-                pass
-                #print "Blad"
             else:
                 chosenSlot = random.choice(lectureKeys)
                 chosenRoom = solution.assignedLectures(lecture[0])[chosenSlot][0][1]
@@ -245,32 +290,22 @@ class GeneticAlgorithm(object):
             """ Prevent the top solution from a potential regression """
             while True:
                 solutionId = random.choice(self.timeTables.keys())
-                if int(self.fitnessTable[solutionId]) > int(self.fitnessTable[self.getTopSolutionIndex()]):
+                if solutionId != self.getTopSolutionIndex():
                     break
 
             course = self.data.getRandomCourse()
-            # delete whole old schedule of the course
-            for slot, cells in self.timeTables[solutionId].timeTable.iteritems():
-                for schedule in cells:
-                    if schedule[0] == course.id:
-                        self.timeTables[solutionId].timeTable[slot].remove(schedule)
+            # delete the whole old schedule of the course
+            oldLectures = self.timeTables[solutionId].assignedLectures(course.id)
+            self.timeTables[solutionId].removeFromTimetable(map(lambda x : (x[0], x[1][0], x[1][1]), oldLectures))
 
-            pairs = self.timeTables[solutionId].availableSlotRoomPairs(self.data, course.id)
-            sortedPairs = sorted(pairs.iteritems(), key = lambda x : len(x[1]))
-            #slots = random.sample(pairs.keys(), self.data.getCourse(course.id).lectureNum)
-            slots = sortedPairs[:self.data.getCourse(course.id).lectureNum]
-            assignedList = list()
-            for slot in slots:
-                assignedList.append((slot[0], course.id, self.data.getBestRoom(slot[1]).id))
-            additionalList = self.timeTables[solutionId].assignMissingLectures(self.data, course.id, \
-                                                            (self.data.getCourse(course.id).lectureNum \
-                                                             - len(sortedPairs)))
-            self.timeTables[solutionId].addDataToTimetable(assignedList)
-            if len(additionalList) > 0:
-                if self.data.getCourse(course.id).lectureNum > (len(sortedPairs) + len(additionalList)):
-                    print "Bedzie brakowac zajec!", course.id, self.data.getCourse(course.id).lectureNum -\
-                                                        (len(sortedPairs) + len(additionalList))
-                    self.timeTables[solutionId].addDataToTimetable(additionalList)
+            unassignedLecturesNum = 0
+            for i in range(self.data.getCourse(course.id).lectureNum):
+                slotRoomPair = self.chooseBestRoom(solutionId, course.id)
+                if len(slotRoomPair) > 0:
+                    self.timeTables[solutionId].addDataToTimetable([(slotRoomPair[0], course.id, slotRoomPair[1])])
+                else:
+                    unassignedLecturesNum += 1
+            self.timeTables[solutionId].assignMissingLectures(self.data, course.id, unassignedLecturesNum)
             """
             for i in range(self.populationSize * 100):
                 slot1 = random.choice(self.timeTables[solutionId].getTimeTable().keys())
@@ -374,3 +409,10 @@ class GeneticAlgorithm(object):
     def saveBestTimeTableToFile(self, fileName):
         bestSolutionId = self.getTopSolutionIndex()
         self.timeTables[bestSolutionId].saveResultsToFile(fileName)
+
+    def showSolutionStatus(self, epoch):
+        self.bestSolutionIndex = self.getTopSolutionIndex()
+        hardConstraintsPenalty = countHardConstraints(self.timeTables[self.bestSolutionIndex], self.data)
+        bestFitnessValue = self.fitnessTable[self.bestSolutionIndex]
+        print "Epoka:", epoch, "Hardy:", str(hardConstraintsPenalty), \
+            "Softy:", str(bestFitnessValue-hardConstraintsPenalty), "najlepszy wynik:", str(bestFitnessValue)
