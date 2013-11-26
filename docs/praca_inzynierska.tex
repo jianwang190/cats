@@ -68,7 +68,7 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 \subsection{Specyficzne sformułowanie problemu}
 \par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p * m}$ gdzie ${x_{i,j}}$ który definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
 \subsection{Ogólny opis algorytmu}
-\par Opis zaimplementowanego przez nas algorytmu został zaczerpnięty z pracy 'Adaptive TabuSearch for Course Timetabling' \cite{tabu}
+\par Opis zaimplementowanego przez nas algorytmu został zaczerpnięty z pracy ,,Adaptive TabuSearch for Course Timetabling'' \cite{tabu}
 \par Na całość algorytmu składają się trzy fazy: faza inicjalizacji podczas której tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki, faza intensyfikacji, która jest właściwą fazą algorytmu Tabu Search, której celem jest optymalizacja funkcji oceny ograniczeń miękkich. Końcowa faza - faza dywersyfikacji gdzie dokonywana jest redukcja naruszeń miękkich, tak aby nie łamać twardych ograniczeń. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
 \subsection{Fazy algorytmu}
 \subsubsection{Faza inicjalizacji}
