@@ -7,9 +7,9 @@
 \selectlanguage{polish}
 \usepackage{amsmath}
 \usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
-
+\usepackage{algorithm,algorithmic}
 \title{Tytuł naszej pracy inżynierskiej}
-
+\author{Katarzyna Śmietanka}
 \begin{document}
 
 %
@@ -22,14 +22,14 @@
 \chapter{Wstęp}
 
 \section{Kontekst zagadnienia}
-\author{Katarzyna Śmietanka}
+
 \par Problem układania planu zajęć dotyczy wielu instytucji głównie związanych ze szkolnictwem, od szkoły podstawowej aż to szkół wyższych. Zadanie sprowadza się do przygotowania graficznego rozkładu zajęć np. dla poszczególnych klas - uczniów uczęszczających do danej klasy, planu zajęć dla każdego z uczących nauczycieli oraz rozkładu zajęć dla każdej sali. Układanie planów zajęć nawet dla niewielkiej szkoły wymaga dużego wysiłku oraz nakładu czasowego. Problem staje jeszcze bardziej skomplikowany dla szkół ponadgimnazjalnych, do których uczęszcza więcej uczniów, tym samym jest więcej klas, nauczycieli oraz realizowanych przedmiotów. Ponadto zagadnienie ułożenia planu zajęć dla szkół wyższych, w których studenci mogą sami wybierać przedmioty w znacznym stopniu komplikuje te zagadnienie. Wynika to z tego, że aby dany plan zajęć był właściwy musi on spełniać podstawowe kryteria: dwa różne zajęcia na które jest zapisany minimum jeden student nie mogą się odbywać w tym samym czasie, dwa różne zajęcia w tym samym czasie nie mogą odbywać się w tej samej sali oraz nauczyciel w danym momencie może nauczać tylko jednego przedmiotu. Rozszerzeń tych ograniczeń jest wiele, a uwzględnienie każdego z nich, często konieczne do stworzenia realnego planu zajęć jest niezbędne. Wprowadzanie kolejnych ograniczeń znacznie utrudnia problem, który i tak jest stosunkowo skomplikowany.
 \par Pomysł tematu pracy inżynierskiej wyniknął z przyglądania się na przestrzeni naszej edukacji planom zajęć które często odbiegały od idealnego według naszej opini. Plan zajęć często zawierał sporo przerw między obowiązkowymi zajęciami, zajęcia zaczynały się bardzo wcześnie lub kończyły bardzo późno, co w znacznym stopniu utrudniało powrót do domu bądź też dopasowanie innych poza uczelnianych zajęć do naszego planu.
 \par Problem ułożenia planu zajęć podejmowany był w wielu pracach naukowych również na Politechnice Gdańskiej, co świadczy o tym że ułożenie bezkonfliktowego planu zajęć jest problemem stosunkowo trudnym do rozwiązania a zarazem bardzo ciekawym, ponieważ w bezpośredni sposób dotyczy każdej uczącej się osoby. Dlatego też na przestrzeni wielu lat powstało wiele różnych podejść do tego problemu od algorytmów klasycznych poprzez różnego typu algorytmy sztucznej inteligencji.
 \par Problem układania graficznych rozkładów nie tylko związany jest ze szkolnictwem, ale również dotyczy konieczności ułożenia rozkładów jazdy komunikacji miejskiej \cite{com}
 , planu zajęć dla pracowników \cite{worker} oraz terminarza zawodów sportowych \cite{sport}.
 \section{Cel pracy}
-\par Celem pracy jest zapoznanie się z problemem układania planów zajęć oraz przegląd różnych sposobów rozwiązania tego problemu. Jak również opracowanie, implementacja oraz porównanie działania wybranych przez nas algorytmów do układania planów zajęć : Algorytm Symulowanego wyżarzania (Particle Swarm Optimization), Algorytm Genetyczny (Genetic Algorithm) oraz Adaptacyjny Algotym Tabu (Adaptive Tabu Search). Stworzone algorytmy mają układać plan zajęć dla wyspecyfikowanego problemu, uwzględniając ograniczenia miękkie oraz ograniczenia twarde. 
+\par Celem pracy jest zapoznanie się z problemem układania planów zajęć oraz przegląd różnych sposobów rozwiązania tego problemu. Jak również opracowanie, implementacja oraz porównanie działania wybranych przez nas algorytmów do układania planów zajęć: Algorytm Symulowanego wyżarzania (Particle Swarm Optimization), Algorytm Genetyczny (Genetic Algorithm) oraz Adaptacyjny Algotym Tabu (Adaptive Tabu Search). Stworzone algorytmy mają układać plan zajęć dla wyspecyfikowanego problemu, uwzględniając ograniczenia miękkie oraz ograniczenia twarde. 
 \par Dodatkowo podjęliśmy się implementacji systemu w którym użytkownik będzie miał możliwość wygenerowania planu zajęć wybranym przez siebie algorytmem oraz wyświetlenia stworzonego planu zajęć w Google Calendar.
 \par W ramach projektu planowane jest również dostosowanie realnych danych ze szkoly ponadgimnazjalnej do zaimplementowanych przez nas algorytmów.
 \section{Zakres pracy}
@@ -40,10 +40,10 @@
 Celem jest stworzenie tygodniowego harmonogramu wykładów dla kilku kursów, z określoną liczbą dostępnych sal i przedziałów czasowych, w których mogą odbywać się zajęcia. Każdy wykład będący w programie danego kursu musi być przypisany do określonego przedziału czasu i sali tak by spełniał wejściowe ograniczenia. 
 \subsection{Jednostki problemu}
 \begin{itemize}
-\item \textbf{Dni, przedziały, okresy} - dzień podzielony jest na określoną liczbę przedziałów czasowych, okres para złożona z dnia i przedziału czasowego.
-\item \textbf{Kursy i wykładowcy} - każdy kurs składa się z określonej liczby wykładów, które muszą być rozłożone w różnym czasie, na które uczęszcza określona liczna studentów i prowadzone są one przez wykładowcę. Dla każdego kursu jest określona minimalna liczba dni w których te wykłady muszą się odbyć, oraz okresy w których dane wykłady nie mogą się odbywać.
-\item \textbf{Sale wykładowe} - sale wykładowe mają ograniczoną liczbę dostępnych miejsc w pomieszczeniu.
-\item \textbf{Program nauczania} - składa się z kilku kursów, na które uczęszcza grupa studentów.
+\item{\textbf{Dni, przedziały, okresy} - dzień podzielony jest na określoną liczbę przedziałów czasowych, okres para złożona z dnia i przedziału czasowego.}
+\item{\textbf{Kursy i wykładowcy} - każdy kurs składa się z określonej liczby wykładów, które muszą być rozłożone w różnym czasie, na które uczęszcza określona liczna studentów i prowadzone są one przez wykładowcę. Dla każdego kursu jest określona minimalna liczba dni w których te wykłady muszą się odbyć, oraz okresy w których dane wykłady nie mogą się odbywać.}
+\item{\textbf{Sale wykładowe} - sale wykładowe mają ograniczoną liczbę dostępnych miejsc w pomieszczeniu.}
+\item{\textbf{Program nauczania} - składa się z kilku kursów, na które uczęszcza grupa studentów.}
 \end{itemize}
 \subsection{Ograniczenia}
 \subsubsection{Ograniczenia twarde}
@@ -68,10 +68,31 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 \chapter{Opis zrealizowanych algorytmów}
 \section{Adaptive tabu search}
 \subsection{Specyficzne sformułowanie problemu}
-\par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p * m}$ gdzie ${x_{i,j}}$ który definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
+\par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p \times m}$ gdzie ${x_{i,j}}$ który definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
 \subsection{Ogólny opis algorytmu}
 \par Opis zaimplementowanego przez nas algorytmu został zaczerpnięty z pracy ,,Adaptive TabuSearch for Course Timetabling'' \cite{tabu}
-\par Na całość algorytmu składają się trzy fazy: faza inicjalizacji podczas której tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki, faza intensyfikacji, która jest właściwą fazą algorytmu Tabu Search, której celem jest optymalizacja funkcji oceny ograniczeń miękkich. Końcowa faza - faza dywersyfikacji gdzie dokonywana jest redukcja naruszeń miękkich, tak aby nie łamać twardych ograniczeń. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
+\par Na całość algorytmu składają się trzy fazy: faza inicjalizacji podczas której tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki, faza intensyfikacji, która jest właściwą fazą algorytmu Adaptive Tabu Search, której celem jest optymalizacja funkcji oceny ograniczeń miękkich. Końcowa faza - faza dywersyfikacji gdzie dokonywana jest redukcja naruszeń miękkich, tak aby nie łamać twardych ograniczeń. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
+
+\subsection{Tabu Search}
+\par Algorytm Tabu Search został zaprezentowany w 1986 roku przez Freda W. Glovera \cite{glover}. Jest to metaheurystyka, która opiera się na obserwacji, że proces przeszukiwania przestrzeni rozwiązań w poszukiwaniu najlepszego u ludzi i zwierząt opiera się na pamięci krótko- i długoterminowej. 
+\par Pamięć krótkoterminowa realizowana jest w postaci listy ruchów zabronionych. W każdej iteracji przeglądamy strukturę sąsiedztwa w poszukiwaniu najlepszego rozwiązania. Sprawdzamy, czy ruch prowadzący do uzyskania najlepszego sąsiada nie znajduje się na liście ruchów zabronionych; jeżeli tak - rozważamy kolejnego najlepszego sąsiada, w przeciwnym wypadku - aktualizujemy rozwiązanie i dodajemy ruch prowadzący do niego jako ruch zabroniony.
+
+\begin{algorithm}[H]
+    \caption{Algorytm Tabu Search}
+    \begin{algorithmic}
+    \STATE{best = current}
+    \WHILE{\emph{nie jest spełniony warunek stopu}}
+    \STATE{sąsiedztwo = neighborhood(current)}
+    \FOR{$i=0$ \TO len(sąsiedztwo)}
+    	\IF{$ruch(current, sąsiedztwo[i]) \not \in lista\_tabu$}
+    	\STATE $lista\_tabu = lista\_tabu \cup ruch(current, sąsiedztwo[i])$
+    	\STATE current = sąsiedztwo[i]
+    	\ENDIF
+    \ENDFOR
+    \ENDWHILE
+    \end{algorithmic}
+    \end{algorithm}
+
 \subsection{Fazy algorytmu}
 \subsubsection{Faza inicjalizacji}
 \par W tej fazie tworzony jest wykonywalny plan zajęć czyli nienaruszający ograniczeń twardych ${H_{1} - H_{4}}$. W każdej iteracji wybierane jest jedno z zajęć z kursu i przypisywane do odpowiedniego okresu i pomieszczenia. Całość przydzielania odbywa się na podstawie dwóch heurystyk pierwsza z nich determinuje wybor kursu, który zostanie przypisany do planu zajęć oraz druga zaś określa parę okres-sala.
@@ -105,6 +126,10 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 
 \subsubsection{Faza intensyfikacji}
 \par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączeń w token ring tych dwóch różnych struktur sąsiedztwa.
+
+\paragraph{Proste sąsiedztwo} Ruch zdefiniowany jest jako zamiana przypisanego okresu i sali między dwoma zajęciami z różnych kursów. Specjalnym przypadkiem tego ruchu jest przeniesienie zajęcia na jedną z pustych pozycji. 
+\paragraph{Sąsiedztwo rozszerzone - łańcuchy Kempe}
+
 \subsubsection{Faza dywersyfikacji}
 
 \section{Particle Swarm Optimization}
@@ -120,6 +145,9 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 \bibitem{com} U. Brannlund, P. ). Lindberg, A. Nou, J. E. Nilsson. Timetabling using lagrangian relaxation Transportation Science 32, 358-369, 1998
 \bibitem{sport} J. A. M. Schreuder. Constructing timetables for sport competitions. \emph{Mathematical Programming Study 13}, 58-67, 1980
 \bibitem{worker} M. Chiarandini, A. Schaerf, F. Tiozzo. Solving employee timetabling problems with flexible workload using tabu search. \emph{Proceedings of the 3rd PATAT Conference}, 2013
+
+\bibitem{glover} Fred Glover (1986). ,,Future Paths for Integer Programming and Links to Artificial Intelligence'' \emph{Computers and Operations Research}, 13 (5): 533–549.
+
 \end{thebibliography}
 
 \end{document}
