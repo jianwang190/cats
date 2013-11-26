@@ -29,7 +29,7 @@
 \par Problem układania graficznych rozkładów nie tylko związany jest ze szkolnictwem, ale również dotyczy konieczności ułożenia rozkładów jazdy komunikacji miejskiej \cite{com}
 , planu zajęć dla pracowników \cite{worker} oraz terminarza zawodów sportowych \cite{sport}.
 \section{Cel pracy}
-\par Celem pracy jest zapoznanie się z problemem układania planów zajęć oraz przegląd różnych sposobów rozwiązania tego problemu. Jak również opracowanie, implementacja oraz porównanie działania wybranych przez nas algorytmów do układania planów zajęć: Algorytm Symulowanego wyżarzania (Particle Swarm Optimization), Algorytm Genetyczny (Genetic Algorithm) oraz Adaptacyjny Algotym Tabu (Adaptive Tabu Search). Stworzone algorytmy mają układać plan zajęć dla wyspecyfikowanego problemu, uwzględniając ograniczenia miękkie oraz ograniczenia twarde. 
+\par Celem pracy jest zapoznanie się z problemem układania planów zajęć oraz przegląd różnych sposobów rozwiązania tego problemu. Jak również opracowanie, implementacja oraz porównanie działania wybranych przez nas algorytmów do układania planów zajęć : Algorytm roju cząsteczek (Particle Swarm Optimization), Algorytm Genetyczny (Genetic Algorithm) oraz Adaptacyjny Algotym Tabu (Adaptive Tabu Search). Stworzone algorytmy mają układać plan zajęć dla wyspecyfikowanego problemu, uwzględniając ograniczenia miękkie oraz ograniczenia twarde. 
 \par Dodatkowo podjęliśmy się implementacji systemu w którym użytkownik będzie miał możliwość wygenerowania planu zajęć wybranym przez siebie algorytmem oraz wyświetlenia stworzonego planu zajęć w Google Calendar.
 \par W ramach projektu planowane jest również dostosowanie realnych danych ze szkoly ponadgimnazjalnej do zaimplementowanych przez nas algorytmów.
 \section{Zakres pracy}
@@ -37,6 +37,7 @@
 \chapter{Opis problemu układania planu zajęć}
 \chapter{Specyfikacja problemu}
 \section{Sformułowanie problemu}
+\author{Katarzyna Śmietanka} \\
 Celem jest stworzenie tygodniowego harmonogramu wykładów dla kilku kursów, z określoną liczbą dostępnych sal i przedziałów czasowych, w których mogą odbywać się zajęcia. Każdy wykład będący w programie danego kursu musi być przypisany do określonego przedziału czasu i sali tak by spełniał wejściowe ograniczenia. 
 \subsection{Jednostki problemu}
 \begin{itemize}
@@ -62,11 +63,32 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 \item  ${S_{3}}$ \textbf{Minimalna liczba dni} - minimalna liczba dni na które powinny być rozłożone zajęcia z danego kursu.
 \item  ${S_{4}}$ \textbf{Zwartość zajęć} - zajęcia wchodzące w skład jednego kierunku powinny być w jak najmniejszych odstępach czasu pomiędzy sobą.
 \end{itemize}
+\subsection{Funkcja oceny}
+\textbf{Ograniczenia twarde} - dla tego typu ograniczeń zliczane są podczas końcowej oceny poszczególne naruszenia ograniczań:\\
+\begin{enumerate}
+\item \textbf{Zajęcia / Wykłady} - naruszenie występuje w przypadku gdy zajęcia nie są przypisane do planu zajęć
+\item \textbf{Zajętość sali} - naruszenie występuje gdy zostaną przypisane więcej niż jedne zajęcia do sali w tym samym czasie
+\item \textbf{Konflikty} - naruszenie wystąpi wtedy gdy dwa zajęcia będące w konflikcie odbywają się w tym samym czasie (tzn. ci sami studenci uczęszczają na te zajęcia lub prowadzone są przez tego samego wykładowcę)
+\item \textbf{Dostępność} - naruszenie występuje gdy zajęcia odbywają się w czasie, w którym niedostępny jest wykładowca 
+\end{enumerate} 
+
+\textbf{Ograniczenia miękkie} - zliczanie punktów kary
+\begin{enumerate}
+\item \textbf{Wielkość sali} - Jeżeli liczba studentów jest większa niż liczba dostępnych miejsc w sali to za każdego dodatkowego studenta punkt kary pomnożony przez współczynnik ${a_{1} = 1}$ 
+\item \textbf{Minimalna liczba dni}
+Jeżeli liczba dni podczas których odbywają się zajęcia jest mniejsza niż minimalna liczba dni w których powinny odbywać się zajęcia to do kary doliczamy rożnicę między minimalną liczbą dni a dni w których zajęcia się odbywają pomnożoną o współczynnik $a_{2} = 5$ 
+\item \textbf{Zwartość zajęc}
+Za każde zajęcia w planie należące do danego programu nauczania nieprzylegające do innych zajęć punkt kary pomnożony o współczynnik ${a_{3} = 2}$
+\item \textbf{Stabilność pomieszczenia}
+Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomieszczań, za każde nowe pomieszczenie punkt kary pomnożony o współczynnik ${a_{2} = 1}$
+\end{enumerate}
+
 \subsection{Matematyczne sformułowanie problemu} \cite{tabu}
 \par Na problem składa się ${n}$ kursów ${C = \{c_{1}, c_{2},...,c_{n}\}}$ które powinny być przydzielone do ${p}$ różnych okresów ${T = \{t_{1}, t_{2},...,t_{p}\}}$ oraz ${m}$ pomieszczeń w których mogą odbywać się zajęcia ${R = \{r_{1}, r_{2},...,r_{m}\}}$. Okres jest to para składająca się z dnia i przedziału czasowego (${d}$ - liczba dni a ${h}$ - liczba dziennych przedziałów czasowych, czyli ${p = d * h}$). Każdy z kursów składa się z ${n}$ zajęć ${L = \{l_{1},l_{2},...,l_{n}\}}$. Kursy wchodzą w skład ${s}$ programów nauczania ${CR = \{cr_{1}, cr_{2}, ..., cr_{s}\}}$, na program nauczania składają się kursy, na które uczęszczają ci sami studenci. 
 
 \chapter{Opis zrealizowanych algorytmów}
 \section{Adaptive tabu search}
+\author{Tomasz Dziopa, Katarzyna Śmietanka}
 \subsection{Specyficzne sformułowanie problemu}
 \par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p \times m}$ gdzie ${x_{i,j}}$ który definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
 \subsection{Ogólny opis algorytmu}
@@ -125,13 +147,28 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 
 
 \subsubsection{Faza intensyfikacji}
-\par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączeń w token ring tych dwóch różnych struktur sąsiedztwa.
+\par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączenia zamian w obrębie tych dwóch struktur, które przeprowadzane są w cyklu token - ring. Celem tej fazy jest ograniczenie funkcji oceny ograniczeń miękkich, nie łamiąc żadnych ograniczeń twardych. Przestrzeń wykonywanych zamian dla poszczególnych zajęć jest ograniczona tylko do wykonywalnych zamian czyli takich, które po wykonaniu nie naruszają ${H1-H4}$.
+\par \textbf{Struktury sasiedztwa}
+\begin{enumerate}
+\item \textbf{Podstawowa struktura sąsiedztwa} \\
+Jest to struktura, która zawiera wszystkie możliwe zamiany dla pary dwóch zajęć należących do różnych kursów i nie należących do tego samego okresu w planie zajęć. \\
+Zamiana jest przypisaniem zajęć $x_{i_{1},j_{1}}$ w miejsce zajęć ${x_{i_{2}, j_{2}}}$ oraz zajęć ${x_{i_{2}, j_{2}}}$ w miejsce zajęć $x_{i_{1},j_{1}}$ \\
+Możliwe przypadki zamian
+\begin{enumerate}
+\item Zamiana pomiędzy dwoma różnymi zajęciami należącymi do dwóch różnych kursów i okresów
+\item Przypisanie zajęcia ${x_{i,j}}$ do wolnej pozycji - do okresu dla którego zajęcie ${x_{i,j}}$ nie wchodzi w konflikt z pozostałymi zajęciami w tym okresie (tzn. nie narusza ${H1-H4}$ )
+\end{enumerate}
+\textbf{Szczegóły implementacyjne}
 
-\paragraph{Proste sąsiedztwo} Ruch zdefiniowany jest jako zamiana przypisanego okresu i sali między dwoma zajęciami z różnych kursów. Specjalnym przypadkiem tego ruchu jest przeniesienie zajęcia na jedną z pustych pozycji. 
-\paragraph{Sąsiedztwo rozszerzone - łańcuchy Kempe}
+
+\item \textbf{Zaawansowana struktura sąsiedztwa} \\
+\textbf{Szczegóły implementacyjne}
+\end{enumerate}
 
 \subsubsection{Faza dywersyfikacji}
-
+\par Jeżeli rozwiązanie nie może zostać poprawione za pomocą algorytmu tabu search uruchamiana jest trzecia faza - faza dywersyfikacji.Głównym jej elementem jest losowy operator zaburzeń mający na celu zniszczenie osiągniętego lokalnego minimum. Początkowo identyfikowane są zajęcia z wysoką karą wynikającą z funkcji oceny  i losowo wybierane są zajęcia dla których zostaną dokonane zamiany sprecyzowane w poprzedniej fazie.
+\par W momencie zakończenia fazy intensyfikacji, poszczególne zajęcia ustawiane są w kolejności malejącej ze względu na wysokość funkcji oceny. Z puli $q$ pierwszych zajęć wybierane jest $n$ zajęć, gdzie zajęcie będące na $k$ miejscu w rankingu wybierane zgodnie z rozkładem prawdopodobieństwa $P(k) = k^{-4.0}$. Następnie dokonywane jest $n$ losowych zamian pomiędzy zajęciami (sprecyzowanych w fazie intensyfikacji), ale tylko takich które zawierają przynajmniej jedno z wybranych z rankingu zajęć. \\
+\textbf{Szczegóły implementacyjne}
 \section{Particle Swarm Optimization}
 \section{Genetic Algorithm}
 \chapter{Projekt systemu}
