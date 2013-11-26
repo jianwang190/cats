@@ -148,7 +148,7 @@ Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomi
 
 \subsubsection{Faza intensyfikacji}
 \par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączenia zamian w obrębie tych dwóch struktur, które przeprowadzane są w cyklu token - ring. Celem tej fazy jest ograniczenie funkcji oceny ograniczeń miękkich, nie łamiąc żadnych ograniczeń twardych. Przestrzeń wykonywanych zamian dla poszczególnych zajęć jest ograniczona tylko do wykonywalnych zamian czyli takich, które po wykonaniu nie naruszają ${H1-H4}$.
-\par \textbf{Struktury sasiedztwa}
+\paragraph{Struktury sasiedztwa}
 \begin{enumerate}
 \item \textbf{Podstawowa struktura sąsiedztwa} \\
 Jest to struktura, która zawiera wszystkie możliwe zamiany dla pary dwóch zajęć należących do różnych kursów i nie należących do tego samego okresu w planie zajęć. \\
@@ -161,8 +161,22 @@ Możliwe przypadki zamian
 \textbf{Szczegóły implementacyjne}
 
 
-\item \textbf{Zaawansowana struktura sąsiedztwa} \\
-\textbf{Szczegóły implementacyjne}
+\item \textbf{Zaawansowana struktura sąsiedztwa} 
+\subparagraph{}
+Jednym z klasycznych podejść do problemu układania planu zajęć jest podejście grafowe instancję problemu możemy przedstawić jako graf $G(V, E)$, gdzie wierzchołki grafu reprezentują kursy, a krawędzie reprezentują konflikty między kursami, który należy pokolorować na jak najmniejszą liczbę kolorów. 
+\subparagraph{}Łańcuchy Kempe zostały zaproponowane jako narzędzie matematyczne, które miało służyć do udowodnienia twierdzenia o czterech kolorach. Mając dany graf $G$ i jego pokolorowanie na co najmniej dwa kolory, łańcuchy Kempe możemy zdefiniować jako maksymalne spójne podgrafy $G$, w których wszystkie wierzchołki mają nadany kolor $a$ lub $b$.
+\subparagraph{}W naszym problemie łańcuchami Kempe będą maksymalne spójne podgrafy $G$, które zostały przypisane do okresu $i$ lub $j$. Dla łańcuchów $K_1$ i $K_2$, które zawierają maksymalne podgrafy kursów przypisanych do odpowiednio $i$ i $j$, gdzie $t_i$ i $t_j$ oznaczają wszystkie kursy przypasowane do $i$ i $j$, tworzymy nowe przypasowania:
+\[ t_i' = (t_i \setminus  (K_1 \cup K_2)) \cup (t_j \cap (K_1 \cup K_2)) \]
+\[ t_j' = (t_j \setminus  (K_1 \cup K_2)) \cup (t_i \cap (K_1 \cup K_2)) \]
+
+Specjalnym przypadkiem jest, gdy jeden z łańcuchów jest pusty, wtedy:
+\[ t_i' = (t_i \setminus K) \cup (t_j \cap K)\]
+\[ t_j' = (t_j \setminus K) \cup (t_i \cap K)\]
+
+Tak określony ruch można traktować jako rozszerzoną wersję podstawowej struktury sąsiedztwa, gdzie zamieniamy po kilka przypasowań na raz. Przy zamianie musimy uważać, aby nie wykonywać ruchów, które powodują przypasowanie większej liczby kursów, niż jest dostępnych sal. 
+
+%- room assignment
+
 \end{enumerate}
 
 \subsubsection{Faza dywersyfikacji}
