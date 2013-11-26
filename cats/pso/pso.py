@@ -18,8 +18,16 @@ class PSO(object):
 
         for i in range(conf.maxIterations):
             self.doIteration()
-            print self.globalBestSolution.penalty
+            #print "------------------------"
+            #for p in self.particles:
+                #print "Act:", p.actualSolution.penalty
+                #print "best:", p.bestSolution.penalty
+                #print "BEST:", self.globalBestSolution.penalty
+                #print "------------------------"
+            if self.globalBestSolution.penalty < conf.minPenalty:
+                break
 
+        self.timetableFactory.echo(self.globalBestSolution)
         return self.globalBestSolution
 
     def genParticles(self):

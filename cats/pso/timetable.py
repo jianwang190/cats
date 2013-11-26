@@ -70,3 +70,12 @@ class TimetableFactory(object):
 
         return day, period, room
 
+    def echo(self, timetable):
+        """Printe timetable"""
+
+        for day in range(len(timetable.periods)):
+            for period in range(len(timetable.periods[day])):
+                for room in timetable.periods[day][period]:
+                    course = timetable.periods[day][period][room]
+                    if course != None:
+                        print day * self.data.periodsPerDay + period , course.id, room
