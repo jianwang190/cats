@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \selectlanguage{polish}
+\usepackage{amsmath}
 \usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
 
 \title{Tytuł naszej pracy inżynierskiej}
@@ -21,6 +22,7 @@
 \chapter{Wstęp}
 
 \section{Kontekst zagadnienia}
+\author{Katarzyna Śmietanka}
 \par Problem układania planu zajęć dotyczy wielu instytucji głównie związanych ze szkolnictwem, od szkoły podstawowej aż to szkół wyższych. Zadanie sprowadza się do przygotowania graficznego rozkładu zajęć np. dla poszczególnych klas - uczniów uczęszczających do danej klasy, planu zajęć dla każdego z uczących nauczycieli oraz rozkładu zajęć dla każdej sali. Układanie planów zajęć nawet dla niewielkiej szkoły wymaga dużego wysiłku oraz nakładu czasowego. Problem staje jeszcze bardziej skomplikowany dla szkół ponadgimnazjalnych, do których uczęszcza więcej uczniów, tym samym jest więcej klas, nauczycieli oraz realizowanych przedmiotów. Ponadto zagadnienie ułożenia planu zajęć dla szkół wyższych, w których studenci mogą sami wybierać przedmioty w znacznym stopniu komplikuje te zagadnienie. Wynika to z tego, że aby dany plan zajęć był właściwy musi on spełniać podstawowe kryteria: dwa różne zajęcia na które jest zapisany minimum jeden student nie mogą się odbywać w tym samym czasie, dwa różne zajęcia w tym samym czasie nie mogą odbywać się w tej samej sali oraz nauczyciel w danym momencie może nauczać tylko jednego przedmiotu. Rozszerzeń tych ograniczeń jest wiele, a uwzględnienie każdego z nich, często konieczne do stworzenia realnego planu zajęć jest niezbędne. Wprowadzanie kolejnych ograniczeń znacznie utrudnia problem, który i tak jest stosunkowo skomplikowany.
 \par Pomysł tematu pracy inżynierskiej wyniknął z przyglądania się na przestrzeni naszej edukacji planom zajęć które często odbiegały od idealnego według naszej opini. Plan zajęć często zawierał sporo przerw między obowiązkowymi zajęciami, zajęcia zaczynały się bardzo wcześnie lub kończyły bardzo późno, co w znacznym stopniu utrudniało powrót do domu bądź też dopasowanie innych poza uczelnianych zajęć do naszego planu.
 \par Problem ułożenia planu zajęć podejmowany był w wielu pracach naukowych również na Politechnice Gdańskiej, co świadczy o tym że ułożenie bezkonfliktowego planu zajęć jest problemem stosunkowo trudnym do rozwiązania a zarazem bardzo ciekawym, ponieważ w bezpośredni sposób dotyczy każdej uczącej się osoby. Dlatego też na przestrzeni wielu lat powstało wiele różnych podejść do tego problemu od algorytmów klasycznych poprzez różnego typu algorytmy sztucznej inteligencji.
@@ -73,6 +75,33 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 \subsection{Fazy algorytmu}
 \subsubsection{Faza inicjalizacji}
 \par W tej fazie tworzony jest wykonywalny plan zajęć czyli nienaruszający ograniczeń twardych ${H_{1} - H_{4}}$. W każdej iteracji wybierane jest jedno z zajęć z kursu i przypisywane do odpowiedniego okresu i pomieszczenia. Całość przydzielania odbywa się na podstawie dwóch heurystyk pierwsza z nich determinuje wybor kursu, który zostanie przypisany do planu zajęć oraz druga zaś określa parę okres-sala.
+\par Dla każdego częściowo wykonywalnego planu zajęć ${P}$ (czyli takiego, do którego zostało przydzielone już część zajęć nie naruszając ograniczeń twardych) próbujemy wybrać jedne z zajęć z kursu, który posiada jeszcze nieprzydzielone zajęcia zgodnie z heurystyką ,,Wybór kursu''. Dzięki tej heurystyce uzyskujemy pierwszeństwo w przydzielaniu kursów mających małą liczbę dostępnych okresów do których może być przypisany oraz kursów z dużą liczbą nieprzypisanych zajęć do planu. Druga z heurystyk ,,Wybór okresu'' dotyczy wyboru okresu, do którego zostaną przypisane dane zajęcia. Celem jest wybór takiego okresu, który ma najmniejsze prawdobodobieństwo bycia wybranym w kolejnych krokach, dla kolejnych nieskończonych kursów.
+
+\par \textbf{Oznaczenia}
+\begin{enumerate}
+\item $ lo_{i}(P)$ - liczba okresów do których mogą być przydzielone zajęcia z kursu $c_{i}$ dla planu ${P}$
+\item $ lp_{i}(P)$ - liczba dostępnych par: okres- sala dla kursu ${c_{i}}$ dla planu ${P}$
+\item $ lnz_{i}(P)$ - liczba nieprzydzielonych zajęć dla kursu ${c_{i}}$ dla planu ${P}$
+\item $ lnk_{i, j}(P)$ - liczba zajęć z nieskończonych kursów, których nie można przydzielić do okresu ${t_{j}}$ po przydzieleniu jednego z zajęć z kursu ${c_{i}}$ do okresu ${t_{i}}$
+\item $kom(i, j, k)$ - całkowita kara związana z ograniczeniami miękkimi po wykonalnym wstawieniu zajęć (tzn. nie naruszając ograniczeń $H1 - H4$ ) z kursu $c_{i}$ do okresu ${t_{j}}$ przydzieleniu sali ${r_{k}}$
+\end{enumerate}
+\par \textbf{Heurystyki}
+
+\begin{enumerate}
+  \item Wybór kursu 
+  \begin{enumerate}
+    \item Wybieramy kurs z najmniejszą wartością współczynnika:\\
+     $ w_a(c_{i}) = \frac{lo_{i}(P)}{\sqrt{lnz_{i}(P)}}$
+    \item Jeżeli istnieje więcej niż jeden kurs z tą samą wartością współczynnika ${w_a}$ wybieramy kurs z najmniejszym współczynnikiem \\ $ w_b(c_{i}) = lp_{i}(P) * \sqrt{lnz_{i}(P)} $
+    \item Jeżeli istnieje więcej niż jeden kurs z tą samą wartością współczynnika $w_b$ to wybieramy kurs ${c_{i}}$ z maksymalną liczbą kursów współdzielonych kursów z tym kursem (tzn. mającym najwięcej konfliktów ze względu na studentów uczęszczających na ten kurs oraz uczących nauczycieli).
+  \end{enumerate}
+  \item Wybór okresu \\
+  Dla każdej dostępnej pary (okres - sala) wybieramy parę z najmiejszą wartością funkcji $g(j, k) = K_{1} * lnk_{i,j}(P) + K_{2} * kom(i, j, k)$ \\
+  $K_{1} = 1.0 $ - współczynnik związany z ograniczeniami twardymi \\
+  $K_{2} = 0.5 $ - współczynnik związany z ograniczeniami miękkimi
+\end{enumerate}
+
+
 
 \subsubsection{Faza intensyfikacji}
 \par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączeń w token ring tych dwóch różnych struktur sąsiedztwa.
