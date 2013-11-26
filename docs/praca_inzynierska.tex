@@ -29,7 +29,7 @@
 \par Problem układania graficznych rozkładów nie tylko związany jest ze szkolnictwem, ale również dotyczy konieczności ułożenia rozkładów jazdy komunikacji miejskiej \cite{com}
 , planu zajęć dla pracowników \cite{worker} oraz terminarza zawodów sportowych \cite{sport}.
 \section{Cel pracy}
-\par Celem pracy jest zapoznanie się z problemem układania planów zajęć oraz przegląd różnych sposobów rozwiązania tego problemu. Jak również opracowanie, implementacja oraz porównanie działania wybranych przez nas algorytmów do układania planów zajęć : Algorytm Symulowanego wyżarzania (Particle Swarm Optimization), Algorytm Genetyczny (Genetic Algorithm) oraz Adaptacyjny Algotym Tabu (Adaptive Tabu Search). Stworzone algorytmy mają układać plan zajęć dla wyspecyfikowanego problemu, uwzględniając ograniczenia miękkie oraz ograniczenia twarde. 
+\par Celem pracy jest zapoznanie się z problemem układania planów zajęć oraz przegląd różnych sposobów rozwiązania tego problemu. Jak również opracowanie, implementacja oraz porównanie działania wybranych przez nas algorytmów do układania planów zajęć : Algorytm Roju (Particle Swarm Optimization), Algorytm Genetyczny (Genetic Algorithm) oraz Adaptacyjny Algotym Tabu (Adaptive Tabu Search). Stworzone algorytmy mają układać plan zajęć dla wyspecyfikowanego problemu, uwzględniając ograniczenia miękkie oraz ograniczenia twarde. 
 \par Dodatkowo podjęliśmy się implementacji systemu w którym użytkownik będzie miał możliwość wygenerowania planu zajęć wybranym przez siebie algorytmem oraz wyświetlenia stworzonego planu zajęć w Google Calendar.
 \par W ramach projektu planowane jest również dostosowanie realnych danych ze szkoly ponadgimnazjalnej do zaimplementowanych przez nas algorytmów.
 \section{Zakres pracy}
@@ -107,7 +107,23 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 \par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączeń w token ring tych dwóch różnych struktur sąsiedztwa.
 \subsubsection{Faza dywersyfikacji}
 
-\section{Particle Swarm Optimization}
+\section{Particle Swarm Optimization (PSO)}
+\subsection{Ogólny opis algorytmu}
+\par Opis zaimplementowanego algorytmu został zaczerpnięty z pracy ,,Timetable Scheduling Using Particle Swarm Optimization'' \cite{pso}
+\par PSO jest metodą bazującą na zachowaniu społeczeństwa. Polega na przeszukiwaniu przestrzeni rozwiązań przy pomocy populacji (roju) rozwiązań kandydujących (nazywanych cząsteczkami). W każdej iteracji każde rozwiązanie kandydujące (cząsteczka) jest aktualizowane na podstawie dwóch najlepszych wartości. Pierwszą z nich jest poprzednia najlepsza pozycja k-tej cząsteczki w i-tej iteracji ${P}^{i}_{k}$. Drugą zaś jest globalna najlepsza pozycja spośród wszystkich cząsteczek ${G}^{i}$ zanotowana pomiędzy pierwszą a i-tą iteracją. Każda cząsteczka jest równoważna z kandydatem na rozwiązanie problemu. Cząsteczka prousza się zgodnie ze swoją prędkością, która bazuje na doświadczeniu owej cząsteczki oraz doświadczeniu innych cząsteczek. PSO zazwyczaj osiąga rozwiązanie bliskie optymalnemu w mniejszej liczbie iteracji niż algorytmy ewolucyjne czy genetyczne.  \subsection{Działaie algorytmu}
+\subsubsection{Orginalna wersja}
+\par Orginalne PSO można opisać w trzech krokach:
+
+\begin{description}
+  \item[Krok 1] \hfill \\
+  The first item
+  \item[Krok 2] \hfill \\
+  The second item
+  \item[Krok 3] \hfill \\
+  The third etc \ldots
+\end{description}
+
+\subsubsection{PSO w problemie układania planu}
 \section{Genetic Algorithm}
 \chapter{Projekt systemu}
 \chapter{Testy}
@@ -120,6 +136,7 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 \bibitem{com} U. Brannlund, P. ). Lindberg, A. Nou, J. E. Nilsson. Timetabling using lagrangian relaxation Transportation Science 32, 358-369, 1998
 \bibitem{sport} J. A. M. Schreuder. Constructing timetables for sport competitions. \emph{Mathematical Programming Study 13}, 58-67, 1980
 \bibitem{worker} M. Chiarandini, A. Schaerf, F. Tiozzo. Solving employee timetabling problems with flexible workload using tabu search. \emph{Proceedings of the 3rd PATAT Conference}, 2013
+\bibitem{pso} Autor1, Autor1. Tytuł.  \emph{European Journal of Operational Research}, 200(1):235-244, 2010.
 \end{thebibliography}
 
 \end{document}

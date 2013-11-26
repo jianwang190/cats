@@ -18,6 +18,14 @@ class Particle(object):
     def produceNewSolution(self, globalBest):
         """Produce new solution"""
 
+        #self.actualSolution = deepcopy(globalBest)
+        #for x in range(10):
+            #self.randChange(self.bestSolution)
+        #for x in range(100):
+            #self.randChange(globalBest)
+
+        #self.randSelfChange()
+
         self.randSelfChange()
         self.randChange(self.bestSolution)
         self.randChange(globalBest)
@@ -28,7 +36,6 @@ class Particle(object):
         slot2 = self.timetableFactory.getRandomSlot()
 
         self.swapCourses(slot1, slot2)
-
 
     def randChange(self, timetable):
         """Change randomly one courseId from actualSolution and timetable"""

@@ -1,2 +1,3 @@
-populationSize = 100
-maxIterations = 10000
+populationSize = 10
+maxIterations = 1000
+minPenalty = 10
