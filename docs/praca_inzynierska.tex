@@ -10,7 +10,7 @@
 \usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
 \usepackage{algorithm,algorithmic}
 \title{Tytuł naszej pracy inżynierskiej}
-\author{Katarzyna Śmietanka}
+
 \begin{document}
 
 %
@@ -23,7 +23,7 @@
 \chapter{Wstęp}
 
 \section{Kontekst zagadnienia}
-
+\author{Katarzyna Śmietanka}
 \par Problem układania planu zajęć dotyczy wielu instytucji głównie związanych ze szkolnictwem, od szkoły podstawowej aż to szkół wyższych. Zadanie sprowadza się do przygotowania graficznego rozkładu zajęć np. dla poszczególnych klas - uczniów uczęszczających do danej klasy, planu zajęć dla każdego z uczących nauczycieli oraz rozkładu zajęć dla każdej sali. Układanie planów zajęć nawet dla niewielkiej szkoły wymaga dużego wysiłku oraz nakładu czasowego. Problem staje jeszcze bardziej skomplikowany dla szkół ponadgimnazjalnych, do których uczęszcza więcej uczniów, tym samym jest więcej klas, nauczycieli oraz realizowanych przedmiotów. Ponadto zagadnienie ułożenia planu zajęć dla szkół wyższych, w których studenci mogą sami wybierać przedmioty w znacznym stopniu komplikuje te zagadnienie. Wynika to z tego, że aby dany plan zajęć był właściwy musi on spełniać podstawowe kryteria: dwa różne zajęcia na które jest zapisany minimum jeden student nie mogą się odbywać w tym samym czasie, dwa różne zajęcia w tym samym czasie nie mogą odbywać się w tej samej sali oraz nauczyciel w danym momencie może nauczać tylko jednego przedmiotu. Rozszerzeń tych ograniczeń jest wiele, a uwzględnienie każdego z nich, często konieczne do stworzenia realnego planu zajęć jest niezbędne. Wprowadzanie kolejnych ograniczeń znacznie utrudnia problem, który i tak jest stosunkowo skomplikowany.
 \par Pomysł tematu pracy inżynierskiej wyniknął z przyglądania się na przestrzeni naszej edukacji planom zajęć które często odbiegały od idealnego według naszej opini. Plan zajęć często zawierał sporo przerw między obowiązkowymi zajęciami, zajęcia zaczynały się bardzo wcześnie lub kończyły bardzo późno, co w znacznym stopniu utrudniało powrót do domu bądź też dopasowanie innych poza uczelnianych zajęć do naszego planu.
 \par Problem ułożenia planu zajęć podejmowany był w wielu pracach naukowych również na Politechnice Gdańskiej, co świadczy o tym że ułożenie bezkonfliktowego planu zajęć jest problemem stosunkowo trudnym do rozwiązania a zarazem bardzo ciekawym, ponieważ w bezpośredni sposób dotyczy każdej uczącej się osoby. Dlatego też na przestrzeni wielu lat powstało wiele różnych podejść do tego problemu od algorytmów klasycznych poprzez różnego typu algorytmy sztucznej inteligencji.
@@ -86,6 +86,20 @@ Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomi
 
 \subsection{Matematyczne sformułowanie problemu} \cite{tabu}
 \par Na problem składa się ${n}$ kursów ${C = \{c_{1}, c_{2},...,c_{n}\}}$ które powinny być przydzielone do ${p}$ różnych okresów ${T = \{t_{1}, t_{2},...,t_{p}\}}$ oraz ${m}$ pomieszczeń w których mogą odbywać się zajęcia ${R = \{r_{1}, r_{2},...,r_{m}\}}$. Okres jest to para składająca się z dnia i przedziału czasowego (${d}$ - liczba dni a ${h}$ - liczba dziennych przedziałów czasowych, czyli ${p = d * h}$). Każdy z kursów składa się z ${n}$ zajęć ${L = \{l_{1},l_{2},...,l_{n}\}}$. Kursy wchodzą w skład ${s}$ programów nauczania ${CR = \{cr_{1}, cr_{2}, ..., cr_{s}\}}$, na program nauczania składają się kursy, na które uczęszczają ci sami studenci. 
+\subsection{Dane wejściowe}
+\par Dane testowe są plikami tekstowymi, w których zawarte są ogólne informacje takie jak: liczba kursów, liczba dostępnych pomieszczeń, liczba dni na które mają być rozłożone zajęcia, liczba programów nauczania oraz ograniczenia precyzujące w jakich terminach nie mogą odbywać się zajęcia z danego kursu. Kolejno sprecyzowane są kursy, pomieszczenia, programy nauczania oraz ograniczenia, w poniższym formacie:
+\begin{verbatim}
+Kursy: <Id Kurs> <Nauczyciel> <Liczba zajęć> <Minimalna liczba dni> <liczba studentów>
+Sale: <Id Sala> <Pojemność sali>
+Program nauczania: <Id Program Nauczania> <Liczba Kursów> <Ids Kursy>
+Ograniczenia: <Id Kurs> <Dzień> <Okres>
+\end{verbatim}
+\begin{enumerate}
+\item Każdy z kursów z danych wejściowych zawiera unikalny identyfikator, liczbę zajęć, która musi się odbyć w ramach tego kursu, minimalną liczbę dni oraz liczbę studentów, którzy uczęszczają na te zajęcia. 
+\item Sale zawierają unikalny identyfikator oraz informację o maksymalnej liczbie studentów, która się zmieści w sali.
+\item Na program nauczania składa się określona liczba kursów, których identyfikatory zawarte są w opisie programu nauczania $<Ids\ Kursy>$.
+\item W ramach ograniczeń umieszczona jest informacja o kursie $<Id\ Kurs>$, który nie może odbyć się w danym dniu w danym okresie.
+\end{enumerate}
 
 \chapter{Opis zrealizowanych algorytmów}
 \section{Adaptive tabu search}
@@ -159,8 +173,6 @@ Możliwe przypadki zamian
 \item Zamiana pomiędzy dwoma różnymi zajęciami należącymi do dwóch różnych kursów i okresów
 \item Przypisanie zajęcia ${x_{i,j}}$ do wolnej pozycji - do okresu dla którego zajęcie ${x_{i,j}}$ nie wchodzi w konflikt z pozostałymi zajęciami w tym okresie (tzn. nie narusza ${H1-H4}$ )
 \end{enumerate}
-\textbf{Szczegóły implementacyjne}
-
 
 \item \textbf{Zaawansowana struktura sąsiedztwa} 
 \subparagraph{}
@@ -185,6 +197,7 @@ Tak określony ruch można traktować jako rozszerzoną wersję podstawowej stru
 \par W momencie zakończenia fazy intensyfikacji, poszczególne zajęcia ustawiane są w kolejności malejącej ze względu na wysokość funkcji oceny. Z puli $q$ pierwszych zajęć wybierane jest $n$ zajęć, gdzie zajęcie będące na $k$ miejscu w rankingu wybierane zgodnie z rozkładem prawdopodobieństwa $P(k) = k^{-4.0}$. Następnie dokonywane jest $n$ losowych zamian pomiędzy zajęciami (sprecyzowanych w fazie intensyfikacji), ale tylko takich które zawierają przynajmniej jedno z wybranych z rankingu zajęć. \\
 \textbf{Szczegóły implementacyjne}
 \section{Particle Swarm Optimization (PSO)}
+\author{Paweł Jastrzębski}
 \subsection{Ogólny opis algorytmu}
 \par Opis zaimplementowanego algorytmu został zaczerpnięty z pracy ,,Timetable Scheduling Using Particle Swarm Optimization'' \cite{pso}
 \par PSO jest metodą bazującą na zachowaniu społeczeństwa. Polega na przeszukiwaniu przestrzeni rozwiązań przy pomocy populacji (roju) rozwiązań kandydujących (nazywanych cząsteczkami). W każdej iteracji każde rozwiązanie kandydujące (cząsteczka) jest aktualizowane na podstawie dwóch najlepszych wartości. Pierwszą z nich jest poprzednia najlepsza pozycja k-tej cząsteczki w i-tej iteracji ${P}^{i}_{k}$. Drugą zaś jest globalna najlepsza pozycja spośród wszystkich cząsteczek ${G}^{i}$ zanotowana pomiędzy pierwszą a i-tą iteracją. Każda cząsteczka jest równoważna z kandydatem na rozwiązanie problemu. Cząsteczka prousza się zgodnie ze swoją prędkością, która bazuje na doświadczeniu owej cząsteczki oraz doświadczeniu innych cząsteczek. PSO zazwyczaj osiąga rozwiązanie bliskie optymalnemu w mniejszej liczbie iteracji niż algorytmy ewolucyjne czy genetyczne.  \subsection{Działaie algorytmu}
@@ -207,6 +220,7 @@ gdzie $M$ to rozmiar cząsteczki, $-V_{max} \le V^{i+1}_{k} \le V_{max}$ ($V_{ma
 
 \subsubsection{PSO w problemie układania planu}
 \section{Genetic Algorithm}
+\author{Filip Czajkowski}
 \subsection{Ogólny opis algorytmu}
 \par Algorytm genetyczny to rodzaj algorytmu przeszukującego przestrzeń alternatywnych rozwiązań problemu w celu wyszukania rozwiązań najlepszych. Obecnie zalicza się go do grupy algorytmów ewolucyjnych.
 \par Algorytmy genetyczne zajmują bardzo ważne miejsce w dziedzinie projektowania i analizy algorytmów. Doskonale sprawdzają się w sytuacji, gdy problem, z którym przychodzi nam się zmierzyć, jest nie do rozwiązania w sposób klasyczny w sensownym czasie. Pozwalają znaleźć sub-optymalne rozwiązanie problemów, których dziedziny nie są łatwe do wyznaczenia. Są powszechnie stosowane tam, gdzie do uzyskania rozwiązania korzystamy z zagadnień sztucznej inteligencji oraz tam, gdzie uzyskanie rozwiązania jest bardzo złożonym problem, natomiast jego ocena jest łatwa i błyskawiczna.
