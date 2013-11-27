@@ -1,0 +1,102 @@
+\section{Adaptive tabu search}
+\author{Tomasz Dziopa, Katarzyna Śmietanka}
+\subsection{Specyficzne sformułowanie problemu}
+\par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p \times m}$ gdzie ${x_{i,j}}$ który definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
+\subsection{Ogólny opis algorytmu}
+\par Opis zaimplementowanego przez nas algorytmu został zaczerpnięty z pracy ,,Adaptive TabuSearch for Course Timetabling'' \cite{tabu}
+\par Na całość algorytmu składają się trzy fazy: faza inicjalizacji podczas której tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki, faza intensyfikacji, która jest właściwą fazą algorytmu Adaptive Tabu Search, której celem jest optymalizacja funkcji oceny ograniczeń miękkich. Końcowa faza - faza dywersyfikacji gdzie dokonywana jest redukcja naruszeń miękkich, tak aby nie łamać twardych ograniczeń. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
+
+\subsection{Tabu Search}
+\par Algorytm Tabu Search został zaprezentowany w 1986 roku przez Freda W. Glovera \cite{glover}. Jest to metaheurystyka, która opiera się na obserwacji, że proces przeszukiwania przestrzeni rozwiązań w poszukiwaniu najlepszego u ludzi i zwierząt opiera się na pamięci krótko- i długoterminowej. 
+\par Pamięć krótkoterminowa realizowana jest w postaci listy ruchów zabronionych. W każdej iteracji przeglądamy strukturę sąsiedztwa w poszukiwaniu najlepszego rozwiązania. Sprawdzamy, czy ruch prowadzący do uzyskania najlepszego sąsiada nie znajduje się na liście ruchów zabronionych; jeżeli tak - rozważamy kolejnego najlepszego sąsiada, w przeciwnym wypadku - aktualizujemy rozwiązanie i dodajemy ruch prowadzący do niego jako ruch zabroniony.
+
+\begin{algorithm}[H]
+    \caption{Algorytm Tabu Search}
+    \begin{algorithmic}
+    \STATE{best = current}
+    \WHILE{\emph{nie jest spełniony warunek stopu}}
+    \STATE{sąsiedztwo = neighborhood(current)}
+    \FOR{$i=0$ \TO len(sąsiedztwo)}
+    	\IF{$ruch(current, sąsiedztwo[i]) \not \in lista\_tabu$}
+    	\STATE $lista\_tabu = lista\_tabu \cup ruch(current, sąsiedztwo[i])$
+    	\STATE current = sąsiedztwo[i]
+    	\ENDIF
+    \ENDFOR
+    \ENDWHILE
+    \end{algorithmic}
+    \end{algorithm}
+
+\subsection{Fazy algorytmu}
+\subsubsection{Faza inicjalizacji}
+\par W tej fazie tworzony jest wykonywalny plan zajęć czyli nienaruszający ograniczeń twardych ${H_{1} - H_{4}}$. W każdej iteracji wybierane jest jedno z zajęć z kursu i przypisywane do odpowiedniego okresu i pomieszczenia. Całość przydzielania odbywa się na podstawie dwóch heurystyk pierwsza z nich determinuje wybor kursu, który zostanie przypisany do planu zajęć oraz druga zaś określa parę okres-sala.
+\par Dla każdego częściowo wykonywalnego planu zajęć ${P}$ (czyli takiego, do którego zostało przydzielone już część zajęć nie naruszając ograniczeń twardych) próbujemy wybrać jedne z zajęć z kursu, który posiada jeszcze nieprzydzielone zajęcia zgodnie z heurystyką ,,Wybór kursu''. Dzięki tej heurystyce uzyskujemy pierwszeństwo w przydzielaniu kursów mających małą liczbę dostępnych okresów do których może być przypisany oraz kursów z dużą liczbą nieprzypisanych zajęć do planu. Druga z heurystyk ,,Wybór okresu'' dotyczy wyboru okresu, do którego zostaną przypisane dane zajęcia. Celem jest wybór takiego okresu, który ma najmniejsze prawdobodobieństwo bycia wybranym w kolejnych krokach, dla kolejnych nieskończonych kursów.
+
+\par \textbf{Oznaczenia}
+\begin{enumerate}
+\item $ lo_{i}(P)$ - liczba okresów do których mogą być przydzielone zajęcia z kursu $c_{i}$ dla planu ${P}$
+\item $ lp_{i}(P)$ - liczba dostępnych par: okres- sala dla kursu ${c_{i}}$ dla planu ${P}$
+\item $ lnz_{i}(P)$ - liczba nieprzydzielonych zajęć dla kursu ${c_{i}}$ dla planu ${P}$
+\item $ lnk_{i, j}(P)$ - liczba zajęć z nieskończonych kursów, których nie można przydzielić do okresu ${t_{j}}$ po przydzieleniu jednego z zajęć z kursu ${c_{i}}$ do okresu ${t_{i}}$
+\item $kom(i, j, k)$ - całkowita kara związana z ograniczeniami miękkimi po wykonalnym wstawieniu zajęć (tzn. nie naruszając ograniczeń $H1 - H4$ ) z kursu $c_{i}$ do okresu ${t_{j}}$ przydzieleniu sali ${r_{k}}$
+\end{enumerate}
+\par \textbf{Heurystyki}
+
+\begin{enumerate}
+  \item Wybór kursu 
+  \begin{enumerate}
+    \item Wybieramy kurs z najmniejszą wartością współczynnika:\\
+     $ w_a(c_{i}) = \frac{lo_{i}(P)}{\sqrt{lnz_{i}(P)}}$
+    \item Jeżeli istnieje więcej niż jeden kurs z tą samą wartością współczynnika ${w_a}$ wybieramy kurs z najmniejszym współczynnikiem \\ $ w_b(c_{i}) = lp_{i}(P) * \sqrt{lnz_{i}(P)} $
+    \item Jeżeli istnieje więcej niż jeden kurs z tą samą wartością współczynnika $w_b$ to wybieramy kurs ${c_{i}}$ z maksymalną liczbą kursów współdzielonych kursów z tym kursem (tzn. mającym najwięcej konfliktów ze względu na studentów uczęszczających na ten kurs oraz uczących nauczycieli).
+  \end{enumerate}
+  \item Wybór okresu \\
+  Dla każdej dostępnej pary (okres - sala) wybieramy parę z najmiejszą wartością funkcji $g(j, k) = K_{1} * lnk_{i,j}(P) + K_{2} * kom(i, j, k)$ \\
+  $K_{1} = 1.0 $ - współczynnik związany z ograniczeniami twardymi \\
+  $K_{2} = 0.5 $ - współczynnik związany z ograniczeniami miękkimi
+\end{enumerate}
+
+
+
+\subsubsection{Faza intensyfikacji}
+\par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączenia zamian w obrębie tych dwóch struktur, które przeprowadzane są w cyklu token - ring. Celem tej fazy jest ograniczenie funkcji oceny ograniczeń miękkich, nie łamiąc żadnych ograniczeń twardych. Przestrzeń wykonywanych zamian dla poszczególnych zajęć jest ograniczona tylko do wykonywalnych zamian czyli takich, które po wykonaniu nie naruszają ${H1-H4}$.
+\paragraph{Struktury sasiedztwa}
+\begin{enumerate}
+\item \textbf{Podstawowa struktura sąsiedztwa} \\
+Jest to struktura, która zawiera wszystkie możliwe zamiany dla pary dwóch zajęć należących do różnych kursów i nie należących do tego samego okresu w planie zajęć. \\
+Zamiana jest przypisaniem zajęć $x_{i_{1},j_{1}}$ w miejsce zajęć ${x_{i_{2}, j_{2}}}$ oraz zajęć ${x_{i_{2}, j_{2}}}$ w miejsce zajęć $x_{i_{1},j_{1}}$ \\
+Możliwe przypadki zamian
+\begin{enumerate}
+\item Zamiana pomiędzy dwoma różnymi zajęciami należącymi do dwóch różnych kursów i okresów
+\item Przypisanie zajęcia ${x_{i,j}}$ do wolnej pozycji - do okresu dla którego zajęcie ${x_{i,j}}$ nie wchodzi w konflikt z pozostałymi zajęciami w tym okresie (tzn. nie narusza ${H1-H4}$ )
+\end{enumerate}
+
+\item \textbf{Zaawansowana struktura sąsiedztwa} 
+\subparagraph{}
+Jednym z klasycznych podejść do problemu układania planu zajęć jest podejście grafowe instancję problemu możemy przedstawić jako graf $G(V, E)$, gdzie wierzchołki grafu reprezentują kursy, a krawędzie reprezentują konflikty między kursami, który należy pokolorować na jak najmniejszą liczbę kolorów. 
+\subparagraph{}Łańcuchy Kempe zostały zaproponowane jako narzędzie matematyczne, które miało służyć do udowodnienia twierdzenia o czterech kolorach. Mając dany graf $G$ i jego pokolorowanie na co najmniej dwa kolory, łańcuchy Kempe możemy zdefiniować jako maksymalne spójne podgrafy $G$, w których wszystkie wierzchołki mają nadany kolor $a$ lub $b$.
+\subparagraph{}W naszym problemie łańcuchami Kempe będą maksymalne spójne podgrafy $G$, które zostały przypisane do okresu $i$ lub $j$. Dla łańcuchów $K_1$ i $K_2$, które zawierają maksymalne podgrafy kursów przypisanych do odpowiednio $i$ i $j$, gdzie $t_i$ i $t_j$ oznaczają wszystkie kursy przypasowane do $i$ i $j$, tworzymy nowe przypasowania:
+\[ t_i' = (t_i \setminus  (K_1 \cup K_2)) \cup (t_j \cap (K_1 \cup K_2)) \]
+\[ t_j' = (t_j \setminus  (K_1 \cup K_2)) \cup (t_i \cap (K_1 \cup K_2)) \]
+
+Specjalnym przypadkiem jest, gdy jeden z łańcuchów jest pusty, wtedy:
+\[ t_i' = (t_i \setminus K) \cup (t_j \cap K)\]
+\[ t_j' = (t_j \setminus K) \cup (t_i \cap K)\]
+
+Tak określony ruch można traktować jako rozszerzoną wersję podstawowej struktury sąsiedztwa, gdzie zamieniamy po kilka przypasowań na raz. Przy zamianie musimy uważać, aby nie wykonywać ruchów, które powodują przypasowanie większej liczby kursów, niż jest dostępnych sal. 
+
+%- room assignment
+\par Po dokonaniu zamian w planie zajęć za pomocą łańcuchów Kempe następuje przypasowanie odpowiedniej sali do poszczególnych zajęć z danego okresu. Sale są przyporządkowywane do kursów metodą zachłanną, w każdym kroku wybieramy kurs, który nie ma przypisanej sali i jest kursem na który uczęszcza najwięcej studentów. Przypisujemy do kursu największą dostępną salę, sala zostaje oznaczona jako niedostępna.
+
+\end{enumerate}
+\paragraph{Tabu lista}
+służy do przechowywania informacji o zakazanych ruchach, które nie mogą być wykonane przez określoną w tabu tenure dla kursu $c_{i}$ liczbę iteracji. \\
+%-  dokłady opis tabu list
+Tabu tenure $t(c_{i})$ obliczane jest na podstawie obecnie uzyskanego rozwiązania oraz częstotliwości przenoszenia zajęć z kursy $c_{i}$ oznaczonej przez $freq(c_{i})$.
+Tabu tenure wyrażone jest poniższym wzorem: \\ 
+$t(c_{i}) = funkcja\ kary\ dla\ obecnego\ rozwiązania + \alpha * freq(c_{i})$ \\ \\
+gdzie ${\alpha = \frac{liczba\ konfliktujących\ kursów\ z\ c_{i}}{liczba\ kursów}}$ wobec tego wartość parametru ${\alpha \in [0, 1]}$ \\
+gdyż ${liczba\ kursów \geq liczba\ konfliktujących\ kursów\ z\ c_{i}} $
+
+\subsubsection{Faza dywersyfikacji}
+\par Jeżeli rozwiązanie nie może zostać poprawione za pomocą algorytmu tabu search uruchamiana jest trzecia faza - faza dywersyfikacji. Głównym jej elementem jest losowy operator zaburzeń mający na celu zniszczenie osiągniętego lokalnego minimum. Początkowo identyfikowane są zajęcia z wysoką karą wynikającą z funkcji oceny  i losowo wybierane są zajęcia dla których zostaną dokonane zamiany sprecyzowane w poprzedniej fazie.
+\par W momencie zakończenia fazy intensyfikacji, poszczególne zajęcia ustawiane są w kolejności malejącej ze względu na wysokość funkcji oceny. Z puli $q$ pierwszych zajęć wybierane jest $n$ zajęć, gdzie zajęcie będące na $k$ miejscu w rankingu wybierane zgodnie z rozkładem prawdopodobieństwa $P(k) = k^{-4.0}$. Następnie dokonywane jest $n$ losowych zamian pomiędzy zajęciami (sprecyzowanych w fazie intensyfikacji), ale tylko takich które zawierają przynajmniej jedno z wybranych z rankingu zajęć. \\

@@ -46,3 +46,8 @@ docs/*.log
 docs/*.toc
 docs/*.pdf
 
+docs/chapters/*.log
+docs/chapters/*.toc
+docs/chapters/*.pdf
+
+
