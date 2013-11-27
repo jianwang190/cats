@@ -1,4 +1,4 @@
-\section{Adaptive tabu search}
+\section{Adaptive tabu search\protect\\Katarzyna Śmietanka, Tomasz Dziopa}
 \author{Tomasz Dziopa, Katarzyna Śmietanka}
 \subsection{Specyficzne sformułowanie problemu}
 \par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p \times m}$ gdzie ${x_{i,j}}$ który definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
@@ -51,8 +51,8 @@
   \end{enumerate}
   \item Wybór okresu \\
   Dla każdej dostępnej pary (okres - sala) wybieramy parę z najmiejszą wartością funkcji $g(j, k) = K_{1} * lnk_{i,j}(P) + K_{2} * kom(i, j, k)$ \\
-  $K_{1} = 1.0 $ - współczynnik związany z ograniczeniami twardymi \\
-  $K_{2} = 0.5 $ - współczynnik związany z ograniczeniami miękkimi
+  $k_{1} = 1.0 $ - współczynnik związany z ograniczeniami twardymi \\
+  $k_{2} = 0.5 $ - współczynnik związany z ograniczeniami miękkimi
 \end{enumerate}
 
 
@@ -82,21 +82,28 @@ Specjalnym przypadkiem jest, gdy jeden z łańcuchów jest pusty, wtedy:
 \[ t_i' = (t_i \setminus K) \cup (t_j \cap K)\]
 \[ t_j' = (t_j \setminus K) \cup (t_i \cap K)\]
 
-Tak określony ruch można traktować jako rozszerzoną wersję podstawowej struktury sąsiedztwa, gdzie zamieniamy po kilka przypasowań na raz. Przy zamianie musimy uważać, aby nie wykonywać ruchów, które powodują przypasowanie większej liczby kursów, niż jest dostępnych sal. 
+\subparagraph{}Tak określony ruch można traktować jako rozszerzoną wersję podstawowej struktury sąsiedztwa, gdzie zamieniamy po kilka przypasowań na raz. Przy zamianie musimy uważać, aby nie wykonywać ruchów, które powodują przypasowanie większej liczby kursów, niż jest dostępnych sal. Dodatkowo nakładamy ograniczenia na liczbę kursów biorących udział w zamianie, tj. $|K_1|+ |K_2| \geq 3 $
 
 %- room assignment
 \par Po dokonaniu zamian w planie zajęć za pomocą łańcuchów Kempe następuje przypasowanie odpowiedniej sali do poszczególnych zajęć z danego okresu. Sale są przyporządkowywane do kursów metodą zachłanną, w każdym kroku wybieramy kurs, który nie ma przypisanej sali i jest kursem na który uczęszcza najwięcej studentów. Przypisujemy do kursu największą dostępną salę, sala zostaje oznaczona jako niedostępna.
 
 \end{enumerate}
 \paragraph{Tabu lista}
-służy do przechowywania informacji o zakazanych ruchach, które nie mogą być wykonane przez określoną w tabu tenure dla kursu $c_{i}$ liczbę iteracji. \\
+służy do przechowywania informacji o zakazanych ruchach, które nie mogą być wykonane przez określoną w tabu tenure dla kursu $c_{i}$ liczbę iteracji.
 %-  dokłady opis tabu list
-Tabu tenure $t(c_{i})$ obliczane jest na podstawie obecnie uzyskanego rozwiązania oraz częstotliwości przenoszenia zajęć z kursy $c_{i}$ oznaczonej przez $freq(c_{i})$.
-Tabu tenure wyrażone jest poniższym wzorem: \\ 
-$t(c_{i}) = funkcja\ kary\ dla\ obecnego\ rozwiązania + \alpha * freq(c_{i})$ \\ \\
+\subparagraph{}W przypadku sąsiedztwa prostego, jeśli zajęcia z kursu $c_i$ zostały przeniesione z okresu $t_j$ i sali $r_k$ w inne miejsce, wtedy przeniesienie jakichkolwiek zajęć z kursu $c_i$ do przedziału czasowego $t_j$ i sali $r_k$ przez kolejne $tt$ iteracji jest ruchem tabu. Podobnie dla sąsiedztwa zaawansowanego, jeśli zajęcia z kursu $c_i$ zostały przeniesione z przedziału czasowego $t_j$ do jakiegoś innego, wtedy przeniesienie jakichkolwiek zajęć z kursu $c_i$ do przedziału czasowego $t_j$ przez kolejne $tt$ iteracji jest ruchem tabu.
+\subparagraph{}
+Tabu tenure $tt(c_{i})$ obliczane jest na podstawie obecnie uzyskanego rozwiązania oraz częstotliwości przenoszenia zajęć z kursu $c_{i}$ oznaczonej przez $freq(c_{i})$. \\
+Tabu tenure wyrażone jest poniższym wzorem: 
+ \[tt(c_{i}) = funkcja\ kary\ dla\ obecnego\ rozwiązania + \alpha * freq(c_{i}) \] 
 gdzie ${\alpha = \frac{liczba\ konfliktujących\ kursów\ z\ c_{i}}{liczba\ kursów}}$ wobec tego wartość parametru ${\alpha \in [0, 1]}$ \\
 gdyż ${liczba\ kursów \geq liczba\ konfliktujących\ kursów\ z\ c_{i}} $
 
 \subsubsection{Faza dywersyfikacji}
 \par Jeżeli rozwiązanie nie może zostać poprawione za pomocą algorytmu tabu search uruchamiana jest trzecia faza - faza dywersyfikacji. Głównym jej elementem jest losowy operator zaburzeń mający na celu zniszczenie osiągniętego lokalnego minimum. Początkowo identyfikowane są zajęcia z wysoką karą wynikającą z funkcji oceny  i losowo wybierane są zajęcia dla których zostaną dokonane zamiany sprecyzowane w poprzedniej fazie.
 \par W momencie zakończenia fazy intensyfikacji, poszczególne zajęcia ustawiane są w kolejności malejącej ze względu na wysokość funkcji oceny. Z puli $q$ pierwszych zajęć wybierane jest $n$ zajęć, gdzie zajęcie będące na $k$ miejscu w rankingu wybierane zgodnie z rozkładem prawdopodobieństwa $P(k) = k^{-4.0}$. Następnie dokonywane jest $n$ losowych zamian pomiędzy zajęciami (sprecyzowanych w fazie intensyfikacji), ale tylko takich które zawierają przynajmniej jedno z wybranych z rankingu zajęć. \\
+
+
+
+
+
