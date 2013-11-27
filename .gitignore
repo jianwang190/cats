@@ -39,3 +39,10 @@ obj/
 
 # Virtualenv
 venv/
+
+# latex pdflatex
+docs/*.aux
+docs/*.log
+docs/*.toc
+docs/*.pdf
+
