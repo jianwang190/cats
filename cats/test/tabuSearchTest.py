@@ -77,9 +77,12 @@ class TabuSearchTest(unittest.TestCase):
     #    t = tabuAdvancedNeighborhood(self.t, self.data, 10)
     #    print "QUALITY: ",softConstraints2.softConstraintsPenalty(self.t.getTimeTable(), self.data)
     #
-    #def testTabuSearch(self):
-    #    initialSolution(self.t, self.data)
-    #    t = tabuSearch.tabuSearch(self.t, self.data, 10)
+    def testTabuSearch(self):
+        initialSolution(self.t, self.data)
+        t = tabuSearch.tabuSearch(self.t, self.data, 4)
+        for p in t.getTimeTable().keys():
+            for c in t.getTimeTable()[p]:
+                print c[0], c[1], p/self.data.periodsPerDay, p%self.data.periodsPerDay
     #
     #def testAdaptiveTabuSearch(self):
     #    t = tabuSearch.adaptiveTabuSearch(self.t, self.data)
