@@ -87,11 +87,13 @@ class TabuSearchTest(unittest.TestCase):
     def testAdaptiveTabuSearch(self):
         for i in range(1, 21):
             print 'INSTANCE', i
+            start = time.time()
             self.c = CompetitionDictReader()
             self.data = self.c.readInstance(i)
             self.t = TimeTableFactory.getTimeTable(self.data)
 
             t = tabuSearch.adaptiveTabuSearch(self.t, self.data)
+            print 'FINISHED IN ', time.time()-start
             p = file('result'+i, 'w')
             for p in t.getTimeTable().keys():
                 for c in t.getTimeTable()[p]:
