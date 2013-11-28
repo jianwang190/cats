@@ -157,7 +157,7 @@ class GeneticAlgorithm(object):
         Perform a crossover over a given mother and father. Generate 2 children
         :param mother:
         :param father:
-        :return:new child - the better one
+        :return:new pair of children
         """
         child1 = mother.copySolution(self.data)
         child2 = father.copySolution(self.data)
