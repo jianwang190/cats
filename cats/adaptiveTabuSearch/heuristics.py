@@ -16,14 +16,22 @@ def initialSolution(timetable, data):
         nextCourse = getNextCourse(timetable, data)
         if feasibleInsertion(timetable, nextCourse.id, data)==False:
             break
+
+        print ">>> TIMETABLE"
+
+        for k in timetable.getTimeTable():
+            print k, [(x[0], x[1]) for x in timetable.getTimeTable()[k]]
+        print ">>>>> OCENA"
+        print totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
+
     print
 
 
-    #print "##### INITIAL SOLUTION FINISHED #####"
-    #print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
-    #for c in data.getUnfinishedCourses():
-    #    print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
-    #                           " ".join(timetable.neighbourhoodList[c.id])])
+    print "##### INITIAL SOLUTION FINISHED #####"
+    print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
+    for c in data.getUnfinishedCourses():
+        print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
+                               " ".join(timetable.neighbourhoodList[c.id])])
 
 
 

@@ -46,9 +46,12 @@ class CompetitionReader(object):
 
         while self.buffer[index] != '':
             s = self.buffer[index].split()
-            course = Course(s[0], s[1], int(s[2]), int(s[3]), int(s[4]))
-            self.data.courses.append(course)
-
+            if len(s) > 5:
+                course = Course(s[0], s[1], int(s[2]), int(s[3]), int(s[4]), s[5])
+                self.data.courses.append(course)
+            else:
+                course = Course(s[0], s[1], int(s[2]), int(s[3]), int(s[4]))
+                self.data.courses.append(course)
             index += 1
 
     def getRooms(self):
@@ -58,7 +61,7 @@ class CompetitionReader(object):
 
         while self.buffer[index] != '':
             s = self.buffer[index].split()
-            room = Room(s[0], int(s[1]))
+            room = Room(s[0], int(s[1]), s[2])
             self.data.rooms.append(room)
 
             index += 1
