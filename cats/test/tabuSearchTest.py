@@ -79,10 +79,26 @@ class TabuSearchTest(unittest.TestCase):
     #
     #def testTabuSearch(self):
     #    initialSolution(self.t, self.data)
-    #    t = tabuSearch.tabuSearch(self.t, self.data, 10)
+    #    t = tabuSearch.tabuSearch(self.t, self.data, 4)
+    #    for p in t.getTimeTable().keys():
+    #        for c in t.getTimeTable()[p]:
+    #            print c[0], c[1], p/self.data.periodsPerDay, p%self.data.periodsPerDay
     #
-    #def testAdaptiveTabuSearch(self):
-    #    t = tabuSearch.adaptiveTabuSearch(self.t, self.data)
+    def testAdaptiveTabuSearch(self):
+        for i in range(1, 21):
+            print 'INSTANCE', i
+            start = time.time()
+            self.c = CompetitionDictReader()
+            self.data = self.c.readInstance(i)
+            self.t = TimeTableFactory.getTimeTable(self.data)
+
+            t = tabuSearch.adaptiveTabuSearch(self.t, self.data)
+            print 'FINISHED IN ', time.time()-start
+            p = file('result'+i, 'w')
+            for p in t.getTimeTable().keys():
+                for c in t.getTimeTable()[p]:
+                    p.write(c[0], c[1], p/self.data.periodsPerDay, p%self.data.periodsPerDay)
+
 
     #def testPerturbation(self):
     #    initialSolution(self.t, self.data)
