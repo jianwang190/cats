@@ -17,12 +17,12 @@ def initialSolution(timetable, data):
         if feasibleInsertion(timetable, nextCourse.id, data)==False:
             break
 
-        print ">>> TIMETABLE"
-
-        for k in timetable.getTimeTable():
-            print k, [(x[0], x[1]) for x in timetable.getTimeTable()[k]]
-        print ">>>>> OCENA"
-        print totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
+        #print ">>> TIMETABLE"
+        #
+        #for k in timetable.getTimeTable():
+        #    print k, [(x[0], x[1]) for x in timetable.getTimeTable()[k]]
+        #print ">>>>> OCENA"
+        #print totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
 
     print
 

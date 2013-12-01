@@ -61,7 +61,10 @@ class CompetitionReader(object):
 
         while self.buffer[index] != '':
             s = self.buffer[index].split()
-            room = Room(s[0], int(s[1]), s[2])
+            if len(s)==3:
+                room = Room(s[0], int(s[1]), s[2])
+            else:
+                room = Room(s[0], int(s[1]))
             self.data.rooms.append(room)
 
             index += 1

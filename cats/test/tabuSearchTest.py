@@ -1,7 +1,8 @@
+import logging
 import unittest
 from cats.adaptiveTabuSearch import tabuLists
 from cats.adaptiveTabuSearch.advancedNeighborhood import AdvancedNeighborhood
-from cats.adaptiveTabuSearch.tabuSearch import tabuAdvancedNeighborhood
+from cats.adaptiveTabuSearch.tabuSearch import tabuAdvancedNeighborhood, AdaptiveTabuSearch
 from cats.adaptiveTabuSearch.tabuSearch import tabuSimpleNeighborhood
 from cats.utils.timetable import TimeTable, TimeTableFactory
 from cats.readers.competitionReader import CompetitionDictReader
@@ -84,20 +85,21 @@ class TabuSearchTest(unittest.TestCase):
     #        for c in t.getTimeTable()[p]:
     #            print c[0], c[1], p/self.data.periodsPerDay, p%self.data.periodsPerDay
     #
-    def testAdaptiveTabuSearch(self):
-        for i in range(1, 21):
-            print 'INSTANCE', i
-            start = time.time()
-            self.c = CompetitionDictReader()
-            self.data = self.c.readInstance(i)
-            self.t = TimeTableFactory.getTimeTable(self.data)
 
-            t = tabuSearch.adaptiveTabuSearch(self.t, self.data)
-            print 'FINISHED IN ', time.time()-start
-            p = file('result'+i, 'w')
-            for p in t.getTimeTable().keys():
-                for c in t.getTimeTable()[p]:
-                    p.write(c[0], c[1], p/self.data.periodsPerDay, p%self.data.periodsPerDay)
+    # THIS IS THE AWESOME TEST FOR ADAPTIVE TABU SEARCH
+    # SORRY, IT CTRL-C MIGHT NOT WORK
+
+    #def testAdaptiveTabuSearch(self):
+    #    for i in range(1, 21):
+    #        logging.info('INSTANCE'+ str(i))
+    #
+    #        a = AdaptiveTabuSearch(self.c.readInstance(i), 10)
+    #        t = a.run()
+    #        o = file('result'+str(i), 'w')
+    #        for p in t.getTimeTable().keys():
+    #            for c in t.getTimeTable()[p]:
+    #                o.write(" ".join((c[0], c[1], str(p/self.data.periodsPerDay), str(p%self.data.periodsPerDay))))
+    #        o.close()
 
 
     #def testPerturbation(self):

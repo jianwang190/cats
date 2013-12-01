@@ -12,7 +12,7 @@ class Course(Model):
         self.typeOfRoom = typeOfRoom
         self.assignedLectureNum = 0
 class Room(Model):
-    def __init__(self, id, capacity, type):
+    def __init__(self, id, capacity, type=None):
         self.id = id
         self.capacity = capacity
         self.type = type
