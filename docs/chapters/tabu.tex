@@ -1,7 +1,41 @@
 \section{Adaptive tabu search (ATS)}
 \author{Tomasz Dziopa, Katarzyna Śmietanka}
-\subsection{Specyficzne sformułowanie problemu}
-\par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p \times m}$ gdzie ${x_{i,j}}$ który definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
+\subsection{Rozszerzenie sformułowania problemu }
+Rozszerzenie specyfikacji problemu z sekcji 3.2.4.
+\par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p \times m}$ gdzie ${x_{i,j}}$ ($x$ - unikalna etykieta zajęć) definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
+
+\begin{table}[H]
+\begin{center}
+
+\begin{tabular}{ r|c|c|c|c|c| }
+\multicolumn{1}{r}{}
+ &  \multicolumn{1}{c}{$r_{1}$}
+ & \multicolumn{1}{c}{$r_{2}$} 
+ & \multicolumn{1}{c}{$r_{3}$} 
+ & \multicolumn{1}{c}{$...$} 
+ & \multicolumn{1}{c}{$r_{m}$} 
+ \\
+\cline{2-6}
+$t_{1}$ & $null$ & $matematyka$ & $biologia$ & $...$ & $geografia$ \\
+\cline{2-6}
+$t_{2}$ & $fizyka$ & $null$  & $null$ & $...$ & $religia$\\
+\cline{2-6}
+$t_{3}$ & $historia$ & $null$  & $null$ & $...$ & $null$\\
+\cline{2-6}
+$...$ & $...$ & $...$ & $...$ & $...$ & $...$ \\
+\cline{2-6}
+$t_{p}$ & $null$ & $matematyka$ & $chemia$ & $...$ & $fizyka$ \\
+\cline{2-6}
+\end{tabular}
+\end{center}
+\caption {Reprezentacja problemu w postaci macierzy $X$}
+\end{table} 
+\begin{itemize}
+ \item Komórka $(t_{2}, r_{2}) = null$ w macierzy $X$ oznacza, że w czasie $t_{2}$ w sali $r_{2}$ nie odbywają się żadne zajęcia.
+ \item Komórka $(t_{3}, r_{1}) = historia$ w macierzy $X$ oznacza, że w czasie $t_{3}$ w sali $r_{1}$ odbywają się zajęcia z przedmiotu $historia$.
+\end{itemize}
+
+
 \subsection{Ogólny opis algorytmu}
 \par Opis zaimplementowanego przez nas algorytmu został zaczerpnięty z pracy ,,Adaptive TabuSearch for Course Timetabling'' \cite{tabu}
 \par Na całość algorytmu składają się trzy fazy: faza inicjalizacji podczas której tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki, faza intensyfikacji, która jest właściwą fazą algorytmu Adaptive Tabu Search, której celem jest optymalizacja funkcji oceny ograniczeń miękkich. Końcowa faza - faza dywersyfikacji gdzie dokonywana jest redukcja naruszeń miękkich, tak aby nie łamać twardych ograniczeń. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
@@ -38,6 +72,7 @@
 \item $ lnz_{i}(P)$ - liczba nieprzydzielonych zajęć dla kursu ${c_{i}}$ dla planu ${P}$
 \item $ lnk_{i, j}(P)$ - liczba zajęć z nieskończonych kursów, których nie można przydzielić do okresu ${t_{j}}$ po przydzieleniu jednego z zajęć z kursu ${c_{i}}$ do okresu ${t_{i}}$
 \item $kom(i, j, k)$ - całkowita kara związana z ograniczeniami miękkimi po wykonalnym wstawieniu zajęć (tzn. nie naruszając ograniczeń $H1 - H4$ ) z kursu $c_{i}$ do okresu ${t_{j}}$ przydzieleniu sali ${r_{k}}$
+\item $konf_{i}$ - liczba kursów konfliktujących z kursem $c_{i}$, czyli takich które należą do tego samego programu nauczania co kurs $c_{i}$ lub prowadzone są przez tego samego nauczyciela
 \end{enumerate}
 \par \textbf{Heurystyki}
 
@@ -47,7 +82,8 @@
     \item Wybieramy kurs z najmniejszą wartością współczynnika:\\
      $ w_a(c_{i}) = \frac{lo_{i}(P)}{\sqrt{lnz_{i}(P)}}$
     \item Jeżeli istnieje więcej niż jeden kurs z tą samą wartością współczynnika ${w_a}$ wybieramy kurs z najmniejszym współczynnikiem \\ $ w_b(c_{i}) = lp_{i}(P) * \sqrt{lnz_{i}(P)} $
-    \item Jeżeli istnieje więcej niż jeden kurs z tą samą wartością współczynnika $w_b$ to wybieramy kurs ${c_{i}}$ z maksymalną liczbą kursów współdzielonych kursów z tym kursem (tzn. mającym najwięcej konfliktów ze względu na studentów uczęszczających na ten kurs oraz uczących nauczycieli).
+    \item Jeżeli istnieje więcej niż jeden kurs z tą samą wartością współczynnika $w_b$ to wybieramy kurs ${c_{i}}$ z maksymalną woarością funkcji $konf_{i}$
+ 
   \end{enumerate}
   \item Wybór okresu \\
   Dla każdej dostępnej pary (okres - sala) wybieramy parę z najmiejszą wartością funkcji $g(j, k) = K_{1} * lnk_{i,j}(P) + K_{2} * kom(i, j, k)$ \\
@@ -58,17 +94,101 @@
 
 
 \subsubsection{Faza intensyfikacji}
-\par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączenia zamian w obrębie tych dwóch struktur, które przeprowadzane są w cyklu token - ring. Celem tej fazy jest ograniczenie funkcji oceny ograniczeń miękkich, nie łamiąc żadnych ograniczeń twardych. Przestrzeń wykonywanych zamian dla poszczególnych zajęć jest ograniczona tylko do wykonywalnych zamian czyli takich, które po wykonaniu nie naruszają ${H1-H4}$.
+\par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączenia zamian w obrębie tych dwóch struktur, które przeprowadzane są w cyklu token - ring. Celem tej fazy jest minimalizacja funkcji kary   tak by, nie zostały złamane żadne ograniczenia twarde. Przestrzeń wykonywanych zamian dla poszczególnych zajęć jest ograniczona tylko do wykonywalnych zamian czyli takich, które po przeprowadzeniu ich nie naruszają ${H1-H4}$.
 \paragraph{Struktury sasiedztwa}
 \begin{enumerate}
 \item \textbf{Podstawowa struktura sąsiedztwa} \\
 Jest to struktura, która zawiera wszystkie możliwe zamiany dla pary dwóch zajęć należących do różnych kursów i nie należących do tego samego okresu w planie zajęć. \\
 Zamiana jest przypisaniem zajęć $x_{i_{1},j_{1}}$ w miejsce zajęć ${x_{i_{2}, j_{2}}}$ oraz zajęć ${x_{i_{2}, j_{2}}}$ w miejsce zajęć $x_{i_{1},j_{1}}$ \\
 Możliwe przypadki zamian
+
 \begin{enumerate}
 \item Zamiana pomiędzy dwoma różnymi zajęciami należącymi do dwóch różnych kursów i okresów
 \item Przypisanie zajęcia ${x_{i,j}}$ do wolnej pozycji - do okresu dla którego zajęcie ${x_{i,j}}$ nie wchodzi w konflikt z pozostałymi zajęciami w tym okresie (tzn. nie narusza ${H1-H4}$ )
 \end{enumerate}
+Przykład możliwych zamian dla podstawowej struktury sąsiedztwa na podstawie zdefiniowanego poniżej problemu (format danych wejściowych zdefiniowany w sekcji 3.2.5, tutaj stosujemy uproszczoną wersję pomijając niektóre parametry nieistotne w tej fazie):
+\begin{alltt}
+Dane wejściowe:
+Kursy: 
+biologia n1 1
+fizyka n2 1
+matematyka n3 1
+język polski n4 1
+język angielski n5 2
+historia n6 1
+religia n7 1
+etyka n8 1
+Sale: 
+sala1
+sala2
+sala3
+sala4
+Programy nauczania:
+Program1 3 biologia fizyka matematyka
+Program2 3 język polski język angielski historia
+Program3 2 religia etyka
+\end{alltt}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ r|c|c|c| }
+\multicolumn{1}{r}{}
+ &  \multicolumn{1}{c}{$sala1$}
+ & \multicolumn{1}{c}{$sala2$} 
+ & \multicolumn{1}{c}{$sala3$} 
+ \\
+\cline{2-4}
+$t_{1}$ & $null$ & $biologia$ & $język\ angielski$  \\
+\cline{2-4}
+$t_{2}$ & $historia$ & $matematyka$  & $null$ \\
+\cline{2-4}
+$t_{3}$ & $religia$ & $język\ polski$  & $null$ \\
+\cline{2-4}
+$t_{4}$ & $fizyka$ & $etyka$ & $język\ angielski$ \\
+\cline{2-4}
+$t_{5}$ & $null$ & $null$ & $null$ \\
+\cline{2-4}
+\end{tabular}
+\end{center}
+
+\caption {Przykład wygenerowanego planu zajęć}
+\end{table} 
+Przykłady możliwych zamian dla poszczególnych przypadków (zdefiniowane w postaci $[(t_{i}, c_{i}, r_{i}), (t_{j}, c_{j}, r_{j})]$ oznaczająca możliwą zamianę między kursami $c_{i}$ i $c_{j}$, wobec której kurs $c_{i}$ zostanie przypisany do okresu $t_{j}$ i sali $r_{j}$ a kurs $c_{j}$ przypisany do $t_{i}$ i sali $r_{i}$:
+\begin{enumerate}
+\item $[(t_{1}, null, sala1),(t_{3},religia, sala1)]$ , $[(t_{1}, null, sala1),(t_{4},etyka, sala2)]$,\\ $[(t_{5}, null, sala1)$,$(t_{1},biologia, sala2)]$ 
+\item $[(t_{1}, biologia, sala2),(t_{3},religia, sala1)]$, $[(t_{1}, język\ angielski, sala3),(t_{3},język\ polski, sala2)]$
+\end{enumerate}
+
+Przykłady niepoprawnych zamian:
+\begin{enumerate}
+\item $[(t_{3}, null, sala3),(t_{1},język\ angielski, sala3)]$ - zaproponowana zmiana wywoła konflikt w $t_{3}$ ponieważ w tym samym czasie będą odbywały się zajęcia \verb#język angielski# oraz \verb#język polski# a należą one do tego samego programu nauczania \verb#Program2# (naruszenie ograniczenia $H3$
+\item $[(t_{3}, język\ polski, sala2),(t_{4},etyka, sala2)]$ - zamiana ta wywołuje naruszenie ograniczenia $H3$
+\end{enumerate}
+Wykonanie zamiany $[(t_{1}, biologia, sala2),(t_{3},religia, sala1)]$ pomiędzy zajęciami:
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ r|c|c|c| }
+\multicolumn{1}{r}{}
+ &  \multicolumn{1}{c}{$sala1$}
+ & \multicolumn{1}{c}{$sala2$} 
+ & \multicolumn{1}{c}{$sala3$} 
+ \\
+\cline{2-4}
+$t_{1}$ & $null$ & $religia$ & $język\ angielski$  \\
+\cline{2-4}
+$t_{2}$ & $historia$ & $matematyka$  & $null$ \\
+\cline{2-4}
+$t_{3}$ & $biologia$ & $język\ polski$  & $null$ \\
+\cline{2-4}
+$t_{4}$ & $fizyka$ & $etyka$ & $język\ angielski$ \\
+\cline{2-4}
+$t_{5}$ & $null$ & $null$ & $null$ \\
+\cline{2-4}
+\end{tabular}
+\end{center}
+
+\caption {Plan po wykonaniu przykładowej zamiany}
+\end{table} 
 
 \item \textbf{Zaawansowana struktura sąsiedztwa} 
 \subparagraph{}

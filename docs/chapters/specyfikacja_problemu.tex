@@ -1,7 +1,7 @@
 \chapter{Specyfikacja problemu}
 \section{International Timetabling Competition 2007}
-\section{Opis konkursu}
-\section{Konkurs a praca inżynierska}
+\subsection{Opis konkursu}
+\subsection{Konkurs a praca inżynierska}
 \section{Sformułowanie problemu}
 \author{Katarzyna Śmietanka} \\
 Celem jest stworzenie tygodniowego harmonogramu wykładów dla kilku kursów, z określoną liczbą dostępnych sal i przedziałów czasowych, w których mogą odbywać się zajęcia. Każdy wykład będący w programie danego kursu musi być przypisany do określonego przedziału czasu i sali tak by spełniał wejściowe ograniczenia. 
@@ -51,6 +51,7 @@ Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomi
 
 \subsection{Matematyczne sformułowanie problemu} \cite{tabu}
 \par Na problem składa się ${n}$ kursów ${C = \{c_{1}, c_{2},...,c_{n}\}}$ które powinny być przydzielone do ${p}$ różnych okresów ${T = \{t_{1}, t_{2},...,t_{p}\}}$ oraz ${m}$ pomieszczeń w których mogą odbywać się zajęcia ${R = \{r_{1}, r_{2},...,r_{m}\}}$. Okres jest to para składająca się z dnia i przedziału czasowego (${d}$ - liczba dni a ${h}$ - liczba dziennych przedziałów czasowych, czyli ${p = d * h}$). Każdy z kursów składa się z ${n}$ zajęć ${L = \{l_{1},l_{2},...,l_{n}\}}$. Kursy wchodzą w skład ${s}$ programów nauczania ${CR = \{cr_{1}, cr_{2}, ..., cr_{s}\}}$, na program nauczania składają się kursy, na które uczęszczają ci sami studenci. 
+
 \subsection{Dane wejściowe}
 \par Dane wejściowe są plikami tekstowymi, w których zawarte są ogólne informacje takie jak: liczba kursów, liczba dostępnych pomieszczeń, liczba dni na które mają być rozłożone zajęcia, liczba programów nauczania oraz ograniczenia precyzujące w jakich terminach nie mogą odbywać się zajęcia z danego kursu. Kolejno sprecyzowane są kursy, pomieszczenia, programy nauczania oraz ograniczenia w zadanym poniżej formacie:
 \begin{verbatim}
