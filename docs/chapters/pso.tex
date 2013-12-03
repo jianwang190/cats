@@ -1,0 +1,24 @@
+
+\section{Particle Swarm Optimization (PSO)}
+\author{Paweł Jastrzębski}
+\subsection{Ogólny opis algorytmu}
+\par Opis zaimplementowanego algorytmu został zaczerpnięty z pracy ,,Timetable Scheduling Using Particle Swarm Optimization'' \cite{pso}
+\par PSO jest metodą bazującą na zachowaniu społeczeństwa. Polega na przeszukiwaniu przestrzeni rozwiązań przy pomocy populacji (roju) rozwiązań kandydujących (nazywanych cząsteczkami). W każdej iteracji każde rozwiązanie kandydujące (cząsteczka) jest aktualizowane na podstawie dwóch najlepszych wartości. Pierwszą z nich jest poprzednia najlepsza pozycja k-tej cząsteczki w i-tej iteracji ${P}^{i}_{k}$. Drugą zaś jest globalna najlepsza pozycja spośród wszystkich cząsteczek ${G}^{i}$ zanotowana pomiędzy pierwszą a i-tą iteracją. Każda cząsteczka jest równoważna z kandydatem na rozwiązanie problemu. Cząsteczka prousza się zgodnie ze swoją prędkością, która bazuje na doświadczeniu owej cząsteczki oraz doświadczeniu innych cząsteczek. PSO zazwyczaj osiąga rozwiązanie bliskie optymalnemu w mniejszej liczbie iteracji niż algorytmy ewolucyjne czy genetyczne.  \subsection{Działaie algorytmu}
+\subsubsection{Orginalna wersja}
+\par Orginalne PSO można opisać w trzech krokach:
+
+\begin{description}
+  \item[Krok 1] \hfill \\
+Liczba cząsteczek urzywana podczas rozwiązywania problemu jest ustalona z góry. Każda cząsteczka ma swoją własną pozycje, prędkość i najlepsze dotychczasowe rozwiązanie. Wtedy,
+  \[f(P^{i}_{k}) \le f(P^{i-1}_{k}) \le \ldots \le f(P^{1}_{k})\].
+
+  \item[Krok 2] \hfill \\
+Proces aktualizacji prędkości jest realizowany jako:
+\[V^{i+1}_{k} = V^{i}_{k} + C_{1} \cdot r_{1} \cdot (P^{i}_{k} - X^{i}_{k}) + C_{2} \cdot r_{2} \cdot (G^{i} - X^{i}_{k})\].
+  \item[Krok 3] \hfill \\
+Przemieszczenie się cząsteczki jest wykonywany przy pomocy poniższego równania:
+\[X^{i+1}_{k} = X^{i}_{k} + V^{i+1}_{k}, i = 0,1,\cdots, M-1,\]
+gdzie $M$ to rozmiar cząsteczki, $-V_{max} \le V^{i+1}_{k} \le V_{max}$ ($V_{max}$ to maksymalna prędkość), oraz $r_{1}$ i $r_{2}$ to zmienne losowe z zakresu $0 \le r_{1},r_{2} \le 1$. Jeśli rozwiązanie jest lepsze od $G^{i}$ to $G^{i}$ zostanie zastąpione przez lepsze rozwiązanie, żeby reprezentować $G^{i+1}$ w kroku 4. W przeciwnym razie, nie będzie żadnej zmiany w globalnym najlepszym wyniku i $G^{i} = G^{i+1}$. Te rekurencyjne kroki będą postępowały dopuki nie nastąpi jakiś warkunek stopu w kroku 5.  
+\end{description}
+
+\subsubsection{PSO w problemie układania planu}
