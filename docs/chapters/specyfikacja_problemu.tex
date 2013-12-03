@@ -1,11 +1,14 @@
 \chapter{Specyfikacja problemu}
+\section{International Timetabling Competition 2007}
+\section{Opis konkursu}
+\section{Konkurs a praca inzynierska}
 \section{Sformułowanie problemu}
 \author{Katarzyna Śmietanka} \\
 Celem jest stworzenie tygodniowego harmonogramu wykładów dla kilku kursów, z określoną liczbą dostępnych sal i przedziałów czasowych, w których mogą odbywać się zajęcia. Każdy wykład będący w programie danego kursu musi być przypisany do określonego przedziału czasu i sali tak by spełniał wejściowe ograniczenia. 
 \subsection{Jednostki problemu}
 \begin{itemize}
 \item{\textbf{Dni, przedziały, okresy} - dzień podzielony jest na określoną liczbę przedziałów czasowych, okres para złożona z dnia i przedziału czasowego.}
-\item{\textbf{Kursy i wykładowcy} - każdy kurs składa się z określonej liczby wykładów, które muszą być rozłożone w różnym czasie, na które uczęszcza określona liczna studentów i prowadzone są one przez wykładowcę. Dla każdego kursu jest określona minimalna liczba dni w których te wykłady muszą się odbyć, oraz okresy w których dane wykłady nie mogą się odbywać.}
+\item{\textbf{Kursy i wykładowcy} - każdy kurs składa się z określonej liczby zajęć, które muszą być rozłożone w różnym czasie, na które uczęszcza określona liczna studentów i prowadzone są one przez konkretnego wykładowcę. Dla każdego kursu określona jest minimalna liczba dni, na które powinny być rozłożone zajęcia oraz okresy w których dane wykłady (zajęcia) nie mogą się odbywać.}
 \item{\textbf{Sale wykładowe} - sale wykładowe mają ograniczoną liczbę dostępnych miejsc w pomieszczeniu.}
 \item{\textbf{Program nauczania} - składa się z kilku kursów, na które uczęszcza grupa studentów.}
 \end{itemize}
@@ -19,19 +22,19 @@ Plan jest wykonywalny - czyli możliwy do realizacji, jeżeli żadne z wymienion
 \item  ${H_{4}}$ \textbf{Dostępność wykładowcy} - zajęcia nie mogą się odbywać w czasie, w którym dany wykładowca nie może prowadzić zajęć.
 \end{itemize}
 \subsubsection{Ograniczenia miękkie}
-Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zajęć, ale na jego jakość uwzględniając poniższe kryteria, które wpływają na funkcję oceny wygenerowanego planu zajęć.
+Ograniczenia te w bezpośredni sposób nie wpływają na wykonywalność planu zajęć, ale na jakość wygenerowanego planu zajęć, określoną na podstawie funkcji oceny.
 \begin{itemize}
 \item  ${S_{1}}$ \textbf{Wielkość sali} - liczba studentów uczęszczajacych na zajęcia w danej sali musi być mniejsza bądź równa liczbie dostępnych miejsc.
 \item  ${S_{2}}$ \textbf{Stabilność pomieszczenia} - zajęcia wchodzące w skład jednego kursu powinny odbywać się w jednej tej samej sali, jeżeli jest to niemożliwe liczba sal w których obdywają się te zajęcia powinna być jak najmniejsza.
 \item  ${S_{3}}$ \textbf{Minimalna liczba dni} - minimalna liczba dni na które powinny być rozłożone zajęcia z danego kursu.
-\item  ${S_{4}}$ \textbf{Zwartość zajęć} - zajęcia wchodzące w skład jednego kierunku powinny być w jak najmniejszych odstępach czasu pomiędzy sobą.
+\item  ${S_{4}}$ \textbf{Zwartość zajęć} - zajęcia wchodzące w skład jednego programu nauczania powinny odbywać się w jak najmniejszych odstępach czasowych między sobą.
 \end{itemize}
-\subsection{Funkcja oceny}
-\textbf{Ograniczenia twarde} - dla tego typu ograniczeń zliczane są podczas końcowej oceny poszczególne naruszenia ograniczań:\\
+\subsection{Funkcja oceny - dla danych konkursowych}
+\textbf{Ograniczenia twarde} - podczas oceny końcowej wygenerowanego planu zajęć zliczane są poszczególne naruszenia ograniczeń twardych:\\
 \begin{enumerate}
 \item \textbf{Zajęcia / Wykłady} - naruszenie występuje w przypadku gdy zajęcia nie są przypisane do planu zajęć
 \item \textbf{Zajętość sali} - naruszenie występuje gdy zostaną przypisane więcej niż jedne zajęcia do sali w tym samym czasie
-\item \textbf{Konflikty} - naruszenie wystąpi wtedy gdy dwa zajęcia będące w konflikcie odbywają się w tym samym czasie (tzn. ci sami studenci uczęszczają na te zajęcia lub prowadzone są przez tego samego wykładowcę)
+\item \textbf{Konflikty} - naruszenie wystąpi wtedy, gdy dwa zajęcia będące w konflikcie odbywają się w tym samym czasie (tzn. ci sami studenci uczęszczają na te zajęcia lub prowadzone są przez tego samego wykładowcę)
 \item \textbf{Dostępność} - naruszenie występuje gdy zajęcia odbywają się w czasie, w którym niedostępny jest wykładowca 
 \end{enumerate} 
 
@@ -39,7 +42,7 @@ Ograniczenia te nie wpływają w bezpośredni sposób na wykonalność planu zaj
 \begin{enumerate}
 \item \textbf{Wielkość sali} - Jeżeli liczba studentów jest większa niż liczba dostępnych miejsc w sali to za każdego dodatkowego studenta punkt kary pomnożony przez współczynnik ${a_{1} = 1}$ 
 \item \textbf{Minimalna liczba dni}
-Jeżeli liczba dni podczas których odbywają się zajęcia jest mniejsza niż minimalna liczba dni w których powinny odbywać się zajęcia to do kary doliczamy rożnicę między minimalną liczbą dni a dni w których zajęcia się odbywają pomnożoną o współczynnik $a_{2} = 5$ 
+Jeżeli liczba dni podczas których odbywają się zajęcia jest mniejsza niż minimalna liczba dni, podczas których powinny odbywać się zajęcia to do kary doliczamy rożnicę między minimalną liczbą dni a liczbą dni, w których zajęcia się odbywają pomnożoną o współczynnik $a_{2} = 5$ 
 \item \textbf{Zwartość zajęc}
 Za każde zajęcia w planie należące do danego programu nauczania nieprzylegające do innych zajęć punkt kary pomnożony o współczynnik ${a_{3} = 2}$
 \item \textbf{Stabilność pomieszczenia}
@@ -49,7 +52,7 @@ Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomi
 \subsection{Matematyczne sformułowanie problemu} \cite{tabu}
 \par Na problem składa się ${n}$ kursów ${C = \{c_{1}, c_{2},...,c_{n}\}}$ które powinny być przydzielone do ${p}$ różnych okresów ${T = \{t_{1}, t_{2},...,t_{p}\}}$ oraz ${m}$ pomieszczeń w których mogą odbywać się zajęcia ${R = \{r_{1}, r_{2},...,r_{m}\}}$. Okres jest to para składająca się z dnia i przedziału czasowego (${d}$ - liczba dni a ${h}$ - liczba dziennych przedziałów czasowych, czyli ${p = d * h}$). Każdy z kursów składa się z ${n}$ zajęć ${L = \{l_{1},l_{2},...,l_{n}\}}$. Kursy wchodzą w skład ${s}$ programów nauczania ${CR = \{cr_{1}, cr_{2}, ..., cr_{s}\}}$, na program nauczania składają się kursy, na które uczęszczają ci sami studenci. 
 \subsection{Dane wejściowe}
-\par Dane testowe są plikami tekstowymi, w których zawarte są ogólne informacje takie jak: liczba kursów, liczba dostępnych pomieszczeń, liczba dni na które mają być rozłożone zajęcia, liczba programów nauczania oraz ograniczenia precyzujące w jakich terminach nie mogą odbywać się zajęcia z danego kursu. Kolejno sprecyzowane są kursy, pomieszczenia, programy nauczania oraz ograniczenia, w poniższym formacie:
+\par Dane wejściowe są plikami tekstowymi, w których zawarte są ogólne informacje takie jak: liczba kursów, liczba dostępnych pomieszczeń, liczba dni na które mają być rozłożone zajęcia, liczba programów nauczania oraz ograniczenia precyzujące w jakich terminach nie mogą odbywać się zajęcia z danego kursu. Kolejno sprecyzowane są kursy, pomieszczenia, programy nauczania oraz ograniczenia w zadanym poniżej formacie:
 \begin{verbatim}
 Kursy: <Id Kurs> <Nauczyciel> <Liczba zajęć> <Minimalna liczba dni> <liczba studentów>
 Sale: <Id Sala> <Pojemność sali>
@@ -59,6 +62,8 @@ Ograniczenia: <Id Kurs> <Dzień> <Okres>
 \begin{enumerate}
 \item Każdy z kursów z danych wejściowych zawiera unikalny identyfikator, liczbę zajęć, która musi się odbyć w ramach tego kursu, minimalną liczbę dni oraz liczbę studentów, którzy uczęszczają na te zajęcia. 
 \item Sale zawierają unikalny identyfikator oraz informację o maksymalnej liczbie studentów, która się zmieści w sali.
-\item Na program nauczania składa się określona liczba kursów, których identyfikatory zawarte są w opisie programu nauczania $<Ids\ Kursy>$.
-\item W ramach ograniczeń umieszczona jest informacja o kursie $<Id\ Kurs>$, który nie może odbyć się w danym dniu w danym okresie.
+\item Na program nauczania składa się określona liczba kursów, których identyfikatory zawarte są w opisie programu nauczania  \verb#<Ids Kursy>#
+
+\item W ramach ograniczeń umieszczona jest informacja o kursie \verb#<Id Kurs>#
+ który nie może odbyć się w danym dniu w danym okresie.
 \end{enumerate}
