@@ -22,3 +22,9 @@ gdzie $M$ to rozmiar cząsteczki, $-V_{max} \le V^{i+1}_{k} \le V_{max}$ ($V_{ma
 \end{description}
 
 \subsubsection{PSO w problemie układania planu}
+\par W proponowanej metodzie każda cząsteczka będzie zamieniać ze sobą dwa swoje zajęcia i będzie posiadała globalnie najlepsze oraz lokalnie najlepsze rozwiązanie. Zwiększa to szanse cząsteczek na znalezienie lepszego rozwiązania oraz ominięcie lokalnie najlepszych rozwiązań. 
+\par Początkowo tak samo jak w przypadku ogólnym startujemy od losowej populacji którą użyjemy do rozwiązania problemu. Przykładowo mamy M cząsteczek do użycia i możemy przedstawić je jako:
+\[X = \{X_{1},X_{2},\cdots,X_{M}\}\]
+
+\par Najpierw tworzymy losowo grupę 20 kandydatów na rozwiązanie jako cząsteczki. Każda cząsteczka jest równoprawnym kandydatem na rozwiązanie problemu. Następnie oceniamy każdego kandydata. Poprzednie najlpesze rozwiązanie $k$-tej cząsteczki powinno być umieszczone w $P^{i}$
+
