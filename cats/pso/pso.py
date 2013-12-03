@@ -1,3 +1,5 @@
+import time
+
 import conf
 from particle import Particle
 from copy import deepcopy
@@ -6,7 +8,8 @@ from evaluationFunction import EvaluationFunction
 
 
 class PSO(object):
-    def __init__(self, data):
+    def __init__(self, data, timeLimit):
+        self.timeLimit = timeLimit
         self.data = data
         self.particles = []
         self.globalBestSolution = None
@@ -18,14 +21,18 @@ class PSO(object):
 
         for i in range(conf.maxIterations):
             self.doIteration()
+
+            if self.globalBestSolution.penalty < conf.minPenalty:
+                break
+
+            if time.time() > self.timeLimit:
+                break
             #print "------------------------"
             #for p in self.particles:
                 #print "Act:", p.actualSolution.penalty
                 #print "best:", p.bestSolution.penalty
                 #print "BEST:", self.globalBestSolution.penalty
                 #print "------------------------"
-            if self.globalBestSolution.penalty < conf.minPenalty:
-                break
 
         self.timetableFactory.echo(self.globalBestSolution)
         return self.globalBestSolution
