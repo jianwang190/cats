@@ -222,6 +222,38 @@ gdyż ${liczba\ kursów \geq liczba\ konfliktujących\ kursów\ z\ c_{i}} $
 \subsubsection{Faza dywersyfikacji}
 \par Jeżeli rozwiązanie nie może zostać poprawione za pomocą algorytmu tabu search uruchamiana jest trzecia faza - faza dywersyfikacji. Głównym jej elementem jest losowy operator zaburzeń mający na celu zniszczenie osiągniętego lokalnego minimum. Początkowo identyfikowane są zajęcia z wysoką karą wynikającą z funkcji oceny  i losowo wybierane są zajęcia dla których zostaną dokonane zamiany sprecyzowane w poprzedniej fazie.
 \par W momencie zakończenia fazy intensyfikacji, poszczególne zajęcia ustawiane są w kolejności malejącej ze względu na wysokość funkcji oceny. Z puli $q$ pierwszych zajęć wybierane jest $n$ zajęć, gdzie zajęcie będące na $k$ miejscu w rankingu wybierane zgodnie z rozkładem prawdopodobieństwa $P(k) = k^{-4.0}$. Następnie dokonywane jest $n$ losowych zamian pomiędzy zajęciami (sprecyzowanych w fazie intensyfikacji), ale tylko takich które zawierają przynajmniej jedno z wybranych z rankingu zajęć. \\
+Przykład dla parametrów $q = 5$ i $n = 3$:
+\begin{enumerate}
+\item Po obliczeniu funkcji kary dla poszczególnych zajęć - ustawiamy zajęcia w kolejności niemalejącej pod względem funkcji kary (w $[\ ]$ podano przykładowe wartości funkcji kary)\\
+\begin{enumerate}
+ \item[(1)] $(t_{4}, fizyka, sala1)[127]$
+ \item[(2)] $(t_{3}, religia, sala1)[89]$
+ \item[(3)] $(t_{3}, język\ polski, sala2)[88]$
+ \item[(4)] $(t_{4}, etyka, sala2)[80]$
+ \item[(5)] $(t_{4}, język\ angielski, sala3)[77]$
+ \item[(6)] $(t_{1}, język\ angielski, sala3)[52]$
+ \item[(7)] $(t_{1}, biologia, sala2)[40]$
+ \item[(8)] $(t_{2}, matematyka, sala2)[34]$
+ \item[(9)] $(t_{2}, historia, sala1)[25]$
+\end{enumerate}
+\item Z puli wszystkich przedmiotów wybieramy $q = 5$ przedmiotów czyli przedmioty $(1) - (5)$ 
+\item Rozkłady prawdopodobieństwa dla wybranych $q$ zajęć:
+	\begin{enumerate}
+	\item[(1)] $P(1) = 1^{-4.0} = 1$
+ 	\item[(2)] $P(2) = 2^{-4.0} = \frac{1}{16}$
+ 	\item[(3)] $P(3) = 3^{-4.0} = \frac{1}{81}$
+ 	\item[(4)] $P(4) = 4^{-4.0} = \frac{1}{256}$
+ 	\item[(5)] $P(5) = 5^{-4.0} = \frac{1}{625}$
+	\end{enumerate}
+\item Losowane jest $n = 3$ zajęć zgodnie z powyższym rozkładem prawdopodobieństwa \\
+	Przykłady wylosowanych zajęć [*]:
+	\begin{enumerate}
+	 \item[(1)] $(t_{4}, fizyka, sala1)[127]$
+	 \item[(2)] $(t_{3}, religia, sala1)[89]$
+	  \item[(4)] $(t_{4}, etyka, sala2)[80]$
+	\end{enumerate}
+\item Dla każdego z zajęć losujemy typ zamiany: podstawowa zamiana lub Kempe oraz znajdujemy wszystkie wykonywalne zamiany dla tego typu. Losowo wybieramy zamianę i przeprowadzamy ją. Odznaczając zajęcia, które są na liście [*], a dla których została już wykonana zamiana zawierająca te zajęcia.
+\end{enumerate}
 
 
 
