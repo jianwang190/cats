@@ -53,6 +53,7 @@ class BasicNeighborhood(object):
                 return True
         return False
 
+
     def simpleSwap(self, timetable, neighborhoodList, numberOfRooms):
 
         """

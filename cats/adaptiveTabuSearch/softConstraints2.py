@@ -65,7 +65,6 @@ def totalSoftConstraintsForTimetable2(partialTimetable, data):
     result = softConstraintsPenalty(partialTimetable, data)
     return result['penaltyMinWorkingDays'] + result['penaltyCurriculumCompactness']
 
-
 def softConstraintsPenalty(partialTimetable, data, perturbation = None):
     """
     Count soft penalty for timetable
@@ -86,11 +85,10 @@ def softConstraintsPenalty(partialTimetable, data, perturbation = None):
     perturbationPenalty = {}
 
 
+
     for key in partialTimetable.keys():
         for cell in partialTimetable[key]:
-            capacityPenalty = data.getCourse(cell[0]).studentsNum - data.getRoom(cell[1]).capacity \
-                if data.getCourse(cell[0]).studentsNum > data.getRoom(cell[1]).capacity else 0
-            roomCapacityPenalty += capacityPenalty
+            roomCapacityPenalty += max(data.getCourse(cell[0]).studentsNum - data.getRoom(cell[1]).capacity, 0)
             perturbationPenalty[(cell[0], cell[1], key)] = roomCapacityPenalty * CAPACITY_PENALTY
             information[cell[0]][0].add(cell[1])
             information[cell[0]][1].add(key / data.periodsPerDay)

@@ -1,5 +1,7 @@
 import collections, json
 from itertools import combinations, groupby
+import sys
+
 
 class TimeTableFactory(object):
     @classmethod
@@ -174,6 +176,13 @@ class TimeTable(object):
         """
         map(lambda a: self.timeTable[a[0]].append((a[1],a[2])), assignedList)
 
+
+    def serialize(self, data, path=None):
+        if path is not None:
+            sys.stdout = open(path, 'w')
+        for p in self.getTimeTable().keys():
+            for c in self.getTimeTable()[p]:
+                print " ".join((c[0], c[1], str(p/data.periodsPerDay), str(p%data.periodsPerDay)+'\n'))
 
     def jsonify(self):
         """

@@ -3,6 +3,7 @@ from itertools import groupby, combinations
 
 class AdvancedNeighborhood(object):
 
+
     def generateChains(self, timetable, period1, period2):
 
         """
