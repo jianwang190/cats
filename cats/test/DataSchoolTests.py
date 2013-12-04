@@ -19,10 +19,10 @@ class DataSchoolTest(unittest.TestCase):
     #    #    print course.id, course.lectureNum, course.minWorkingDays, course.studentsNum
     #    pass
 
-    def test_tabu(self):
-        #self.t.jsonify()
-        print "Dane ze szkoly test"
-        initialSolution(self.t, self.data)
+    #def test_tabu(self):
+    #    #self.t.jsonify()
+    #    print "Dane ze szkoly test"
+    #    initialSolution(self.t, self.data)
 
 
 if __name__=="__main__":

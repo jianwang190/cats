@@ -86,19 +86,19 @@ class TimeTable(object):
         key = self.getKey(constraint.day, constraint.dayPeriod)
         return key
 
-    def createListOfRooms(self, roomList, courseStudentsNum):
+    def createListOfRooms(self, roomList, course):
         """
         Create list of rooms for course with appropriate capacity of room for course (considering number of students attending course)
         :param roomList: list of rooms
         :param courseStudentsNum: number of students attending to course
         :return:
         """
-        listOfRooms = set([r.id for r in roomList if (r.capacity >= courseStudentsNum)])
+        listOfRooms = set([r.id for r in roomList if (r.capacity >= course.studentsNum and r.type == course.typeOfRoom)])
         return listOfRooms
 
     """Get rooms ids for each of courses (considering number of students)"""
     def getRoomsIdForCourses(self, roomList, courseList):
-        roomsForCourses = {x.id: self.createListOfRooms(roomList, x.studentsNum) for x in courseList}
+        roomsForCourses = {x.id: self.createListOfRooms(roomList, x) for x in courseList}
         return roomsForCourses
 
     """Get list of constraints for course"""

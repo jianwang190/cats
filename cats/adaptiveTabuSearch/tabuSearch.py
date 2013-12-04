@@ -111,7 +111,7 @@ def tabuSimpleNeighborhood(timetable, data, theta):
     initialSolution = timetable.copy()
 
     tabuList = TabuList(data.getAllCourses(), initialSolution.neighbourhoodList)
-    b = BasicNeighborhood()
+    b = BasicNeighborhood(data)
     currentBestSolution = initialSolution.getTimeTable()
     currentBestQuality = softConstraints2.totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
     #print "SIMPLE TABU", currentBestQuality, "THETA:", theta

@@ -77,7 +77,7 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
     # 0 denote that was no move with this lecture (0, 0) - (simple, kempe)
     # ex. (1, 0) denotes there was a try to do simpleSwap
     selectedLecturesDict = {x: (0, 0) for x in selectedLectures}
-    b = BasicNeighborhood()
+    b = BasicNeighborhood(data)
     a = AdvancedNeighborhood()
 
     while checkIfAllDone(selectedLecturesDict) == False:

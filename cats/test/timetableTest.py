@@ -49,11 +49,11 @@ class TimetableTest(unittest.TestCase):
         self.assertEqual(counter, 15)
 
     def test_createListOfRooms(self):
-        listOfRooms = self.t.createListOfRooms(self.data.getAllRooms(), self.data.getCourse("c0001").studentsNum)
+        listOfRooms = self.t.createListOfRooms(self.data.getAllRooms(), self.data.getCourse("c0001"))
         self.assertEqual(listOfRooms, set(['B']))
-        listOfRooms = self.t.createListOfRooms(self.data.getAllRooms(), self.data.getCourse("c0002").studentsNum)
+        listOfRooms = self.t.createListOfRooms(self.data.getAllRooms(), self.data.getCourse("c0002"))
         self.assertEqual(listOfRooms, set(['B', 'C']))
-        listOfRooms = self.t.createListOfRooms(self.data.getAllRooms(), self.data.getCourse("c0072").studentsNum)
+        listOfRooms = self.t.createListOfRooms(self.data.getAllRooms(), self.data.getCourse("c0072"))
         self.assertEqual(listOfRooms, set(['B', 'C', 'E', 'F', 'G', 'S']))
 
     def test_getRoomsIdForCourses(self):

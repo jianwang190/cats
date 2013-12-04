@@ -11,8 +11,9 @@ class CellBasicNeighborhood(object):
 
 """Structure containing all possible swaps between courses"""
 class BasicNeighborhood(object):
-    def __init__(self):
+    def __init__(self, data):
         self.basicList = []
+        self.data = data
 
     def clearBasicList(self):
         self.basicList = []
@@ -72,7 +73,9 @@ class BasicNeighborhood(object):
                 for j in range(0, SIZE):
                     """Swap two courses"""
                     if j != i:
-                        for indexSecond in range(0, len(timetable[j])):
+                        for indexSecond in filter(lambda x: self.data.getCourse(timetable[j][x][0]).typeOfRoom == \
+                                self.data.getCourse(timetable[i][indexFirst][0]).typeOfRoom, range(0, len(timetable[j]))):
+
                             cellSecond = timetable[j][indexSecond]
                             if cellSecond[0] != cellFirst[0]:
                                 if self.checkSimpleSwapMove(timetable, neighborhoodList, cellSecond[0], cellFirst[0], j) \

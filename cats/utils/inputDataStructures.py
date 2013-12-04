@@ -3,7 +3,7 @@ class Model(object):
         return self.meta["id"]
 
 class Course(Model):
-    def __init__(self, id, teacher, lectureNum, minWorkingDays, studentsNum, typeOfRoom = ''):
+    def __init__(self, id, teacher, lectureNum, minWorkingDays, studentsNum, typeOfRoom = None):
         self.id = id
         self.teacher = teacher
         self.lectureNum = lectureNum

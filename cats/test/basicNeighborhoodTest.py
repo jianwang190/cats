@@ -15,7 +15,7 @@ class BasicNeighborhoodTest(unittest.TestCase):
     def test_checkSimpleSwapMove2(self):
         assignedList = [(0, 'c0001', 'B'), (0, 'c0014', 'B'), (2, 'c0030', 'B'), (2, 'c0001', 'B')]
         self.t.addDataToTimetable(assignedList)
-        basicNeighborHood = BasicNeighborhood()
+        basicNeighborHood = BasicNeighborhood(self.data)
 
         """Check if possible to change course 'c0001' with 'c0030' (if 'c0030' can be assigned to slot == 0)"""
         self.assertTrue(basicNeighborHood.checkSimpleSwapMove(self.t.timeTable, self.t.neighbourhoodList, 'c0001', 'c0030', 0) is True)
@@ -27,14 +27,14 @@ class BasicNeighborhoodTest(unittest.TestCase):
     def test_simpeSwap(self):
         assignedList = [(0, 'c0001', 'B'), (0, 'c0014', 'B'), (2, 'c0030', 'B'), (2, 'c0001', 'B')]
         self.t.addDataToTimetable(assignedList)
-        basicNeighborHood = BasicNeighborhood()
+        basicNeighborHood = BasicNeighborhood(self.data)
         basicNeighborHood.simpleSwap(self.t.timeTable, self.t.neighbourhoodList, 6)
         self.assertEqual(len(basicNeighborHood.getBasicList()), 115)
 
     def test_simpeSwap2(self):
         path = u"data/TabuSearchDataTests/simpleSwapMove"
         self.t.readLecturesToTimetable(path)
-        basicNeighborHood = BasicNeighborhood()
+        basicNeighborHood = BasicNeighborhood(self.data)
         basicNeighborHood.simpleSwap(self.t.timeTable, self.t.neighbourhoodList, 6)
         self.assertEqual(len(basicNeighborHood.getPossibleSwapsForCourse('c0001', 0)), 28)
         self.assertEqual(len(basicNeighborHood.getPossibleSwapsForCourse('c0014', 0)), 30)
