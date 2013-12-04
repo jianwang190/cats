@@ -52,7 +52,9 @@ Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomi
 \subsection{Matematyczne sformułowanie problemu} \cite{tabu}
 \par Na problem składa się ${n}$ kursów ${C = \{c_{1}, c_{2},...,c_{n}\}}$ które powinny być przydzielone do ${p}$ różnych okresów ${T = \{t_{1}, t_{2},...,t_{p}\}}$ oraz ${m}$ pomieszczeń w których mogą odbywać się zajęcia ${R = \{r_{1}, r_{2},...,r_{m}\}}$. Okres jest to para składająca się z dnia i przedziału czasowego (${d}$ - liczba dni a ${h}$ - liczba dziennych przedziałów czasowych, czyli ${p = d * h}$). Każdy z kursów składa się z ${n}$ zajęć ${L = \{l_{1},l_{2},...,l_{n}\}}$. Kursy wchodzą w skład ${s}$ programów nauczania ${CR = \{cr_{1}, cr_{2}, ..., cr_{s}\}}$, na program nauczania składają się kursy, na które uczęszczają ci sami studenci. 
 
-\subsection{Dane wejściowe}
+\section{Dane wejściowe}
+\subsection{Konkursowe dane wejściowe}
+\par Dane wejściowe zostały uzyskane z konkursu International Timetabling Competition 2007
 \par Dane wejściowe są plikami tekstowymi, w których zawarte są ogólne informacje takie jak: liczba kursów, liczba dostępnych pomieszczeń, liczba dni na które mają być rozłożone zajęcia, liczba programów nauczania oraz ograniczenia precyzujące w jakich terminach nie mogą odbywać się zajęcia z danego kursu. Kolejno sprecyzowane są kursy, pomieszczenia, programy nauczania oraz ograniczenia w zadanym poniżej formacie:
 \begin{verbatim}
 Kursy: <Id Kurs> <Nauczyciel> <Liczba zajęć> <Minimalna liczba dni> <liczba studentów>
@@ -67,4 +69,27 @@ Ograniczenia: <Id Kurs> <Dzień> <Okres>
 
 \item W ramach ograniczeń umieszczona jest informacja o kursie \verb#<Id Kurs>#
  który nie może odbyć się w danym dniu w danym okresie.
+\end{enumerate}
+\subsection{Szkolne dane wejściowe}
+\par Dane z roku szkolnego 2013/2014 uzyskane z jednej ze szkół gdyńskich ponadgimnazjalnych, która jest połączeniem szkoły zawodowej, technikum oraz liceum.
+\par Dane zostały przystosowane do formatu ,,Konkursowych danych wejściowych'' rozszerzając je o pojęcie typu sali. Szczegółowy proces przetworzenia danych został opisany w sekcji ,,Etapy przetwarzania danych szkolnych''.
+\begin{verbatim}
+Kursy: <Id Kurs> <Nauczyciel> <Liczba zajęć> <Minimalna liczba dni> 
+	   <liczba studentów><Typ sali>
+Sale: <Id Sala> <Pojemność sali> <Typ sali>
+Program nauczania: <Id Program Nauczania> <Liczba Kursów> <Ids Kursy>
+Ograniczenia: <Id Kurs> <Dzień> <Okres>
+\end{verbatim}
+Rozszerzenie formatu danych wejściowych:
+\begin{enumerate}
+\item Wprowadzono \verb#<Typ sali>#, który przyjmuje poniżej zdefiniowane wartości:
+\begin{verbatim}
+n - zwykła sala lekcyjna
+w - sala warsztatowa
+l - biblioteka
+o - poza szkołą
+e - sala gimnastyczna / boisko szkolne / basen 
+c - sala laboratoryjna (komputerowa)
+\end{verbatim}
+\item Został wprowadzony \verb#<Typ sali># dla każdego z kursów określający w jakich rodzajach sal mogą odbywać się zajęcia z tego kursu.
 \end{enumerate}
