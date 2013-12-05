@@ -29,23 +29,52 @@
 \paragraph{}Problem układania planu zajęć jest klasyfikowany jako NP-zupełny, co można w łatwy sposób udowodnić poprzez redukcję problemu k-kolorowania wierzchołkowego grafu $G(V, E)$, gdzie $V$ zawiera zdarzenia, a $E$ konflikty między nimi, do decyzyjnej wersji problemu układania planu zajęć (czy da się skonstruować plan zajęć obejmujący $k$ przedziałów czasowych) 
 \paragraph{}Problem k-kolorowania wierzchołkowego to problem decyzyjny, który polega na odpowiedzi na pytanie, czy dany graf da się pokolorować wierzchołkowo na dokładnie $k$ kolorów. Przypomnijmy, że w każdym poprawnym pokolorawniu każde dwa wierzchołki połączone ze sobą krawędzią muszą mieć przyporządkowane różne kolory. W grafie $G(V,E)$ krawędziami połączone są zdarzenia, które nie mogą odbywać się w tym samym czasie. Jeżeli przyjmiemy, że kolorom w pokolorowaniu odpowiadają poszczególne przedziały czasowe otrzymujemy redukcję w czasie wielomianowym ze względu na liczbę wierzchołków i krawędzi do problemu k-kolorowania wierzchołkowego grafu. Bardziej formalny dowód na tą redukcję, jak i inne redukcje z innych problemów NP-zupełnych zawiera \cite{npcomplete}.
 
-\subsection{Trudności i ograniczenia}
 
 \section{Przegląd algorytmów}
-\paragraph{}Problem układania planu zajęć jest NP-zupełny, więc nie istnieje deterministyczny algorytm, który zwracałby dokładny wynik w czasie wielomianowym. Znane są zastosowania różnego rodzaju metaheurystyk do rozwiązania tego problemu.
+\subsection{Metaheurystyki}
+\paragraph{}Problem układania planu zajęć jest NP-zupełny, więc nie istnieje deterministyczny algorytm, który zwracałby dokładny wynik w czasie wielomianowym. Konieczne jest więc zastosowanie \textbf{metaheurystyk} - niedeterministycznych algorytmów, które wspomagają przeszukiwanie przestrzeni rozwiązań, w celu znalezienia najlepszego rozwiązania. Metaheurystyki często bazują na obserwacjach różnych procesów zachodzących w naturze. Znane są zastosowania różnego rodzaju metaheurystyk do rozwiązania naszego problemu.
 \subsubsection{Algorytm genetyczny}
 
 \subsubsection{Algorytm optymalizacji roju}
 
 \subsubsection{Algorytm symulowanego wyżarzania}
+\paragraph{} Metoda przeszukiwania iteracyjnego zainspirowana procesem wyżarzania w przemyśle metalowym. Przechowujemy specjalną zmienną, która symuluje malejącą ,,temperaturę'' otoczenia. W każdej iteracji przeglądamy sąsiadów i z prawdopodobieństwem proporcjonalnym do ,,temperatury'' akceptujemy rozwiązanie gorsze od aktualnego. 
+
 
 \subsubsection{Algorytm Tabu Search}
-
+\paragraph{} Metoda iteracyjnego przeszukiwania najlepszego rozwiązania, która bazuje na liście tabu - liście ruchów zabronionych, których nie można wykonać przez określoną liczbę iteracji. Dokładny opis algorytmu znajduje się w punkcie 4.1.3.
 \subsubsection{Algorytm Harmony Search}
 
-\subsubsection{Algorytm Hill-Climbing}
 
-\subsubsection{Hiperheurystyki}
+\subsection{Hiperheurystyki}
+\paragraph{}Nieco innym podejściem do rozwiązania problemu układania planu zajęć jest zastosowanie hiperheurystyki. \textbf{Hiperheurystyka} to algorytm, który ma za zadanie odnalezienie najlepszej metaheurystyki mającej na celu znaleźć optymalne rozwiązanie. Przykładem hiperheurystyki może być algorytm Adaptive Tabu Search, opisany szerzej w punkcie 4.1, gdzie metaheurystykami niskiego poziomu są procedury Tabu Search dla dwóch struktur sąsiedztwa, a metaheurystyką jest iteracyjne przeszukiwanie lokalne, które steruje głębokością procedury Tabu Search i wprowadza operator zaburzeń rozwiązania.
+\paragraph{}Innym przykładem hiperheurystyki jest algorytm opisany w \cite{gbhh}. Autorzy jako metaheurystyki niskiego poziomu wybrali 5 różnych kolejności, w których można rozpatrywać wierzchołki grafu kursów i konfliktów między nimi. Metaheurystyka wysokiego poziomu - w tym przypadku Tabu Search, gdzie lista Tabu przechowuje kombinacje dwuelementowe metaheurystyk niskiego poziomu - wybiera dwie metaheurystyki, które nie występują na liście Tabu, przyporządkowywuje według nich kolejne kursy i porównuje wynik z najlepszym.
+
+\subsection{Algorytmy \textit{state-of-the-art}}
+
+\paragraph{} Inną grupą algorytmów, na które można się natknąć w literaturze są algorytmy tzw. \textit{state-of-the-art} - wielofazowe algorytmy, które kolejnych fazach wykonują po kilka różnych metaheurystyk. Przykładem takiego algorytmu jest algorytm, który wygrał konkurs ITC w 2003 roku, opisany w \cite{kostuch}.
+
 
 
 \section{Przegląd powstałych systemów}
+
+
+
+\subsection{aSc TimeTables}
+Rozbudowane komercyjne narzędzie, które umożliwia automatyczne wygenerowanie planu zajęć na podstawie zebranych wymagań. Posiada bardzo zaawansowane możliwości edycji wygenerowania planu, wprowadzania zastępstw nauczycieli i wizualizacji. Możliwości sterowania generowaniem są ograniczone - można ustalić czas generowania (krótki - długi - bardzo długi) i stopień spełniania warunków. Program jest adresowany do dyrektorów i osób zarządzających planami lekcji, jego obsługa jest bardzo prosta. Wadą jest scentralizowane wprowadzanie ograniczeń, niechlujny interfejs i cena 
+(od 499 USD za wersję podstawową, do 3995 USD za wersję z rozszerzonym wsparciem i generowaniem planów dla poszczególnych uczniów)
+\begin{figure}[H]
+\includegraphics[width=15cm]{img/asc2.png}
+\caption{Zrzut ekranu z programu aSc. Przy przenoszeniu zajęć konfliktujące okresy podświetlają się na czerwono}
+\end{figure}
+
+\subsection{Mimosa}
+Komercyjny program, który umożliwia wprowadzanie ograniczeń, automatyczne generowanie planu zajęć i optymalizowanie już istniejącego planu. Interfejs aplikacji jest nieczytelny i chaotyczny, cały program sprawia wrażenie przestarzałego. Nie można sterować procesem generowania, który sam w sobie chodzi bardzo szybko, jednak dla przykładowych danych nie przydziela wszystkich zajęć (chociaż ręcznie jest to możliwe). Aplikacja jest uniwersalna, można dostosowywać problem do własnych potrzeb, jednak bez uprzedniego przeszkolenia jest to bardzo trudne. Najtańsza licencja na jedno stanowisko kosztuje 500 euro.
+\begin{figure}[H]
+\includegraphics[width=15cm]{img/mimosa.png}
+\caption{Zrzut ekranu z widoku planu zajęć programu Mimosa}
+\end{figure}
+\subsection{FET - Free Evolutionary Timetable}
+Jest to program darmowy, stworzony dla platformy Linux, rozpowszechniany na zasadach licencji GNU GPL. Napisany w C++ z wykorzystaniem biblioteki Qt, dane pobiera z plików w formacie XML. Rozbudowany interfejs umożliwia śledzenie procesu ewolucji.
+\subsection{Tablix}
+Jest to polski produkt typu \emph{open source}, jego autorem jest Tomasz Solc. Program powstał w technologii języka C z użyciem pakietu PVM, który umożliwia zrównoleglenie obliczeń, co znacząco przyspiesza działanie algorytmu. Dane wejściowe muszą znajdować się w plikach XML. Nie posiada natomiast interfejsu graficznego, który umożliwiałby edycję danych lub wizualizację wyników.

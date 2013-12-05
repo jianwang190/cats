@@ -75,10 +75,4 @@ Proces ten polega na złączeniu w sposób losowy genotypu dwóch rodziców wybr
 Podobnie jak w naturalnym procesie mutacji, tutaj też polega on na wprowadzeniu losowych zmian w powstałym kompletnym potomku. Prawdopodobieństwo jego zajścia jest niewielkie (domyślnie 1\%), więc dotyczyć on będzie jednego bądź kilku genów. W tym przypadku skasowane zostaną wszystkie zajęcia z wybranego kursu i algorytm spróbuje na nowo je przyporządkować. Proces ten jest identyczny jak w przypadku generowania rozwiązania początkowego.
 \subsubsection{Elityzm}
 \par Jest to zagadnienie związane z etapem mutacji. Ponieważ rezultat tego działania może polepszyć lub pogorszyć wcześniejsze rozwiązanie, nie będziemy mu poddawać jednego (domyślnie) lub kilku najlepszych rozwiązań, aby nie utracić ich wyniku. Elityzmem nazywamy więc ochronę najlepszego rozwiązania przed możliwą regresją podczas mutacji.
-\subsection{Istniejące implementacje}
-\begin{itemize}
-\item{FET - Free Evolutionary Timetable}
-Jest to program darmowy, stworzony dla platformy Linux, rozpowszechniany na zasadach licencji GNU GPL. Napisany w C++ z wykorzystaniem biblioteki Qt, dane pobiera z plików w formacie XML. Rozbudowany interfejs umożliwia śledzenie procesu ewolucji.
-\item{Tablix}
-Jest to polski produkt typu \emph{open source}, jego autorem jest Tomasz Solc. Program powstał w technologii języka C z użyciem pakietu PVM, który umożliwia zrównoleglenie obliczeń, co znacząco przyspiesza działanie algorytmu. Dane wejściowe muszą znajdować się w plikach XML. Nie posiada natomiast interfejsu graficznego, który umożliwiałby edycję danych lub wizualizację wyników.
-\end{itemize}
+
