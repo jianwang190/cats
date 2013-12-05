@@ -1,0 +1,49 @@
+
+\chapter{Opis problemu układania planu zajęć}
+\textit{Tomasz Dziopa}
+\paragraph{}Układanie planu zajęć można sformułować jako problem przydzielenia zdarzeń do przedziałów czasowych i zasobów, w taki sposób, żeby nie naruszyć odpowiednio skonstruowanych ograniczeń. Ograniczenia można podzielić na:
+\begin{itemize}
+\item ,,twarde'' - naruszenie ich powoduje, że utworzony plan zajęć jest niepoprawny,
+\item ,,miękkie'' - naruszenia ich wyznaczają jakość utworzonego poprawnego planu zajęć. Im więcej naruszeń, tym jakość planu jest niższa.
+\end{itemize}
+\paragraph{}W przypadku problemu układania planu zajęć na uczelni problem możemy sprowadzić do następującej postaci:
+\begin{itemize}
+\item zdarzeniami będą powtarzające się zajęcia - wykłady, laboratoria, lekcje
+\item zasobami będą sale, w których są prowadzone zajęcia i wykładowcy
+\item ograniczenia twarde najczęściej uwzględniają:
+	\begin{itemize}
+	\item zajęcia dla jednej klasy nie mogą odbywać się w tym samym czasie,
+	\item wykładowca nie może prowadzić równocześnie dwóch różnych zajęć,
+	\item w jednej sali mogą odbywać się tylko jedne zajęcia,
+	\item niektóre zajęcia muszą odbywać się w sali przystosowanej do specyfiki zajęć 
+	\end{itemize}
+\item ograniczenia miękkie definiuje się odrębnie dla placówek zależnie od ich priorytetów
+\end{itemize}
+
+
+
+%Problem układania planu zajęć jest niezwykle ważnym problemem. Jest obecny w wielu dziedzinach, gdyż przy niewielkich modyfikacjach można przenieść go na problem ustalania rozkładów jazdy, czy planowania grafiku pracowników, gdzie znalezienie lepszego rozwiązania prowadzi do oszczędności czasu i zasobów. 
+\section{Klasyfikacja problemu}
+\subsection{Klasyfikacja problemu}
+\paragraph{}Problem układania planu zajęć jest klasyfikowany jako NP-zupełny, co można w łatwy sposób udowodnić poprzez redukcję problemu k-kolorowania wierzchołkowego grafu $G(V, E)$, gdzie $V$ zawiera zdarzenia, a $E$ konflikty między nimi, do decyzyjnej wersji problemu układania planu zajęć (czy da się skonstruować plan zajęć obejmujący $k$ przedziałów czasowych) 
+\paragraph{}Problem k-kolorowania wierzchołkowego to problem decyzyjny, który polega na odpowiedzi na pytanie, czy dany graf da się pokolorować wierzchołkowo na dokładnie $k$ kolorów. Przypomnijmy, że w każdym poprawnym pokolorawniu każde dwa wierzchołki połączone ze sobą krawędzią muszą mieć przyporządkowane różne kolory. W grafie $G(V,E)$ krawędziami połączone są zdarzenia, które nie mogą odbywać się w tym samym czasie. Jeżeli przyjmiemy, że kolorom w pokolorowaniu odpowiadają poszczególne przedziały czasowe otrzymujemy redukcję w czasie wielomianowym ze względu na liczbę wierzchołków i krawędzi do problemu k-kolorowania wierzchołkowego grafu. Bardziej formalny dowód na tą redukcję, jak i inne redukcje z innych problemów NP-zupełnych zawiera \cite{npcomplete}.
+
+
+\subsection{Przegląd algorytmów}
+\paragraph{}Problem układania planu zajęć jest NP-zupełny, więc nie istnieje deterministyczny algorytm, który zwracałby dokładny wynik w czasie wielomianowym. Znane są zastosowania różnego rodzaju metaheurystyk do rozwiązania tego problemu.
+\subsubsection{Algorytm genetyczny}
+
+\subsubsection{Algorytm optymalizacji roju}
+
+\subsubsection{Algorytm symulowanego wyżarzania}
+
+\subsubsection{Algorytm Tabu Search}
+
+\subsubsection{Algorytm Harmony Search}
+
+\subsubsection{Algorytm Hill-Climbing}
+
+\subsubsection{Hiperheurystyki}
+
+
+\section{Przegląd istniejących systemów}
