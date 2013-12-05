@@ -11,6 +11,28 @@ class CompetitionReader(object):
         self.data = Data()
         self.buffer = []
 
+    def read(self, fileName):
+        """Return data object with data from fileName"""
+
+        self.buffer = self.readF(fileName)
+
+        self.getHeader()
+        self.getCourses()
+        self.getRooms()
+        self.getCurricula()
+        self.getConstraints()
+
+        return self.data
+
+    def readF(self, fileName):
+        """Return content of file"""
+
+        path = u"input/" + fileName
+        f = open(path, "r")
+        content = map(lambda x: x.rstrip('\n'), f.readlines())
+
+        return content
+
     def readInstance(self, instanceNr):
         """Return data object with data from instance file"""
 

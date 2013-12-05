@@ -7,12 +7,12 @@ from cats.readers.competitionReader import CompetitionReader
 from cats.pso.particle import Particle
 from cats.pso.pso import PSO
 
-timeLimit = float(sys.argv[1])
+fileName = sys.argv[1]
+timeLimit = float(sys.argv[2])
 endTime = time.time() + timeLimit
 
 c = CompetitionReader()
-data = c.readInstance(1)
-print data.curricula[1].members
+data = c.read(fileName)
 
 pso = PSO(data, endTime)
 best = pso.run()
