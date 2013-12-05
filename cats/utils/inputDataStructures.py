@@ -3,17 +3,21 @@ class Model(object):
         return self.meta["id"]
 
 class Course(Model):
-    def __init__(self, id, teacher, lectureNum, minWorkingDays, studentsNum):
+    def __init__(self, id, teacher, lectureNum, minWorkingDays, studentsNum, typeOfRoom = None):
         self.id = id
         self.teacher = teacher
         self.lectureNum = lectureNum
         self.minWorkingDays = minWorkingDays
         self.studentsNum = studentsNum
-
+        self.typeOfRoom = typeOfRoom
+        self.assignedLectureNum = 0
 class Room(Model):
-    def __init__(self, id, capacity):
+    def __init__(self, id, capacity, type=None):
         self.id = id
         self.capacity = capacity
+        self.type = type
+    def __str__(self):
+        return str(self.id)+" "+str(self.capacity)
 
 class Curriculum(Model):
     def __init__(self, id, courseNum, members):

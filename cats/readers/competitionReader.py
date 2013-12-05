@@ -1,8 +1,7 @@
 import os
 
 from cats.utils.inputDataStructures import Course, Room, Curriculum, Constraint
-from cats.utils.data import Data
-
+from cats.utils.data import Data, DictData
 
 class CompetitionReader(object):
     """Read data from file"""
@@ -69,9 +68,12 @@ class CompetitionReader(object):
 
         while self.buffer[index] != '':
             s = self.buffer[index].split()
-            course = Course(s[0], s[1], int(s[2]), int(s[3]), int(s[4]))
-            self.data.courses.append(course)
-
+            if len(s) > 5:
+                course = Course(s[0], s[1], int(s[2]), int(s[3]), int(s[4]), s[5])
+                self.data.courses.append(course)
+            else:
+                course = Course(s[0], s[1], int(s[2]), int(s[3]), int(s[4]))
+                self.data.courses.append(course)
             index += 1
 
     def getRooms(self):
@@ -81,7 +83,10 @@ class CompetitionReader(object):
 
         while self.buffer[index] != '':
             s = self.buffer[index].split()
-            room = Room(s[0], int(s[1]))
+            if len(s)==3:
+                room = Room(s[0], int(s[1]), s[2])
+            else:
+                room = Room(s[0], int(s[1]))
             self.data.rooms.append(room)
 
             index += 1
@@ -93,7 +98,6 @@ class CompetitionReader(object):
 
         while self.buffer[index] != '':
             s = self.buffer[index].split()
-            #print s
             curriculum = Curriculum(s[0], int(s[1]), s[2:])
             self.data.curricula.append(curriculum)
 
@@ -113,6 +117,12 @@ class CompetitionReader(object):
 
 
 
+
+class CompetitionDictReader(object):
+    def readInstance(self, id):
+        c = CompetitionReader()
+        data = c.readInstance(id)
+        return DictData(data)
 
 
 

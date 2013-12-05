@@ -1,0 +1,467 @@
+Name: SchoolData
+Courses: 373
+Rooms: 55
+Days: 5
+Periods_per_day: 15
+Curricula: 22
+Constraints: 0
+
+COURSES:
+4*4A*Niem.*Zawodowy*2 CzBa 2 1 17 n
+4*4A*Niem.*Zawodowy*1 CzBa 1 1 16 n
+2*4B*Gr.*1 KzEa 3 1 16 n
+3*ZA_Matematyka*MAT MkMa 2 1 27 n
+2*4B*Gr.*2 AsAm 3 1 15 n
+1*4A_Chemia*CHEM ŒaAa 1 1 32 n
+3*LW_Chemia*CHEM ŒaAa 1 1 29 n
+3*4*A*niereligia WaLa 2 1 9 l
+3*LW*INF*A PaAa 2 1 13 c
+3*LW*INF*B JzKa 2 1 16 c
+3*ZB_Godziny*z*wychowawc¹*GZW DaAa 1 1 18 n
+1*4C_Matematyka*MAT MkMa 4 1 23 n
+1*4B_Godziny*z*wychowawc¹*GZW MiZn 3 1 28 n
+2*LP*religia LkWh 2 1 15 n
+2*4B_Podstawy*konstrukcji*maszyn*PKM KaMa 1 1 31 n
+2*ZA_Zajêcia*praktyczne*ZP WiJk 1 1 31 w
+1*LW_Wiedza*o*spo³eczeñstwie*WOS WaDa 1 1 32 n
+1*LP*EDB*2 DfEa 1 1 17 n
+4*4C*Tech.*Poj.*Samochodowych ByTz 6 1 15 n
+1*LW_Fizyka*FIZ ErAa 1 1 32 n
+3*LW*WF*A KaMa 3 1 17 e
+3*LW*WF*B KzEa 3 1 12 e
+1*4C*INFORMATYKA*GR.2 JzKa 1 1 13 c
+1*4C*INFORMATYKA*GR.1 JzKa 1 1 10 c
+1*4C_Wychowanie*fizyczne*WF PoJw 3 1 23 e
+1*4B*Warsztaty*A MiZn 1 1 7 w
+1*4B*Warsztaty*B ¯iWw 1 1 8 w
+1*4B*Warsztaty*C KaEa 1 1 7 w
+1*4B*Warsztaty*D AsAj 1 1 6 w
+2*4B_Podstawy*przedsiêbiorczoœci*PP ŒkBa 2 1 31 n
+2*4C_Wiedza*o*kulturze*WOK SiPr 1 1 17 n
+3*4A_Godziny*z*wychowawc¹*GZW GaMk 1 1 27 n
+1*LP*WF*1_Wychowanie*fizyczne*WF GaMa 2 1 22 e
+1*ZA_Wiedza*o*spo³eczeñstwie*WOS WaDa 1 1 32 n
+1*4B*Religia OkMz 2 1 16 n
+2*ZB*Operatorzy GaMk 1 1 12 n
+1*LP*Religia OkMz 2 1 16 n
+2*ZB_J.*polski*j*pol SaMa 2 1 24 n
+2*4A*gr1 MaJk 2 1 13 n
+1*LP_Godziny*z*wychowawc¹*GZW PaAa 1 1 31 n
+1*ZA_Biologia*BIOL LkKa 1 1 32 n
+2*ZA_bezpieczeñstwo*pracy*BP SiMw 1 1 31 n
+2*4A_Elektryczne*i*elektroniczne*wyposa¿enie*pojazdów*samochodowych*EiEWPS MaJk 1 1 23 n
+1*4B*GR.1 WoWw 3 1 15 n
+1*4C_Edukacja*dla*bezpieczeñstwa*EDB DfEa 1 1 23 n
+1*ZA_Matematyka*MAT BsHa 2 1 32 n
+4*4A*PRE*1 MaJk 3 1 16 n
+4*4A*PRE*2 CkSr 3 1 17 n
+2*LP_Godziny*z*wychowawc¹*GZW CzBa 1 1 29 n
+1*4A*WF*2_Wychowanie*fizyczne*WF KaMa 2 1 20 e
+1*4C*Warsztaty*D TaSr 1 1 3 w
+1*4C*Warsztaty*A JaMa 7 1 7 w
+2*ZA_Matematyka*MAT ŒaAa 2 1 31 n
+1*4C*Warsztaty*C ¯iWw 6 1 7 w
+1*4C*Warsztaty*B KaEa 1 1 6 w
+2*ZA_Godziny*z*wychowawc¹*GZW ŒaAa 1 1 31 n
+1*LP_Chemia*CHEM ŒaAa 1 1 31 n
+1*4C_Podstawy*konstrukcji*maszyn*PKM GjAa 2 1 23 n
+2*4B_Wiedza*o*spo³eczeñstwie*WOS WaDa 1 1 31 n
+1*4A_Podstawy*konstrukcji*maszyn*PKM GjAa 2 1 32 n
+4*4C_Podstawy*przedsiêbiorczoœci*PP SiWw 2 1 33 n
+1*4C_Godziny*z*wychowawc¹*GZW JaMa 1 1 23 n
+3*LW*J.ANG*B PaAa 5 1 16 n
+4*4A*PDPS*2 KiGz 6 1 11 n
+4*4A*PDPS*1 ByTz 6 1 10 n
+3*LW*J.ANG*A PaAa 3 1 13 n
+2*4C_Godziny*z*wychowawc¹*GZW MaJk 1 1 17 n
+2*4A_J.*polski*j*pol HzMa 2 1 23 n
+1*4B_Fizyka*FIZ JzKa 1 1 28 n
+2*4C_Geografia*GEO LkEa 2 1 17 n
+3*LW_J.*polski*j*pol HzMa 6 1 29 n
+2*4C_J.*polski*j*pol HiP³ 2 1 17 n
+2*4A_Przepisy*ruchu*drogowego*PRD SaLk 2 1 23 n
+1*LP*Jêzyki*obce*2 CzBa 2 1 16 n
+1*LP*Jêzyki*obce*1 CzBa 2 1 15 n
+1*LW*Matp SaLa 4 1 21 n
+1*4B_Podstawy*konstrukcji*maszyn*PKM GjAa 3 1 28 n
+1*4A*Gr.2_Wychowanie*fizyczne*WF KaMa 1 1 20 n
+3*ZA*GR.2 WoWw 3 1 13 n
+3*ZA*GR.1 WoWw 3 1 14 n
+3*LW*RELIGIA LkWh 2 1 28 n
+1*ZB_Fizyka*FIZ ErAa 1 1 33 n
+2*ZB*Blacharze JkIz 4 1 12 n
+1*ZB_Matematyka*MAT ŒaAa 2 1 33 n
+1*LW_Przysposobienie*obronne*PO MzR³ 1 1 32 n
+2*4B*PDPS/ZP*Gr.2 KiGz 5 1 16 n
+1*4A_Historia*HIS WaDa 1 1 32 n
+2*4C_Mechanika*techniczna* GaMk 2 1 17 n
+1*LP_Edukacja*dla*bezpieczeñstwa*EDB DfEa 1 1 31 n
+1*LP_Historia*HIS WaDa 2 1 31 n
+1*4C_Ko³o*matematyczne*KMAT MkMa 1 1 23 n
+3*LP_Historia*HIS WaDa 1 1 28 n
+2*LW_Jêzyk*angielski*J*ANG SkAa 1 1 33 n
+2*4C_Podstawy*przedsiêbiorczoœci*PP ŒkBa 2 1 17 n
+3*4A_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS GaMk 3 1 27 n
+1*4A_Fizyka*FIZ JzKa 1 1 32 n
+2*4A_Geografia*GEO LkEa 2 1 23 n
+1*ZB_Chemia*CHEM ŒaAa 1 1 33 n
+4*4A*WF*2 WoWw 5 1 17 n
+2*ZB*Religia/Etyka*nieuczêszczaj¹cy WaLa 2 1 4 l
+3*ZB*Blacharze JkIz 4 1 8 n
+1*4B_Biologia*BIOL LkKa 1 1 28 n
+4*4C*Religia OkMz 2 1 16 n
+1*4C_Technologia*mechaniczna*TM KaMa 2 1 23 n
+3*LP_Godziny*z*wychowawc¹*GZW ErAa 1 1 28 n
+4*4A_Matematyka*MAT MkMa 4 1 33 n
+1*4A_J.*polski*j*pol HzMa 2 1 32 n
+2*4B_Matematyka*MAT SaLa 5 1 31 n
+3*4A_Wiedza*o*kulturze*WOK SiPr 1 1 27 n
+2*LW*historia WaAa 6 1 25 n
+1*LP*INF*1 JzKa 2 1 14 c
+1*ZA_Technologia*mechaniczna*TM GaMk 2 1 32 n
+1*LW_Geografia*GEO LkEa 1 1 32 n
+3*4A_bezpieczeñstwo*pracy*BP SiMw 1 1 27 n
+1*LW*J.Obce*2 Dsvl 2 1 17 n
+1*ZA*GR.1 PoJw 3 1 16 n
+1*ZA*GR.2 AsAm 3 1 16 n
+1*LW*J.Obce*1 Dsvl 2 1 15 n
+4*4C_Wiedza*o*spo³eczeñstwie*WOS WaAa 2 1 33 n
+3*ZB_Podstawy*przedsiêbiorczoœci*PP ŒkBa 1 1 18 n
+3*LP*WF*A GaMa 1 1 1
+3*LP*WF*B GaMa 2 1 28
+2*4A_Godziny*z*wychowawc¹*GZW ByTz 1 1 23
+2*ZA_J.*polski*j*pol SiPr 2 1 31
+1*ZB_Godziny*z*wychowawc¹*GZW JkIz 1 1 33
+2*4B_Godziny*z*wychowawc¹*GZW SaLa 1 1 31
+2*LP*Religia/Etyka*nieuczêszczaj¹cy KaEa 2 1 11
+1*4A*Warsztaty*D KaEa 1 1 9
+1*4A*Warsztaty*C ¯iWw 1 1 7
+1*4A*Warsztaty*B MiZn 1 1 8
+1*4A*Warsztaty*A AsAj 1 1 8
+1*4C_Mechanika*techniczna* GaMk 1 1 23
+2*ZB_Jêzyk*angielski*J*ANG DaAa 2 1 24
+3*ZA_J.*polski*j*pol SiPr 2 1 27
+2*LW*Religia TiWh 2 1 18
+1*4A_Matematyka*MAT BaDa 4 1 32
+2*4A_Silniki*pojazdów*samochodowych*SPS KaMa 2 1 23
+4*4A*religia OkMz 2 1 26
+1*ZB_Wiedza*o*spo³eczeñstwie*WOS WaDa 1 1 33
+3*ZB_Matematyka*MAT ŒaAa 2 1 18
+4*4A_J.*polski*j*pol HzMa 4 1 33
+4*4C*Obrabiarki DfEa 3 1 5
+2*ZA*PDS*1 MiZn 1 1 10
+2*ZA*PDS*2 KiGz 1 1 10
+2*ZA*PDS*3 OzMw 1 1 11
+1*LW_Godziny*z*wychowawc¹*GZW KaMa 2 1 32
+2*ZA*B AsAm 1 1 16
+2*ZA*A OzMw 2 1 15
+1*ZB_Edukacja*dla*bezpieczeñstwa*EDB MzR³ 1 1 33
+1*LW_Chemia*CHEM ŒaAa 1 1 32
+3*ZB_Jêzyk*angielski*J*ANG DaAa 1 1 18
+2*ZA_Konstrukcja*pojazdów*samochodowych*KPS OzMw 3 1 31
+1*4C_Geografia*GEO LkEa 1 1 23
+2*LP*2_Jêzyk*angielski*J*ANG SkAa 2 1 21
+3*LP_Fizyka*FIZ ErAa 1 1 28
+3*4A_Historia*HIS WaDa 2 1 27
+2*4B_Wiedza*o*kulturze*WOK SiPr 1 1 31
+4*4C_Godziny*z*wychowawc¹*GZW KzEa 1 1 33
+3*LP_Chemia*CHEM ŒaAa 1 1 28
+2*ZA*Religia LkWh 2 1 19
+1*4A*Gr.2_Jêzyk*angielski*J*ANG MaAa 1 1 29
+3*4A_Elektryczne*i*elektroniczne*wyposa¿enie*pojazdów*samochodowych*EiEWPS MaJk 4 1 27
+1*4C_Jêzyk*angielski*J*ANG MaAa 1 1 23
+1*LP_Fizyka*FIZ ErAa 1 1 31
+1*4C*Rys.*Tech.*Gr.*1 JaMa 2 1 13
+1*ZA_Chemia*CHEM ŒaAa 1 1 32
+1*ZA_Historia*HIS OkMz 2 1 32
+3*LP_Wiedza*o*spo³eczeñstwie*WOS WaAa 3 1 28
+2*LP*2_Biologia*BIOL LkKa 2 1 27
+2*4b*Religia OkMz 2 1 20
+1*LP*MAT MkMa 4 1 27 n
+3*LW_Fizyka*FIZ ErAa 1 1 29 n
+1*4C*NIEMIECKI*GR.*1 SgPa 1 1 10 n
+1*4C_Biologia*BIOL LkKa 1 1 23 n
+3*ZB_J.*polski*j*pol SiPr 2 1 18 n
+3*4A_Jêzyk*angielski*J*ANG SkAa 1 1 27 n
+2*ZA*WF*A PoJw 3 1 15 n
+2*4A*WF*dziewczêta_Wychowanie*fizyczne*WF KzEa 3 1 29 e
+2*LW*MAT SaLa 5 1 25 n
+2*LP*matr_Matematyka*MAT BsHa 8 1 16 n
+2*LP_Historia*HIS WaDa 2 1 29 n
+2*4C*GR.3 JaMa 4 1 6 n
+3*LP*J.ANG*B DaAa 5 1 13 n
+4*4A_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS ByTz 2 1 33 n
+1*LW_Historia*HIS WaAa 2 1 32 n
+2*ZB*Religia OkMz 3 1 20 n
+3*ZA*RELIGIA OkMz 2 1 17 n
+2*4C_Podstawy*konstrukcji*maszyn*PKM GjAa 3 1 17 n
+1*LW*Inf*2 JzKa 1 1 17 c
+1*LW*Inf*1 JzKa 1 1 15 c
+3*ZA_Godziny*z*wychowawc¹*GZW WoWw 1 1 27 n
+4*4A_Organizacja*i*zarz¹dzanie*przedsiêbiorstwem*samochodowym*OiZPS MiZn 3 1 33 n
+3*ZB_Wychowanie*fizyczne*WF PoJw 3 1 18 e
+2*ZA_Eksploatacja*pojazdów*samochodowych*EPS MiZn 1 1 31 w
+1*ZB_Historia*HIS OkMz 2 1 33 n
+3*LP_Matematyka*MAT BaDa 5 1 28 n
+2*4B_Geografia*GEO LkEa 2 1 31 n
+3*4A_Geografia*GEO LkEa 2 1 27 n
+3*4*C_J.*polski*j*pol HiP³ 4 1 25 n
+2*4A_Jêzyk*niemiecki*J*NIEM CzBa 2 1 23 n
+2*ZA_Podstawy*konstrukcji*maszyn*PKM GjAa 1 1 31 n
+1*ZA*Religia TiWh 2 1 22 n
+1*LP_Wiedza*o*kulturze*WOK SiPr 1 1 31 n
+2*LW*WF*Dziewczêta KzEa 3 1 10 e
+3*4A_Silniki*pojazdów*samochodowych*SPS ByTz 4 1 27 n
+3*LW_Matematyka*MAT SaLa 5 1 29 n
+2*LW*Fizyka ErAa 4 1 11 n
+2*LP*matp MkMa 5 1 21 n
+2*ZA_Technologia*mechaniczna*TM GjAa 1 1 31 n
+1*4A_Geografia*GEO LkEa 1 1 32 n
+1*ZB*Elektromechanik PoJw 3 1 17 n
+3*LP_J.*polski*j*pol SaMa 6 1 28 n
+3*4*C_Godziny*z*wychowawc¹*GZW DfEa 1 1 25 n
+2*LP*A CzBa 2 1 14 n
+2*LP*B CzBa 2 1 15 n
+1*4A_Godziny*z*wychowawc¹*GZW BaDa 1 1 32 n
+2*4A_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS GaMk 6 1 23 w
+2*ZA*WF*B AsAm 2 1 15 e
+3*4A_Fizyka*FIZ ErAa 2 1 27 n
+1*4A_Religia*REL OkMz 2 1 32 n
+3*4*C_Geografia*GEO LkEa 1 1 25 n
+1*ZB_Biologia*BIOL LkKa 1 1 33 n
+2*4A*gr2 WiJk 1 1 10 n
+3*ZA_Eksploatacja*pojazdów*samochodowych*EPS KiGz 3 1 27 w
+2*ZB_bezpieczeñstwo*pracy*BP SiMw 2 1 24 n
+3*ZB_Zajêcia*praktyczne*ZP WiJk 4 1 18 o
+4*4A*J.Obce*2 CzBa 3 1 17 n
+3*ZA_Fizyka*FIZ ErAa 1 1 27 n
+1*LW*WF*Dziewczêta KzEa 3 1 11 e
+4*4A_Jêzyk*angielski*J*ANG PaAa 1 1 33 n
+4*4A_Wiedza*o*spo³eczeñstwie*WOS WaAa 2 1 33 n
+1*LW_Biologia*BIOL LkKa 1 1 32 n
+2*LW*historia*i*spo³eczeñstwo WaDa 2 1 8 n
+1*ZA_Godziny*z*wychowawc¹*GZW ZcIa 1 1 32 n
+2*4B_Elektryczne*i*elektroniczne*wyposa¿enie*pojazdów*samochodowych*EiEWPS MaJk 1 1 31 w
+2*LW*B Dsvl 2 1 16 n
+2*LW*A Dsvl 2 1 17 n
+2*LP*3_Biologia*BIOL LkKa 2 1 17 n
+4*4A_Podstawy*przedsiêbiorczoœci*PP SiWw 2 1 33 n
+3*4A_Matematyka*MAT BaDa 5 1 27 n
+1*ZA*Warsztaty*A CkSr 1 1 8 w
+1*ZA*Warsztaty*C JaMa 1 1 7 w
+1*ZA*Warsztaty*B ¯iWw 1 1 8 w
+1*ZA*Warsztaty*D JiRn 1 1 9 w
+3*LP_Biologia*BIOL WñDa 3 1 28 n
+2*4A_Jêzyk*angielski*J*ANG SkAa 1 1 14 n
+1*LW_Edukacja*dla*bezpieczeñstwa*EDB KaMa 2 1 32 n
+2*LW_Godziny*z*wychowawc¹*GZW KaKa 1 1 33 n
+3*LW_Historia*HIS WaAa 3 1 29 n
+1*LP_Podstawy*przedsiêbiorczoœci*PP ŒkBa 2 1 31 n
+1*LP*BIBL._Biblioteka*szkolna*BSZKOL KaEa 1 1 19 l
+2*LW_J.*polski*j*pol HiP³ 4 1 33 n
+1*LW_Wiedza*o*kulturze*WOK SiPr 1 1 32 n
+4*4C_Matematyka*MAT SaLa 4 1 33 n
+1*ZB_Geografia*GEO LkEa 1 1 33 n
+2*4B_J.*polski*j*pol HzMa 2 1 31 n
+1*ZA*Religia/Etyka*nieuczêszczaj¹cy_Biblioteka*szkolna*BSZKOL WaLa 1 1 24 l
+2*LP*1_Jêzyk*angielski*J*ANG SkAa 2 1 18 b
+2*4C_Jêzyk*niemiecki*J*NIEM SgPa 1 1 15 n
+2*4A*WF AsAm 3 1 22 e
+1*4A*WF*3_Wychowanie*fizyczne*WF WoWw 1 1 17 e
+1*LP*MATR_Matematyka*MAT BaDa 3 1 14 n
+3*4*C_Historia*HIS WaDa 2 1 25 n
+2*4B_Silniki*pojazdów*samochodowych*SPS KaMa 2 1 31 o
+2*4C_Uk³ady*sterowania*i*regulacji*USIR MaJk 2 1 17 o
+2*4B_Przepisy*ruchu*drogowego*PRD SaLk 1 1 31 n
+2*4C_Matematyka*MAT BsHa 5 1 17 n
+1*ZB_J.*polski*j*pol SiPr 2 1 33 n
+2*4A_Podstawy*przedsiêbiorczoœci*PP ŒkBa 2 1 23 n
+2*4A_Matematyka*MAT BaDa 5 1 23 n
+1*4C*ANGIELSKI*GR.*1 MaAa 2 1 10 n
+1*4B_J.*polski*j*pol SiPr 2 1 28 n
+2*ZA*Religia/Etyka*nieuczêszczaj¹cy WaLa 2 1 12 l
+4*4C*Jêzyki*obce*2 KzEa 3 1 15 n
+4*4C*Jêzyki*obce*1 KzEa 3 1 18 n
+3*ZB*Operatorzy DfEa 3 1 10 o
+2*4C*GR.1_Pracownia*techniczna*PT SiWw 3 1 11 o
+2*4A_Pracownia*diagnostyki*pojazdów*samochodowych*PDPS ByTz 1 1 23 o
+2*ZA_Przygotowanie*do*prowadzenia*pojazdów*samochodowych*PDPPS SaLk 2 1 31 w
+1*4B*GR.2_Jêzyk*angielski*J*ANG MaAa 1 1 45 n
+2*LP_Podstawy*psychologii*PSYCH SkMa 2 1 29 n
+3*LW_Godziny*z*wychowawc¹*GZW WaAa 1 1 29 n
+3*4A_J.*polski*j*pol SaMa 4 1 27 n
+1*LW*WF*Ch³opcy KaMa 3 1 21 e
+1*4C*Rys.*Tech.*Gr.*2 JaMa 2 1 10 n
+2*4C_Wiedza*o*spo³eczeñstwie*WOS WaDa 1 1 17 n
+2*4B_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS KiGz 4 1 31 w
+1*ZB*Warsztaty*D KaEa 1 1 7 w
+1*ZB*Warsztaty*B JiRn 1 1 8 w
+1*ZB*Warsztaty*C TaSr 1 1 9 w
+1*ZB*Warsztaty*A JkIz 1 1 9 w
+1*4A_Technologia*mechaniczna*TM KaMa 2 1 32 w
+1*LP_Podstawy*psychologii*PSYCH SkMa 2 1 31 n
+3*4C*TPS SiMw 1 1 10 w
+1*4B_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS MiZn 3 1 28 w
+1*4C_Chemia*CHEM ŒaAa 1 1 23 n
+3*LW*J.NIEM*B SgPa 2 1 15 n
+3*LW*J.NIEM*A SgPa 1 1 14 n
+3*ZA_Podstawy*przedsiêbiorczoœci*PP ŒkBa 1 1 27 n
+1*ZB*Religia LkWh 2 1 17 n
+1*4A*Gr.1_Jêzyk*angielski*J*ANG ZcIa 1 1 32 n
+2*LW*WF*Ch³opcy KaMa 3 1 23 e
+3*4*C_Wiedza*o*kulturze*WOK SiPr 1 1 25 n
+2*4A_Podstawy*konstrukcji*maszyn*PKM KaMa 1 1 23 w
+3*4*C_Wychowanie*fizyczne*WF AsAm 3 1 25 n
+2*ZB_Godziny*z*wychowawc¹*GZW OkMz 2 1 24 n
+1*ETYKA_Etyka*ETY WaAa 2 1 4 n
+2*ZA_Organizacja*i*zarz¹dzanie*przedsiêbiorstwem*samochodowym*OiZPS MiZn 2 1 31 n
+1*4C_Historia*HIS MzR³ 1 1 23 n
+2*ZB_Zajêcia*praktyczne*ZP WiJk 1 1 24 o
+1*ZA_Fizyka*FIZ ErAa 1 1 32 n
+1*LP_Biologia*BIOL WñDa 2 1 31 n
+2*LP_J.*polski*j*pol HzMa 4 1 29 n
+3*4C*Religia LkWh 2 1 16 n
+1*4C_J.*polski*j*pol SaMa 2 1 23 n
+2*4C*Religia TiWh 2 1 16 n
+1*4B_Chemia*CHEM ŒaAa 1 1 28 n
+3*LP*J.ANG*A ZcIa 5 1 15 n
+3*ZB_Fizyka*FIZ ErAa 1 1 18 n
+2*LP_Etyka*ETY WaAa 2 1 29 n
+2*ZB_Matematyka*MAT ŒaAa 2 1 24 n
+1*LW*Religia/etyka*nieuczêszczaj¹cy_Biblioteka*szkolna*BSZKOL KaEa 1 1 18 l
+2*4A*Religia TiWh 2 1 14 n
+2*4A_Wiedza*o*kulturze*WOK SiPr 1 1 23 n
+1*4B_Technologia*mechaniczna*TM KaMa 2 1 28 w
+1*4A_Maszynoznastwo*MASZ KaMa 1 1 32 w
+3*LP*J.NIEM*B SgPa 2 1 13 n
+3*LP*J.NIEM*A SgPa 2 1 15 n
+4*4A_Godziny*z*wychowawc¹*GZW HzMa 2 1 33 n
+4*4C_J.*polski*j*pol HiP³ 4 1 33 n
+2*4B_Pracownia*diagnostyki*pojazdów*samochodowych*PDPS KiGz 1 1 31 w
+1*4A_Edukacja*dla*bezpieczeñstwa*EDB DfEa 1 1 32 n
+3*LW_Wiedza*o*spo³eczeñstwie*WOS WaAa 2 1 29 n
+1*4B_Maszynoznastwo*MASZ KaMa 1 1 28 w
+3*4C*ZS(Oper) DfEa 2 1 6 w
+4*4C*Tech.*Mechanik MaJk 3 1 13 w
+1*LW*Religia OkMz 2 1 21 n
+1*LP_J.*polski*j*pol SaMa 4 1 31 n
+1*4B_Matematyka*MAT BsHa 4 1 28 n
+4*4A*PDPS*3 MiZn 6 1 12 n
+1*LW_Podstawy*przedsiêbiorczoœci*PP ŒkBa 2 1 32 n
+1*4A*WF*1 GaMa 2 1 16 e
+2*4C_Wychowanie*fizyczne*WF PoJw 3 1 17 e
+1*4A_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS GaMk 1 1 32 n
+1*4B_Historia*HIS WaDa 1 1 28 n
+1*ZA_Podstawy*konstrukcji*maszyn*PKM GjAa 1 1 32 n
+3*4C*ZS*(Sam) JkIz 2 1 9 w
+3*LP*Religia LkWh 2 1 11 n
+2*4B*PDPS/ZP*Gr.1_Zajêcia*praktyczne*ZP WiJk 1 1 15 w
+14*14*c*Religia LkWh 2 1 11 n
+2*4A_Wiedza*o*spo³eczeñstwie*WOS WaDa 1 1 23 n
+1*LW_J.*polski*j*pol HzMa 4 1 32 n
+1*LP_Geografia*GEO LkEa 2 1 31 n
+3*4*C_Matematyka*MAT MkMa 5 1 25 n
+1*4C_Jêzyk*niemiecki*J*NIEM SgPa 1 1 13 n
+2*ZB_Wychowanie*fizyczne*WF AsAm 3 1 24 e
+2*LW_Przysposobienie*obronne*PO MzR³ 2 1 33 n
+1*ZA_J.*polski*j*pol SiPr 2 1 32 n
+2*4C_Jêzyk*angielski*J*ANG DaAa 2 1 17 n
+2*4C*Religia*i*etyka*nieuczêszczaj¹cy WaLa 2 1 1 l
+1*4C_Fizyka*FIZ ErAa 1 1 23 n
+2*4C_Technologia*mechaniczna*TM GjAa 2 1 17 n
+2*LP*Chemia_Chemia*CHEM ŒaAa 4 1 15 n
+3*ZB_Religia*REL LkWh 2 1 18 n
+2*LP*geografia_Geografia*GEO LkEa 4 1 30 n
+1*LP_Wiedza*o*spo³eczeñstwie*WOS WaDa 1 1 31 n
+3*4A*GR1 WoWw 3 1 13 n
+3*LW_Biologia*BIOL WñDa 1 1 29 n
+3*4*A*religia LkWh 2 1 18 n
+3*4*C_Fizyka*FIZ ErAa 2 1 25 n
+1*ZA_Geografia*GEO LkEa 1 1 32 n
+1*4A*Gr.1_Rysunek*techniczny*RT DfEa 2 1 32 n
+1*4A_Biologia*BIOL LkKa 1 1 32 n
+
+ROOMS:
+Sala*401	34	n
+7*Warsztaty	34	w
+18W*Warsztaty	34	w
+Sala*405	18	n
+Sala*404	18	n
+Sala*501	34	n
+Sala*502	34	n
+Sala*503	34	n
+Sala*504	34	n
+20W*Warsztaty	34	w
+Basen	30	e
+10A*Warsztaty	34	w
+3*Warsztaty	34	w
+14*Warsztaty	34	w
+11*Warsztaty	34	w
+6*Warsztaty	34	w
+Sala*119	34	n
+Sala*215	34	n
+Sala*117	34	n
+Sala*116	34	n
+Sala*114	34	n
+Sala*313	34	n
+Sala*206	34	n
+Sala*205	34	n
+Sala*gimnastyczna*3	60	e
+Sala*203	34	n
+Si³ownia	30	e
+Sala*306	34	n
+Sala*304	34	n
+Sala*302	34	n
+Sala*303	34	n
+Sala*209	34	n
+19W*Warsztaty	34	w
+8*Warsztaty	34	w
+9B*Warsztaty	34	w
+Œwietlica	100	l
+Sala*316	34	n
+16*Warsztaty	34	w
+Biblioteka*Szkolna	20	l
+9A*Warsztaty	34	w
+Sala*gimnastyczna*1	60	e
+13*Warsztaty	34	w
+Sala*gimnastyczna*2	60	e
+Sala*105	18	c
+Sala*102	34	c
+Boisko*szkolne	100	e
+Sala*311	34	n
+Sala*310	34	n
+Sala*216	34	n
+Sala*312	18	c
+Sala*314	34	n
+Sala*212	34	n
+Sala*213	34	n
+10B*Warsztaty	34	w
+Poza*szko³¹	200	o
+
+CURRICULA:
+1*4C  32 1*4C*Warsztaty*A 1*4C*Warsztaty*B 1*4C*Warsztaty*C 1*4C*Warsztaty*D 1*4C*Rys.*Tech.*Gr.*1 1*4C*Rys.*Tech.*Gr.*2 1*4C*ANGIELSKI*GR.*1 1*4C*NIEMIECKI*GR.*1 1*4A*Gr.2_Jêzyk*angielski*J*ANG 1*4C_Jêzyk*niemiecki*J*NIEM 1*4C*INFORMATYKA*GR.1 1*4C*INFORMATYKA*GR.2 14*14*c*Religia 1*4C_Biologia*BIOL 1*4C_Chemia*CHEM 1*4C_Edukacja*dla*bezpieczeñstwa*EDB 1*4C_Fizyka*FIZ 1*4C_Geografia*GEO 1*4C_Godziny*z*wychowawc¹*GZW 1*4C_Historia*HIS 1*4C_J.*polski*j*pol 1*4C_Jêzyk*angielski*J*ANG 1*4C_Jêzyk*niemiecki*J*NIEM 1*4C_Ko³o*matematyczne*KMAT 1*4C_Matematyka*MAT 1*4C_Mechanika*techniczna* 1*4C_Podstawy*konstrukcji*maszyn*PKM 1*4C_Technologia*mechaniczna*TM 1*4C_Wychowanie*fizyczne*WF
+1*4B  21 1*4B*Warsztaty*A 1*4B*Warsztaty*B 1*4B*Warsztaty*C 1*4B*Warsztaty*D 1*4B*GR.1 1*4B*GR.2_Jêzyk*angielski*J*ANG 1*4B*Religia 1*4B_Biologia*BIOL 1*4B_Chemia*CHEM 1*4B_Fizyka*FIZ 1*4B_Godziny*z*wychowawc¹*GZW 1*4B_Historia*HIS 1*4B_J.*polski*j*pol 1*4B_Maszynoznastwo*MASZ 1*4B_Matematyka*MAT 1*4B_Podstawy*konstrukcji*maszyn*PKM 1*4B_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS 1*4B_Technologia*mechaniczna*TM
+1*4A  24 1*4A*Warsztaty*A 1*4A*Warsztaty*B 1*4A*Warsztaty*C 1*4A*Warsztaty*D 1*4A*Gr.1_Jêzyk*angielski*J*ANG 1*4A*Gr.2_Wychowanie*fizyczne*WF 1*4A*WF*3_Wychowanie*fizyczne*WF 1*4A*WF*1 1*4A*WF*2_Wychowanie*fizyczne*WF 1*4A_Biologia*BIOL 1*4A_Chemia*CHEM 1*4A_Edukacja*dla*bezpieczeñstwa*EDB 1*4A_Fizyka*FIZ 1*4A_Geografia*GEO 1*4A_Godziny*z*wychowawc¹*GZW 1*4A_Historia*HIS 1*4A_J.*polski*j*pol 1*4A_Maszynoznastwo*MASZ 1*4A_Matematyka*MAT 1*4A_Podstawy*konstrukcji*maszyn*PKM 1*4A_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS 1*4A_Religia*REL 1*4A_Technologia*mechaniczna*TM
+2*4B  18 2*4B*Gr.*1 2*4B*Gr.*2 2*4B*PDPS/ZP*Gr.1_Zajêcia*praktyczne*ZP 2*4B*PDPS/ZP*Gr.2 2*4b*Religia 2*4B_Elektryczne*i*elektroniczne*wyposa¿enie*pojazdów*samochodowych*EiEWPS 2*4B_Geografia*GEO 2*4B_Godziny*z*wychowawc¹*GZW 2*4B_J.*polski*j*pol 2*4B_Matematyka*MAT 2*4B_Podstawy*konstrukcji*maszyn*PKM 2*4B_Podstawy*przedsiêbiorczoœci*PP 2*4B_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS 2*4B_Pracownia*diagnostyki*pojazdów*samochodowych*PDPS 2*4B_Przepisy*ruchu*drogowego*PRD 2*4B_Silniki*pojazdów*samochodowych*SPS 2*4B_Wiedza*o*kulturze*WOK 2*4B_Wiedza*o*spo³eczeñstwie*WOS
+2*4C  19 2*4C*GR.1_Pracownia*techniczna*PT 2*4C*GR.1_Pracownia*techniczna*PT 2*4C*GR.3 2*4C*Religia 2*4C*Religia*i*etyka*nieuczêszczaj¹cy 2*4C_Geografia*GEO 2*4C_Godziny*z*wychowawc¹*GZW 2*4C_J.*polski*j*pol 2*4C_Jêzyk*angielski*J*ANG 2*4C_Jêzyk*niemiecki*J*NIEM 2*4C_Matematyka*MAT 2*4C_Mechanika*techniczna* 2*4C_Podstawy*konstrukcji*maszyn*PKM 2*4C_Podstawy*przedsiêbiorczoœci*PP 2*4C_Technologia*mechaniczna*TM 2*4C_Uk³ady*sterowania*i*regulacji*USIR 2*4C_Wiedza*o*kulturze*WOK 2*4C_Wiedza*o*spo³eczeñstwie*WOS 2*4C_Wychowanie*fizyczne*WF
+2*4A  20 2*4A*gr1 2*4A*gr2 2*4A*WF 2*4A*Religia 2*4A*WF*dziewczêta_Wychowanie*fizyczne*WF 2*4A_Elektryczne*i*elektroniczne*wyposa¿enie*pojazdów*samochodowych*EiEWPS 2*4A_Geografia*GEO 2*4A_Godziny*z*wychowawc¹*GZW 2*4A_J.*polski*j*pol 2*4A_Jêzyk*angielski*J*ANG 2*4A_Jêzyk*niemiecki*J*NIEM 2*4A_Matematyka*MAT 2*4A_Podstawy*konstrukcji*maszyn*PKM 2*4A_Podstawy*przedsiêbiorczoœci*PP 2*4A_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS 2*4A_Pracownia*diagnostyki*pojazdów*samochodowych*PDPS 2*4A_Przepisy*ruchu*drogowego*PRD 2*4A_Silniki*pojazdów*samochodowych*SPS 2*4A_Wiedza*o*kulturze*WOK 2*4A_Wiedza*o*spo³eczeñstwie*WOS
+2*LW  18 2*LW*A 2*LW*WF*Dziewczêta 2*LW*WF*Ch³opcy 2*LW*B 2*LP*matr_Matematyka*MAT 2*LW*MAT 2*LW*Religia 2*LP*3_Biologia*BIOL 2*LP*geografia_Geografia*GEO 2*LP*Chemia_Chemia*CHEM 2*LW*Fizyka 2*LW*historia*i*spo³eczeñstwo 2*LW*historia 2*LW_Godziny*z*wychowawc¹*GZW 2*LW_J.*polski*j*pol 2*LW_Jêzyk*angielski*J*ANG 2*LW_Przysposobienie*obronne*PO
+2*LP  18 2*LP*geografia_Geografia*GEO 2*LP*1_Jêzyk*angielski*J*ANG 2*LP*1_Jêzyk*angielski*J*ANG 2*LP*3_Biologia*BIOL 2*LP*matr_Matematyka*MAT 2*LP*matp 2*LP*A 2*LP*B 2*LP*religia 2*4A*WF*dziewczêta_Wychowanie*fizyczne*WF 2*LP*Chemia_Chemia*CHEM 2*LP*Religia/Etyka*nieuczêszczaj¹cy 2*LP_Etyka*ETY 2*LP_Godziny*z*wychowawc¹*GZW 2*LP_Historia*HIS 2*LP_J.*polski*j*pol 2*LP_Podstawy*psychologii*PSYCH
+3*LP  18 3*LP*WF*A 3*LP*J.ANG*B 3*LP*J.NIEM*A 3*LP*J.NIEM*B 3*LP*J.ANG*A 3*LP*WF*B 3*LP*Religia 1*ETYKA_Etyka*ETY 1*LW*Religia/etyka*nieuczêszczaj¹cy_Biblioteka*szkolna*BSZKOL 3*LP_Biologia*BIOL 3*LP_Chemia*CHEM 3*LP_Fizyka*FIZ 3*LP_Godziny*z*wychowawc¹*GZW 3*LP_Historia*HIS 3*LP_J.*polski*j*pol 3*LP_Matematyka*MAT 3*LP_Wiedza*o*spo³eczeñstwie*WOS
+3*LW  19 3*LW*WF*B 3*LW*J.ANG*A 3*LW*INF*A 3*LW*INF*B 3*LW*J.ANG*B 3*LW*J.NIEM*A 3*LW*J.NIEM*B 3*LW*RELIGIA 3*LW*WF*A 3*LW_Biologia*BIOL 3*LW_Chemia*CHEM 3*LW_Fizyka*FIZ 3*LW_Godziny*z*wychowawc¹*GZW 3*LW_Historia*HIS 3*LW_J.*polski*j*pol 3*LW_Matematyka*MAT 3*LW_Wiedza*o*spo³eczeñstwie*WOS
+2*ZA  21 2*ZA*WF*B 2*ZA*WF*A 2*ZA*A 2*4A*WF*dziewczêta_Wychowanie*fizyczne*WF 2*ZA*B 2*ZA*Religia 2*ZA*Religia/Etyka*nieuczêszczaj¹cy 2*ZA*PDS*1 2*ZA*PDS*2 2*ZA*PDS*3 2*ZA_Eksploatacja*pojazdów*samochodowych*EPS 2*ZA_Godziny*z*wychowawc¹*GZW 2*ZA_J.*polski*j*pol 2*ZA_Konstrukcja*pojazdów*samochodowych*KPS 2*ZA_Matematyka*MAT 2*ZA_Organizacja*i*zarz¹dzanie*przedsiêbiorstwem*samochodowym*OiZPS 2*ZA_Podstawy*konstrukcji*maszyn*PKM 2*ZA_Przygotowanie*do*prowadzenia*pojazdów*samochodowych*PDPPS 2*ZA_Technologia*mechaniczna*TM 2*ZA_Zajêcia*praktyczne*ZP 2*ZA_bezpieczeñstwo*pracy*BP
+2*ZB  14 2*ZB*Operatorzy 2*ZB*Blacharze 2*ZB*Religia/Etyka*nieuczêszczaj¹cy 2*ZB*Religia 2*ZB_Godziny*z*wychowawc¹*GZW 2*ZB_J.*polski*j*pol 2*ZB_Jêzyk*angielski*J*ANG 2*ZB_Matematyka*MAT 2*ZB_Wychowanie*fizyczne*WF 2*ZB_Zajêcia*praktyczne*ZP 2*ZB_bezpieczeñstwo*pracy*BP
+3*4*C  14 2*4C_Jêzyk*niemiecki*J*NIEM 3*4C*TPS 3*4C*ZS(Oper) 3*4C*ZS*(Sam) 3*4C*Religia 1*LP*BIBL._Biblioteka*szkolna*BSZKOL 3*4*C_Fizyka*FIZ 3*4*C_Geografia*GEO 3*4*C_Godziny*z*wychowawc¹*GZW 3*4*C_Historia*HIS 3*4*C_J.*polski*j*pol 3*4*C_Matematyka*MAT 3*4*C_Wiedza*o*kulturze*WOK 3*4*C_Wychowanie*fizyczne*WF
+4*4A  22 1*4B*GR.2_Jêzyk*angielski*J*ANG 4*4A*J.Obce*2 4*4A*religia 1*ETYKA_Etyka*ETY 4*4A*PDPS*1 4*4A*PDPS*2 4*4A*PDPS*3 1*4A*WF*3_Wychowanie*fizyczne*WF 4*4A*WF*2 4*4A*PRE*1 4*4A*PRE*2 4*4A*Niem.*Zawodowy*1 4*4A*Niem.*Zawodowy*2 4*4A_Godziny*z*wychowawc¹*GZW 4*4A_J.*polski*j*pol 4*4A_Jêzyk*angielski*J*ANG 4*4A_Matematyka*MAT 4*4A_Organizacja*i*zarz¹dzanie*przedsiêbiorstwem*samochodowym*OiZPS 4*4A_Podstawy*przedsiêbiorczoœci*PP 4*4A_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS 4*4A_Wiedza*o*spo³eczeñstwie*WOS
+4*4C  11 4*4C*Jêzyki*obce*1 4*4C*Jêzyki*obce*2 4*4C*Obrabiarki 4*4C*Tech.*Mechanik 4*4C*Tech.*Poj.*Samochodowych 4*4C*Religia 4*4C_Godziny*z*wychowawc¹*GZW 4*4C_J.*polski*j*pol 4*4C_Matematyka*MAT 4*4C_Podstawy*przedsiêbiorczoœci*PP 4*4C_Wiedza*o*spo³eczeñstwie*WOS
+1*ZA  20 1*ZA*Warsztaty*A 1*ZA*Warsztaty*B 1*ZA*Warsztaty*C 1*ZA*Warsztaty*D 1*ZA*GR.1 1*ZA*GR.2 1*ZA*Religia 1*ZA*Religia/Etyka*nieuczêszczaj¹cy_Biblioteka*szkolna*BSZKOL 1*ZA_Biologia*BIOL 1*ZA_Chemia*CHEM 1*ZA_Fizyka*FIZ 1*ZA_Geografia*GEO 1*ZA_Godziny*z*wychowawc¹*GZW 1*ZA_Historia*HIS 1*ZA_J.*polski*j*pol 1*ZA_Matematyka*MAT 1*ZA_Podstawy*konstrukcji*maszyn*PKM 1*ZA_Technologia*mechaniczna*TM 1*ZA_Wiedza*o*spo³eczeñstwie*WOS
+1*ZB  19 1*ZB*Warsztaty*A 1*ZB*Warsztaty*B 1*ZB*Warsztaty*C 1*ZB*Warsztaty*D 1*ZB*Elektromechanik 1*4B*GR.2_Jêzyk*angielski*J*ANG 1*ZB*Religia 1*ZA*Religia/Etyka*nieuczêszczaj¹cy_Biblioteka*szkolna*BSZKOL 1*ZB_Biologia*BIOL 1*ZB_Chemia*CHEM 1*ZB_Edukacja*dla*bezpieczeñstwa*EDB 1*ZB_Fizyka*FIZ 1*ZB_Geografia*GEO 1*ZB_Godziny*z*wychowawc¹*GZW 1*ZB_Historia*HIS 1*ZB_J.*polski*j*pol 1*ZB_Matematyka*MAT 1*ZB_Wiedza*o*spo³eczeñstwie*WOS
+3*ZB  14 3*ZB*Blacharze 3*ZB*Operatorzy 3*ZB_Fizyka*FIZ 3*ZB_Godziny*z*wychowawc¹*GZW 3*ZB_J.*polski*j*pol 3*ZB_Jêzyk*angielski*J*ANG 3*ZB_Matematyka*MAT 3*ZB_Podstawy*przedsiêbiorczoœci*PP 3*ZB_Religia*REL 3*ZB_Wychowanie*fizyczne*WF 3*ZB_Zajêcia*praktyczne*ZP
+3*ZA  11 3*ZA*GR.1 3*ZA*GR.2 3*ZA*RELIGIA 3*ZA_Eksploatacja*pojazdów*samochodowych*EPS 3*ZA_Fizyka*FIZ 3*ZA_Godziny*z*wychowawc¹*GZW 3*ZA_J.*polski*j*pol 3*ZA_Matematyka*MAT 3*ZA_Podstawy*przedsiêbiorczoœci*PP
+3*4A  16 3*4A*GR1 2*4A_Jêzyk*angielski*J*ANG 3*4*A*religia 3*4*A*niereligia 3*4A_Elektryczne*i*elektroniczne*wyposa¿enie*pojazdów*samochodowych*EiEWPS 3*4A_Fizyka*FIZ 3*4A_Geografia*GEO 3*4A_Godziny*z*wychowawc¹*GZW 3*4A_Historia*HIS 3*4A_J.*polski*j*pol 3*4A_Jêzyk*angielski*J*ANG 3*4A_Matematyka*MAT 3*4A_Podwozia*i*nadwozia*pojazdów*samochodowych*PiNPS 3*4A_Silniki*pojazdów*samochodowych*SPS 3*4A_Wiedza*o*kulturze*WOK 3*4A_bezpieczeñstwo*pracy*BP
+1*LP  27 1*LP*Jêzyki*obce*1 1*LP*Jêzyki*obce*2 1*LP*WF*1_Wychowanie*fizyczne*WF 1*LP*WF*1_Wychowanie*fizyczne*WF 1*4A*Gr.2_Wychowanie*fizyczne*WF 1*LP*MAT 1*LP*MATR_Matematyka*MAT 1*LP*EDB*2 1*LP*Religia 1*LP*INF*1 1*LP*BIBL._Biblioteka*szkolna*BSZKOL 1*ETYKA_Etyka*ETY 1*LP_Biologia*BIOL 1*LP_Chemia*CHEM 1*LP_Edukacja*dla*bezpieczeñstwa*EDB 1*LP_Fizyka*FIZ 1*LP_Geografia*GEO 1*LP_Godziny*z*wychowawc¹*GZW 1*LP_Historia*HIS 1*LP_J.*polski*j*pol 1*LP_Podstawy*przedsiêbiorczoœci*PP 1*LP_Podstawy*psychologii*PSYCH 1*LP_Wiedza*o*kulturze*WOK 1*LP_Wiedza*o*spo³eczeñstwie*WOS
+1*LW  23 1*LW*WF*Dziewczêta 1*LW*WF*Ch³opcy 1*LP*MATR_Matematyka*MAT 1*LW*Matp 1*LW*J.Obce*1 1*LW*J.Obce*2 1*LW*Religia 1*LW*Religia/etyka*nieuczêszczaj¹cy_Biblioteka*szkolna*BSZKOL 1*LW*Inf*1 1*LW*Inf*2 1*LW_Biologia*BIOL 1*LW_Chemia*CHEM 1*LW_Edukacja*dla*bezpieczeñstwa*EDB 1*LW_Fizyka*FIZ 1*LW_Geografia*GEO 1*LW_Godziny*z*wychowawc¹*GZW 1*LW_Historia*HIS 1*LW_J.*polski*j*pol 1*LW_Podstawy*przedsiêbiorczoœci*PP 1*LW_Przysposobienie*obronne*PO 1*LW_Wiedza*o*kulturze*WOK 1*LW_Wiedza*o*spo³eczeñstwie*WOS
+
+UNAVAILABILITY_CONSTRAINTS:
+
+END.
