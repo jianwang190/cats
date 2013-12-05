@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 \chapter{Opis problemu układania planu zajęć}
 \textit{Tomasz Dziopa}
@@ -24,12 +25,13 @@
 
 %Problem układania planu zajęć jest niezwykle ważnym problemem. Jest obecny w wielu dziedzinach, gdyż przy niewielkich modyfikacjach można przenieść go na problem ustalania rozkładów jazdy, czy planowania grafiku pracowników, gdzie znalezienie lepszego rozwiązania prowadzi do oszczędności czasu i zasobów. 
 \section{Klasyfikacja problemu}
-\subsection{Klasyfikacja problemu}
+\subsection{Problem NP-zupełny}
 \paragraph{}Problem układania planu zajęć jest klasyfikowany jako NP-zupełny, co można w łatwy sposób udowodnić poprzez redukcję problemu k-kolorowania wierzchołkowego grafu $G(V, E)$, gdzie $V$ zawiera zdarzenia, a $E$ konflikty między nimi, do decyzyjnej wersji problemu układania planu zajęć (czy da się skonstruować plan zajęć obejmujący $k$ przedziałów czasowych) 
 \paragraph{}Problem k-kolorowania wierzchołkowego to problem decyzyjny, który polega na odpowiedzi na pytanie, czy dany graf da się pokolorować wierzchołkowo na dokładnie $k$ kolorów. Przypomnijmy, że w każdym poprawnym pokolorawniu każde dwa wierzchołki połączone ze sobą krawędzią muszą mieć przyporządkowane różne kolory. W grafie $G(V,E)$ krawędziami połączone są zdarzenia, które nie mogą odbywać się w tym samym czasie. Jeżeli przyjmiemy, że kolorom w pokolorowaniu odpowiadają poszczególne przedziały czasowe otrzymujemy redukcję w czasie wielomianowym ze względu na liczbę wierzchołków i krawędzi do problemu k-kolorowania wierzchołkowego grafu. Bardziej formalny dowód na tą redukcję, jak i inne redukcje z innych problemów NP-zupełnych zawiera \cite{npcomplete}.
 
+\subsection{Trudności i ograniczenia}
 
-\subsection{Przegląd algorytmów}
+\section{Przegląd algorytmów}
 \paragraph{}Problem układania planu zajęć jest NP-zupełny, więc nie istnieje deterministyczny algorytm, który zwracałby dokładny wynik w czasie wielomianowym. Znane są zastosowania różnego rodzaju metaheurystyk do rozwiązania tego problemu.
 \subsubsection{Algorytm genetyczny}
 
@@ -46,4 +48,4 @@
 \subsubsection{Hiperheurystyki}
 
 
-\section{Przegląd istniejących systemów}
+\section{Przegląd powstałych systemów}
