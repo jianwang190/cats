@@ -34,7 +34,6 @@ def countRoomCapacityPenalty(solution, slots, data):
 
 def countMissingLectures(solution, data):
     lecturesSum = data.getAllLecturesCount() - solution.getAssignedLecturesSum(data)
-    #print "Kara missing lectures * 2000:", lecturesSum
     if lecturesSum > 0:
         return lecturesSum * 2000
     else:

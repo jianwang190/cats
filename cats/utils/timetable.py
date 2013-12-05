@@ -193,7 +193,7 @@ class TimeTable(object):
         lectures = self.assignedLectures(courseId)
         assignedDays = map(lambda x : self.getPeriodPair(x[0])[0], lectures)
 
-        return assignedDays
+        return set(assignedDays)
 
     def getAssignedLecturesSum(self, data):
         """
@@ -276,7 +276,6 @@ class TimeTable(object):
                     break
 
             self.addDataToTimetable([(slot, courseId, roomID)])
-            print "Beda konflikty w initial solution!"
 
     def copySolution(self, data):
         newSolution = TimeTableFactory.getTimeTable(data)
@@ -287,11 +286,16 @@ class TimeTable(object):
         return newSolution
 
     def checkIfInsertionIsValid(self, slot, courseId, roomId, data):
+        #remove a random lecture of a course at first
+        oldLecture = random.choice(self.assignedLectures(courseId))
+        self.removeFromTimetable([(oldLecture[0], oldLecture[1][0][0], oldLecture[1][0][1])])
+
         initialPenalty = checkHardConstraintsForSlots(self, data, [slot])
         self.addDataToTimetable([(slot, courseId, roomId)])
-        if checkHardConstraintsForSlots(self, data, [slot]) == initialPenalty:
+        if checkHardConstraintsForSlots(self, data, [slot]) <= initialPenalty:
             return True
         else:
+            self.addDataToTimetable([(oldLecture[0], oldLecture[1][0][0], oldLecture[1][0][1])])
             return False
 
     def saveResultsToFile(self, fileName):

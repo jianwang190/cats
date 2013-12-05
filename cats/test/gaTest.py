@@ -16,11 +16,11 @@ class GATest(object):
         for it in range(self.populationSize):
             self.solutions[it] = TimeTableFactory.getTimeTable(self.data)
 
-        self.ga = GeneticAlgorithm(self.data, self.solutions, self.populationSize, 20, 0.01, 5)
+        self.ga = GeneticAlgorithm(self.data, self.solutions, self.populationSize, 10, 0.01, 5)
         self.ga.generateInitialSolutions()
         self.ga.estimateFitness()
 
-        #self.ga.runAlgorithmLoop()
+        self.ga.runAlgorithmLoop()
 
         #self.ga.saveBestTimeTableToFile("/home/filip/Inzynierka/cats/Plany/plan" + str(random.randint(0, 10000)) + ".sln")
 
