@@ -55,7 +55,6 @@
 \paragraph{} Inną grupą algorytmów, na które można się natknąć w literaturze są algorytmy tzw. \textit{state-of-the-art} - wielofazowe algorytmy, które kolejnych fazach wykonują po kilka różnych metaheurystyk. Przykładem takiego algorytmu jest algorytm, który wygrał konkurs ITC w 2003 roku, opisany w \cite{kostuch}.
 
 
-
 \section{Przegląd powstałych systemów}
 
 
@@ -75,6 +74,6 @@ Komercyjny program, który umożliwia wprowadzanie ograniczeń, automatyczne gen
 \caption{Zrzut ekranu z widoku planu zajęć programu Mimosa}
 \end{figure}
 \subsection{FET - Free Evolutionary Timetable}
-Jest to program darmowy, stworzony dla platformy Linux, rozpowszechniany na zasadach licencji GNU GPL. Napisany w C++ z wykorzystaniem biblioteki Qt, dane pobiera z plików w formacie XML. Rozbudowany interfejs umożliwia śledzenie procesu ewolucji.
+Jest to program darmowy, stworzony dla platformy Linux, rozpowszechniany na zasadach licencji GNU GPL. Napisany w C++ z wykorzystaniem biblioteki Qt, dane pobiera z plików w formacie XML. W swojej początkowej formie opierał się na algorytmie genetycznym, który jednak poczynając od wersji 5.0.0 wydanej w 2007 roku został zastąpiony autorską heurystyką nazwaną przez autora \emph{rekursywnym zamienianiem}. Naśladuje on proces manualnego układania planu zajęć i okazał się dużo szybszy i wydajnieszy dla złożonych problem w porównaniu ze swoim poprzednikiem. Jego rozbudowany interfejs umożliwia śledzenie procesu ewolucji najlepszego rozwiązania.
 \subsection{Tablix}
-Jest to polski produkt typu \emph{open source}, jego autorem jest Tomasz Solc. Program powstał w technologii języka C z użyciem pakietu PVM, który umożliwia zrównoleglenie obliczeń, co znacząco przyspiesza działanie algorytmu. Dane wejściowe muszą znajdować się w plikach XML. Nie posiada natomiast interfejsu graficznego, który umożliwiałby edycję danych lub wizualizację wyników.
+Jest to polski produkt typu \emph{open source}, jego autorem jest Tomasz Solc. Program powstał w technologii języka C z użyciem pakietu PVM, który umożliwia zrównoleglenie obliczeń, co znacząco przyspiesza działanie algorytmu. Dane wejściowe muszą znajdować się w plikach XML. Głównym mechanizmem, na którym opiera się program jest zrównoleglony algorytm genetyczny. Zastosowania stworzonego jądra systemu mogą dotyczyć najróżniejszych problemów optymalizacyjnych, lecz w swojej pierwotnej implementacji zostało przystosowane do problemu układania planu zajęć. Nie posiada natomiast interfejsu graficznego, który umożliwiałby edycję danych lub wizualizację wyników.
