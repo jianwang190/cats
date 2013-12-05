@@ -5,12 +5,18 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[pdftex]{graphicx}
+\usepackage{alltt}
 \selectlanguage{polish}
 \usepackage{amsmath}
 \usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
 \usepackage{algorithm,algorithmic}
-\title{Tytuł naszej pracy inżynierskiej}
-
+\title{System do automatyzacji procesu składania planu zajęć z wykorzystaniem algorytmów genetycznych}
+\author{
+	Katarzyna Śmietanka \\
+	Filip Czajkowski \\
+	Tomasz Dziopa\\
+	Paweł Jastrzębski
+}
 \begin{document}
 
 %
@@ -21,51 +27,33 @@
 \tableofcontents
 
 \input{chapters/wstep.tex}
-\chapter{Opis problemu układania planu zajęć}
+%\input{chapters/opis_problemu}
 
+
+\chapter{Opis problemu układania planu zajęc}
+\section{Klasyfikacja problemu, algorytmy}
+\section{Przegląd istniejących systemów}
 
 \input{chapters/specyfikacja_problemu.tex}
 
 
 \chapter{Opis zrealizowanych algorytmów}
 \input{chapters/tabu.tex}
-
 \input{chapters/pso.tex}
-
-\section{Genetic Algorithm}
-\author{Filip Czajkowski}
-\subsection{Ogólny opis algorytmu}
-\par Algorytm genetyczny to rodzaj algorytmu przeszukującego przestrzeń alternatywnych rozwiązań problemu w celu wyszukania rozwiązań najlepszych. Obecnie zalicza się go do grupy algorytmów ewolucyjnych.
-\par Algorytmy genetyczne zajmują bardzo ważne miejsce w dziedzinie projektowania i analizy algorytmów. Doskonale sprawdzają się w sytuacji, gdy problem, z którym przychodzi nam się zmierzyć, jest nie do rozwiązania w sposób klasyczny w sensownym czasie. Pozwalają znaleźć sub-optymalne rozwiązanie problemów, których dziedziny nie są łatwe do wyznaczenia. Są powszechnie stosowane tam, gdzie do uzyskania rozwiązania korzystamy z zagadnień sztucznej inteligencji oraz tam, gdzie uzyskanie rozwiązania jest bardzo złożonym problem, natomiast jego ocena jest łatwa i błyskawiczna.
-\par Należy zaznaczyć, że algorytm genetyczny nie gwarantuje znalezienia rozwiązania optymalnego, lecz przybliżone. Istota jego działania jest zbliżona do charakterystycznych dla środowiska naturalnego procesów ewolucyjnych. Cały algorytm operuje na grupie (populacji) potencjalnych rozwiązań, których jakość (stopień, w jakim jest bliskie rozwiązania optymalnego) potrafimy ocenić i które zbliżają się w przypominającym ewolucyjny procesie do rozwiązania optymalnego.
-\par Problem definiuje środowisko, w którym istnieje pewna populacja osobników. Każdy z osobników ma przypisany pewien zbiór informacji stanowiących jego genotyp, a będących podstawą do utworzenia fenotypu. Fenotyp to zbiór cech podlegających ocenie funkcji przystosowania modelującej środowisko. Innymi słowy - genotyp opisuje proponowane rozwiązanie problemu, a funkcja przystosowania ocenia, jak dobre jest to rozwiązanie. Genotyp składa się z chromosomów, gdzie zakodowany jest fenotyp i ewentualnie pewne informacje pomocnicze dla algorytmu genetycznego. Chromosom składa się z genów.
-\par Najczęściej działanie algorytmu przebiega następująco:
-\begin{enumerate}
-\item Losowana jest pewna populacja początkowa.
-\item Populacja poddawana jest ocenie (selekcja). Najlepiej przystosowane osobniki biorą udział w procesie reprodukcji.
-\item Genotypy wybranych osobników są ze sobą kojarzone poprzez złączanie genotypów rodziców (krzyżowanie).
-\item Przeprowadzana jest mutacja, czyli wprowadzenie drobnych losowych zmian.
-\item Rodzi się kolejne pokolenie. Aby utrzymać stałą liczbę osobników w populacji te najlepsze (według funkcji oceniającej fenotyp) są powielane, a najsłabsze usuwane. Jeżeli nie znaleziono dostatecznie dobrego rozwiązania, algorytm powraca do kroku drugiego. W przeciwnym wypadku wybieramy najlepszego osobnika z populacji - jego genotyp to uzyskany wynik.
-\end{enumerate}
-\subsection{Historia i zastosowanie}
-Sposób działania algorytmów genetycznych nieprzypadkowo przypomina zjawisko ewolucji biologicznej, ponieważ ich twórca John Henry Holland właśnie z biologii czerpał inspiracje do swoich prac. 
-\subsection{Fazy algorytmu}
-\subsubsection{Utworzenie rozwiązania początkowego}
-\subsubsection{Selekcja}
-\subsubsection{Krzyżowanie}
-\subsubsection{Mutacja}
-\subsubsection{Elityzm}
-\subsection{Istniejące implementacje}
+\input{chapters/ga.tex}
+\input{chapters/etapy_przetwarzania_danych_szkolnych.tex}
 \chapter{Projekt systemu}
 \subsection{Zastosowanie}
 \subsubsection{Przypadki użycia}
 \par
 \includegraphics[width=0.8\textwidth]{InzynierkaUseCase.png}
 \subsection{Architektura systemu}
+
 \par
 \includegraphics[width=0.8\textwidth]{ComponentsDiagram.png}
-\chapter{Testy}
-\chapter{Porównanie algorytmów}
+\subsection{Rozwiązania implementacyjne}
+\chapter{Testy i porównanie algorytmów}
+
 \chapter{Sposób użytkowania systemu}
 \chapter{Podsumowanie}
 
