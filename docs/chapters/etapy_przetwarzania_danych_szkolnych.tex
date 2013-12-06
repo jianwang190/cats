@@ -133,6 +133,19 @@ Do programu nauczania dla tej klasy należą kursy:
 Prawdopodobnie klasa podzielona jest na 4 rozłączne grupy albo na 2 różne grupy, a każdy uczeń należy do dwóch z czterech grup. Precyzyjne stwierdzenie wymagałoby szczegółowej konsultacji z osobami układającymi plan w szkole. \\
 Dlatego też zdecydowaliśmy się na uproszczenie problemu, poprzez przyporządkowanie wszystkich grup należących do danej klasy, w wyniku czego zajęcia dla każdej z grup muszą odbywać się w różnym czasie, stąd wynika konieczność rozszerzenia przedziałów czasowych. 
 \subsection{Wizualizacje danych szkolnych}
+Poniższe grafy zostały stworzone przy pomocy biblioteki JavaScript, D3.js. Wierzchołki oznaczają kursy (przedmioty) zaś krawędzie w grafie konflikty pomiędzy kursami (uwzględniając tego samego prowadzącego bądź należenie do tego samego programu nauczania). 
+
+\begin{figure}[H]
+  \centering
+  \caption{Fragment grafu przedstawiający konflikty pomiędzy pomiędzy kursami, uwzględniając zależności związane z tym samym prowadzącym zajęcia. Grafy pełne.}
+    \includegraphics[width=0.8\textwidth]{szkola1.PNG}
+\end{figure}
+\begin{figure}[H]
+  \centering
+   \caption{Fragment grafu przedstawiający grupy konfliktujących ze sobą kursów ze względu na należenie do tych samych programów nauczania}
+   \includegraphics[width=0.8\textwidth]{fragmentszkola.PNG}
+ 
+\end{figure}
 
 
 \subsection{Implementacja}
