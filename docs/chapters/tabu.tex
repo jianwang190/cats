@@ -293,7 +293,13 @@ Przykład dla parametrów $q = 5$ i $n = 3$:
 \end{enumerate}
 
 \subsection{Szczegóły implementacyjne}
-
-
+\subsubsection{Struktury danych}
+\paragraph{} Na potrzeby implementacji algorytmu plan zajęć został zamodelowany przy użyciu podstawowych struktur danych z języka Python. W pierwotnej wersji miał postać słownika, którego kluczami były kolejne numery przedziałów czasowych, a wartościami były listy, które przechowywały obiekty przypasowań zawierające identyfikatory kursu i sali. W trakcie implementacji okazało się, że kopiowanie takiej struktury wymaga korzystania z metody \verb#deepcopy# z modułu \verb#copy#, która przy wielu wywołaniach i dużej strukturze danych okazała się być nieefektywna. Ta obserwacja spowodowała, że w ostatecznej wersji obiekty przypasowań zastąpiono wbudowanym typem \verb#tuple#, co zmniejszyło czas wykonania funkcji kosztu 3-krotnie.
+\subsubsection{Funkcja kosztu}
+\paragraph{} Pomimo rozbudowanej matematycznej definicji funkcji kosztu w literaturze, efektywna implementacja okazała się być nietrywialna. Pierwsza wersja implementacja potrzebowała przejrzeć cały plan zajęć dla każdego ograniczenia miękkiego, w wersji ostatecznej wystarczą do tego 2 przeglądy. Optymalizacja funkcji kosztu jest kluczowa dla czasu działania algorytmu. Korzystając z narzędzi do profilowania - moduł \verb#line_profile# - zauważyliśmy, że zdecydowaną większość czasu algorytm przeznacza na wykonanie funkcji kosztu.
+\subsubsection{Optymalizacje językowe}
+\paragraph{} Implementując algorytm staraliśmy się korzystać z funkcjonalnego paradygmatu programowania - funkcji \verb#map# i \verb#filter#, które w porównaniu ze zwykłymi pętlami w Pythonie nie mają dodatkowego narzutu przy iterowaniu. Ponadto korzystanie z elementów programowania funkcjonalnego spowodowało, że kod źródłowy jest w naszej ocenie bardziej zwięzły i czytelny.
+\subsubsection{Test-Driven Development}
+\paragraph{} Przy implementacji algorytmu staraliśmy wykorzystywać podejście TDD, czyli pisanie testów jednostkowych dla funkcji przed implementacją funkcji. ,,Szczelne'' pokrycie testami jednostkowymi podstawowych funkcji zdecydowanie ułatwiło późniejsze większe zmiany w logice i strukturze algorytmu.
 
 
