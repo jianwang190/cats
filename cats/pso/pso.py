@@ -15,12 +15,14 @@ class PSO(object):
         self.globalBestSolution = None
         self.timetableFactory = TimetableFactory(data)
         self.evaluationFunction = EvaluationFunction(data, self.timetableFactory)
+        self.h = []
 
     def run(self):
         self.genParticles()
 
         for i in range(conf.maxIterations):
-            self.doIteration()
+            self.doIteration(i)
+            self.h.append((i,self.globalBestSolution.penalty))
 
             if self.globalBestSolution.penalty < conf.minPenalty:
                 break
@@ -34,7 +36,14 @@ class PSO(object):
                 #print "BEST:", self.globalBestSolution.penalty
                 #print "------------------------"
 
-        self.timetableFactory.echo(self.globalBestSolution)
+        #self.timetableFactory.echo(self.globalBestSolution)
+        h2 = []
+        for particle in self.particles:
+            h2.append(particle.history)
+
+        print h2
+        print self.h
+
         return self.globalBestSolution
 
     def genParticles(self):
@@ -44,11 +53,12 @@ class PSO(object):
             timetable = self.timetableFactory.getRandomTimetable()
             self.particles.append(Particle(timetable, self.timetableFactory))
 
-    def doIteration(self):
+    def doIteration(self, nr):
         """Do PSO iteration"""
 
         for particle in self.particles:
             self.evaluate(particle)
+            particle.history.append((nr,particle.actualSolution.penalty))
             particle.updateLocalBestSolution()
             self.updateGlobalBestSolution(particle)
             particle.produceNewSolution(self.globalBestSolution)

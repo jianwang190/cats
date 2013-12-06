@@ -8,6 +8,7 @@ class Particle(object):
         self.actualSolution = timetable
         self.bestSolution = None
         self.timetableFactory = timetableFactory
+        self.history = []
 
     def updateLocalBestSolution(self):
         """Update local Best"""
@@ -18,17 +19,17 @@ class Particle(object):
     def produceNewSolution(self, globalBest):
         """Produce new solution"""
 
-        #self.actualSolution = deepcopy(globalBest)
+        self.actualSolution = deepcopy(self.bestSolution)
         #for x in range(10):
             #self.randChange(self.bestSolution)
         #for x in range(100):
             #self.randChange(globalBest)
 
-        #self.randSelfChange()
-
         self.randSelfChange()
-        self.randChange(self.bestSolution)
-        self.randChange(globalBest)
+
+        #self.randSelfChange()
+        #self.randChange(self.bestSolution)
+        #self.randChange(globalBest)
 
     def randSelfChange(self):
         """Change randomly two courses in actualSolution"""
