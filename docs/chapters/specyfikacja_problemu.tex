@@ -1,7 +1,15 @@
 \chapter{Specyfikacja problemu}
 \section{International Timetabling Competition 2007}
 \subsection{Opis konkursu}
+\paragraph International Timetabling Competition (ITC) to międzynarodowy konkurs w dziedzinie układania planów zajęć organizowany przez międzynarodowe środowisko akademickie. Jego celem jest lepsze poznanie problemu rozkładania zajęć lub egzaminów na uczelni, z którym zmagają się od bardzo dawna i wciąż potrzebują stosowania lepszych rozwiązań. W 2007 roku odbyła się jego druga edycja, w której można było startować w dowolnej z trzech kategorii: 
+\begin{itemize}
+\item Układanie rozkładu sesji egzaminacyjnej na uczelni. W tym przypadku zakłada się, że wszyscy studenci zapisani na swoje zajęcia muszą mieć możliwość wzięcia udziału we wszystkich dotyczących ich egzaminach. Plan powstaje zatem po zapisaniu się wszystkich studentów na wybrane przez siebie przedmioty.
+\item Tworzenie planu zajęć dla studentów zapisanych na konkretne zajęcia. W tym przypadku rozkład wszystkich zajęć obowiązujących przez cały semestr jest generowany w momencie, gdy studenci wybrali już przedmioty, na które zajęcia chcą uczęszczać. Ten model rozwiązania jest dostosowany do elastycznych programów nauczania, które uczelnie coraz częściej stosują.
+\item Układanie planu zajęć dla każdego planu nauczania. Tworzony jest tygodniowy rozkład lekcji, które są przyporządkowane do poszczególnych programów nauczania, a także muszą spełniać ograniczenia czasowe narzucone przez władze uczelni. Udostępnione przykładowe dane przedmiotów, sal oraz wykładowców pochodzą z Uniwersytetu Udine we Włoszech.
+\end{itemize}
+W przewidzianym przedziale czasowym można było nadsyłać rozwiązania, które można było testować na części udostępnionych zestawach danych. Niedozwolone było stosowanie zrównoleglenia obliczeń w stosowanych rozwiązaniach. Ostatecznie, zwycięzcy w każdej z kategorii zostali ogłoszeni podczas konferencji w Montrealu w 2008 roku i każdy z nich otrzymał nagrodę pieniężną w wysokości 500\pounds .
 \subsection{Konkurs a praca inżynierska}
+\paragraph Poszukując informacji o implementowanych przez nas algorytmach optymalizacyjnych w kontekście układania planu zajęć, natknęliśmy się na informacje o konkursie ITC w 2007 roku. Wspólnie stwierdziliśmy, że skorzystanie ze zdefiniowanych w nim ograniczeń i wymagań względem generowanego planu a także określona funkcja oceny rozwiązania bardzo pomoże nam zaprojektować nasze algorytmy oraz jednoznacznie je porównać. Nasze implementacje były tworzone pod kątem trzeciej kategorii konkursu, czyli rozkładu zajęć przedmiotów zawierających się we wcześniej zdefiniowanych programach nauczania.
 \section{Sformułowanie problemu}
 \textit{Katarzyna Śmietanka} \\
 Celem jest stworzenie tygodniowego harmonogramu wykładów dla kilku kursów, z określoną liczbą dostępnych sal i przedziałów czasowych, w których mogą odbywać się zajęcia. Każdy wykład będący w programie danego kursu musi być przypisany do określonego przedziału czasu i sali tak by spełniał wejściowe ograniczenia. 
