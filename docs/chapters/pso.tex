@@ -28,4 +28,55 @@ $\cdots$
         \par Losowo wybrana lekcji z globalnie najlepszego planu zostaje kopjowana do aktualnego planu 
 \end{description}
 \par Iteracje powtarzamy do czasu aż nie osiągniemy wystarczająco dobrego planu lub osiągniemy maksymalną liczbę iteracji albo skończy nam się limit czasu.
-\subsection{Ewojucja ostatecnego rozwiązania}
+\subsection{Ścieżka dojścia do ostatecznego rozwiązania}
+\subsubsection{Problem z proponowanym rozwiązaniem}
+\par Podczas testowania proponowanego rozwiązania wystąpił problem. Algorytm okazał się mieć bardzo słabą skuteczność i nie był w stanie usunąć całkowicie problemów związanych z ograniczeniami "twardymi". Jak wiemy z rozdziału drugiego ograniczania "twarde" nie mają prawa być łamane w ostatecznym rozwiązaniu. 
+\par Aby zwrócić uwagę algorytmu w pierwszej kolejności na ograniczenia twarde kary przydzielane za ich łamanie są mnożone przez milion.
+Poniższy wykres pokazuje efektywność algorytmu. Uwagę należy zwrócić na skalę przy osi y. Wartości nie zchodzą poniżej $10^{7}$ czyli wynik w najlepszym przypadku nadal łamie 10 ograniczeń "twardych".
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/standard_penalty.png}
+\centering
+\end{figure}
+\par Aby sprawdzić co się dzieje przyjrzałem się zachowaniu jednej cząsteczki. Okazało się, że kara za kolejno generowane plany oscyluje wokół kary wyliczonej dla początkowo wylosowanego planu. Pokazuje to poniższy wykres.  
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/standard_particle.png}
+\centering
+\end{figure}
+\par Sprawdzając dale wyszło, że wszystkie cząsteczki zachowują się bardzo podobnie. Widać to na poniższym wykresie.
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/standard_particle_all.png}
+\centering
+\end{figure}
+\subsubsection{Rozważane modyfikacje}
+\par Rozwarzałem dwie modyfikacjie do aktualnego algortymu. Jedną nazwałem podążaniem za lokalnie najlepszym planem a drugą podążanie za globalnie najlepszym planem. Obie modyfilacje są bardzo analogiczne a różnią się tylko tym który plan bierzemy pod uwagę. Modyfikacją została objęta faza oceny aktualnego rozwiązania która zachodzi na początku każdej iteracji. Dodany został warunek, że jeśli aktualny plan jest gorszy od najlepszego planu to zostaje on zamieniony na najlepszy plan.  Usunięte też zostały kroki 3 i 4 czyli kopie z najlepszych planow.
+\par W przypadku gdy każda cząsteczka podąża za swoim lokalnie najlepszym planem istnieje mniejsze ryzyko, że algorytm utknie w minimum lokanlym przestrzeni rozwiązań. Natomiast podczas podążania za globalnie najlepszym planem algorytm będzie znacznie szybciej dążył do najbliższego minimum.
+\par Opcja podążania za lokalnie najlepszym planem okazała się być dużo efektywniejsza niż pierwotny algorytm. W tym przypadku ograniczenia "twarde" nie stanowiły problemu. Można to zobaczyc na poniższym wykresie.
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/localbest_penalty.png}
+\centering
+\end{figure}
+\par Analizując pojedyńczą cząsteczki można zauważyć, że czesto kara skacze z małych wartości powyżej milion. Jest to spowodowane tym, że w po zamianie dwóch lekcji w poprzedniej iteracji pojawił się konfilikt z ograniczeniami "twardymi". Nie jest to problem, ponieważ w takim przypadku wracamy do poprzedniego rozwiązania. Na poniższych wykresach widać zachowanie jednej cząsteczki oraz wszystkich cząsteczek.
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/localbest_particle.png}
+\centering
+\end{figure}
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/localbest_particle_all.png}
+\centering
+\end{figure}
+\par Opcja podążąnia za globalnie najlepszym planem okazała się jeszcze bardzie efektywna. Sporym zaskoczeniem był brak problemów z lokalnymi minimami przestrzeni rozwiązań. Poniższy wykres pokazuje skuteczność modyfikacji.
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/globalbest_penalty.png}
+\centering
+\end{figure}
+\par W tym przypadku cząsteczki zachowywały się bardzo podobnie. Jedyną różnicą była prędkość z jaką spadała kara. Widać to na poniższych wykresach. 
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/globalbest_particle.png}
+\centering
+\end{figure}
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/globalbest_particle_all.png}
+\centering
+\end{figure}
+\subsubsection{Ostateczne rozwiązanie}
+\par Jako ostateczne rozwiązanie wybrałem podążanie za globalnie najlepszym planem. Jest to spowodowane tym, że mimo wielu testów nie udało mi się znaleść przypadku kiedy podążanie za lokalnie najlepszym planem wypadłoby lepiej. 
