@@ -3,6 +3,7 @@ MIN_WORKINGS_DAY_PENALTY = 5
 COMPACTNESS_PENALTY = 2
 STABILITY_PENALTY = 1
 
+refPenalty = 0
 
 def countPenaltyForCurriculumCompactnessPerturbation(periodsList, periodsPerDay, perturbation, perturbationPenalty):
     """
@@ -73,6 +74,10 @@ def softConstraintsPenalty(partialTimetable, data, perturbation = None):
     :param data: data for tested timetable
     :return: dictionary with penalty for : min working days, curriculum compactness, room stability and capacity, total penalty
     """
+
+
+    global refPenalty
+    refPenalty += 1
     roomCapacityPenalty = 0
     roomStabilityPenalty = 0
     minWorkingDaysPenalty = 0
