@@ -48,57 +48,57 @@ class AdaptiveTabuSearch:
             self.bestSolution = better.copy()
 
 
-        def runTimeLimited(self):
-            initialSolution(self.bestSolution, self.data)
-            # print "INITIALSOLUTION", softConstraints2.totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
-            xi = 0
-            mju = 0.6
-            theta = INITIAL_TABU_DEPTH
-            eta = INITIAL_PERTURBATION_STRENGTH
-            solution = tabuSearch(self.bestSolution, self.data, theta)
+    def runTimeLimited(self):
+        initialSolution(self.bestSolution, self.data)
+        # print "INITIALSOLUTION", softConstraints2.totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
+        xi = 0
+        mju = 0.6
+        theta = INITIAL_TABU_DEPTH
+        eta = INITIAL_PERTURBATION_STRENGTH
+        solution = tabuSearch(self.bestSolution, self.data, theta)
+        solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
+        bestQuality = solutionQuality
+        self.updateBest(solution)
+        iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
+        while iterationsWithoutChange>0:
+            print "ATS:", solutionQuality, bestQuality
+            # print "THETA: %f ETA: %f xi: %f F: %f" % (theta, eta, xi, softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data))
+            perturbedSolution = perturbation.produceRandomlySimpleOrKempeSwap(solution, self.data,  eta, 30)
+            perturbedTabu = tabuSearch(perturbedSolution, self.data, theta)
+
+            perturbedQuality = softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), self.data)
+            perturbedTabuQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
             solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
-            bestQuality = solutionQuality
-            self.updateBest(solution)
-            iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
-            while iterationsWithoutChange>0:
-                print "ATS:", solutionQuality, bestQuality
-                # print "THETA: %f ETA: %f xi: %f F: %f" % (theta, eta, xi, softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data))
-                perturbedSolution = perturbation.produceRandomlySimpleOrKempeSwap(solution, self.data,  eta, 30)
-                perturbedTabu = tabuSearch(perturbedSolution, self.data, theta)
 
-                perturbedQuality = softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), self.data)
-                perturbedTabuQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
-                solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
+            # print "PERTURBED", perturbedQuality, "PERTURBED_TABU", perturbedTabuQuality, "SOLUTION", solutionQuality
 
-                # print "PERTURBED", perturbedQuality, "PERTURBED_TABU", perturbedTabuQuality, "SOLUTION", solutionQuality
+            if perturbedTabuQuality <= solutionQuality+2:
+                intensification = INITIAL_INTENSIFICATION_ITERATIONS
+                while intensification>0:
+                    # print "RESTARTING", "PERTURBEDTABU", perturbedTabuQuality, "SOLUTION", solutionQuality
+                    intensification -= 1
+                    theta = (1+mju)*theta
+                    perturbedTabuQuality = softConstraints2.totalSoftConstraintsForTimetable(perturbedSolution.getTimeTable(), self.data)
+                    perturbedTabu = tabuSearch(perturbedTabu, self.data, theta)
 
-                if perturbedTabuQuality <= solutionQuality+2:
-                    intensification = INITIAL_INTENSIFICATION_ITERATIONS
-                    while intensification>0:
-                        # print "RESTARTING", "PERTURBEDTABU", perturbedTabuQuality, "SOLUTION", solutionQuality
-                        intensification -= 1
-                        theta = (1+mju)*theta
-                        perturbedTabuQuality = softConstraints2.totalSoftConstraintsForTimetable(perturbedSolution.getTimeTable(), self.data)
-                        perturbedTabu = tabuSearch(perturbedTabu, self.data, theta)
-
-                        if perturbedTabuQuality<=softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), self.data):
-                            break
-                if softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), self.data) < \
-                    softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data):
-                    solution = perturbedTabu.copy()
-                    theta = INITIAL_TABU_DEPTH
-                    eta = INITIAL_PERTURBATION_STRENGTH
-                    iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
-                else:
-                    theta = INITIAL_TABU_DEPTH
-                    xi+=1
-                    eta = max(INITIAL_PERTURBATION_STRENGTH+LAMBDA*xi, MAX_PERTURBATION_STRENGTH)
-                    iterationsWithoutChange -=1
-                solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
-                if  solutionQuality < bestQuality:
-                    bestQuality = solutionQuality
-                    self.updateBest(solution)
-            return self.bestSolution
+                    if perturbedTabuQuality<=softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), self.data):
+                        break
+            if softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), self.data) < \
+                softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data):
+                solution = perturbedTabu.copy()
+                theta = INITIAL_TABU_DEPTH
+                eta = INITIAL_PERTURBATION_STRENGTH
+                iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
+            else:
+                theta = INITIAL_TABU_DEPTH
+                xi+=1
+                eta = max(INITIAL_PERTURBATION_STRENGTH+LAMBDA*xi, MAX_PERTURBATION_STRENGTH)
+                iterationsWithoutChange -=1
+            solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
+            if  solutionQuality < bestQuality:
+                bestQuality = solutionQuality
+                self.updateBest(solution)
+        return self.bestSolution
 
 
 
