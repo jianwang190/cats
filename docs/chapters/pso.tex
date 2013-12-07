@@ -2,30 +2,30 @@
 \section{Particle Swarm Optimization (PSO)}
 \author{Paweł Jastrzębski}
 \subsection{Ogólny opis algorytmu}
-\par Opis zaimplementowanego algorytmu został zaczerpnięty z pracy ,,Timetable Scheduling Using Particle Swarm Optimization'' \cite{pso}
-\par Particle Swarm Optimization (PSO) jest metodą bazującą na zachowaniu społeczeństwa. Polega na przeszukiwaniu przestrzeni rozwiązań przy pomocy populacji (roju) rozwiązań kandydujących (nazywanych cząsteczkami). W każdej iteracji każde rozwiązanie kandydujące (cząsteczka) jest aktualizowane na podstawie dwóch najlepszych wartości. Pierwszą z nich jest poprzednia najlepsza pozycja k-tej cząsteczki w i-tej iteracji ${P}^{i}_{k}$. Drugą zaś jest globalna najlepsza pozycja spośród wszystkich cząsteczek ${G}^{i}$ zanotowana pomiędzy pierwszą a i-tą iteracją. Każda cząsteczka jest równoważnym kandydatem na rozwiązanie problemu. Cząsteczka porusza się zgodnie ze swoją prędkością, która bazuje na doświadczeniu tej cząsteczki oraz doświadczeniu innych cząsteczek. PSO zazwyczaj osiąga rozwiązanie bliskie optymalnemu w mniejszej liczbie iteracji niż algorytmy ewolucyjne czy genetyczne.  
+\par Particle Swarm Optimaliation (PSO) lub optymalizacja rojem cząsteczek jest algorytmem zaproponowanym przez Jamesa Kennedy'ego oraz Russela Eberhart'a w roku 1995. Jest to technika wzorowana na zachowaniach występujących w przyrodzie. Algorytm naśladuje sposób poruszania się i inteligencje roju owadów poszukujących pożywienia. 
+\par Zachowania te są w pewien sposób upraszczane, zamiast roju owadów mamy pewną liczbę cząsteczek (agentów) poruszających się w n-wymiarowej przestrzeni. Cząsteczki przemieszczają się w różnych kierunkach poszukując optymalnego rozwiązania. Korzystają przy tym ze swoich indywidualnych doświadczeń jak i doświadczenia ogółu.
 \subsection{Działanie algorytmu}
 \subsubsection{Oryginalna wersja}
-\par Oryginalne PSO opisane jest w trzech głównych krokach:
-
+$\cdots$
+\subsubsection{PSO w problemie układania planu}
+\par Modyfikacja PSO przedstawiona w tym rozdziale została zaczerpnięta z pracy ,,Timetable Scheduling Using Particle Swarm Optimization'' \cite{pso}
+\par W tym podejściu każda cząsteczka będzie posiadała dwa kompletne plany zajęć. Jeden będzie planem przeznaczonym do modyfikacji w każdej iteracji algorytmu (Dalej nazywany planem aktualnym). Natomiast drugi będzie używany do pamiętania dotychczas najlepszego planu znalezionego przez tą cząsteczke (Dalej nazywany lokalnie najlepszym planem). Obecny będzie także globalny plan którego zadaniem będzie przechowywanie najpelszego planu znalezionego kiedykolwiek przez jakąkolwiek cząsteczke (Dalej nazywany globalnie najlepszym planem).  
+\par Podczas każdej iteracji poszczególne cząsteczki będą poddawane trzem zmianom. Najpierw dwie losowe lekcje z planu aktualnego zostaną ze sobą zamienione. Potem jedna lekcja z lokalnie najlepszego planu zostanie skopjowana do aktualnego palanu. Na koniec skopjujemy jedną lekcje z globalnie najlepszego planu do aktualnego planu. Kopja lekcji z innego planu wykonywana jest w następujący sposób. Wybierana jest lekcja z innego planu. Odszukujemy miejsce gdzie jest ta lekcja w aktualnym planie. Zamieniamy odszukaną lekcjie z lekcją która jest w miejscu do którego chcemy ją skopjować. 
+\par Cały algorytm zaczynamy od stworzenia populacji dwudziestu cząsteczek. Każda z nich będzie posiadała losowo wygenerowany plan zajęć. Następnie dla każdej iteracji na każdej cząsteczce wykonwane będą poniższe kroki:
 \begin{description}
   \item[Krok 1] \hfill \\
-Liczba cząsteczek używana podczas rozwiązywania problemu jest ustalona z góry. Każda cząsteczka ma swoją własną pozycję, prędkość i najlepsze dotychczasowe rozwiązanie. Wtedy,
-  \[f(P^{i}_{k}) \le f(P^{i-1}_{k}) \le \ldots \le f(P^{1}_{k})\].
-
+     \par Ocena rozwiązania. \hfill \\
+   \par Oceniany zostaje aktualny plan. W tym momęcie następuje aktualizacja lokalnie najlepszego planu oraz globalnie najlepszego planu.
   \item[Krok 2] \hfill \\
-Proces aktualizacji prędkości jest realizowany jako:
-\[V^{i+1}_{k} = V^{i}_{k} + C_{1} \cdot r_{1} \cdot (P^{i}_{k} - X^{i}_{k}) + C_{2} \cdot r_{2} \cdot (G^{i} - X^{i}_{k})\].
+     \par Lokalna zamiana lekcji. \hfill \\
+    \par Wykonana zostaje losowa zamiana dwóch lekcji w aktualnym planie.
+
   \item[Krok 3] \hfill \\
-Przemieszczanie się cząsteczki jest wykonywane przy pomocy poniższego równania:
-\[X^{i+1}_{k} = X^{i}_{k} + V^{i+1}_{k}, i = 0,1,\cdots, M-1,\]
-gdzie $M$ to rozmiar cząsteczki, $-V_{max} \le V^{i+1}_{k} \le V_{max}$ ($V_{max}$ to maksymalna prędkość), oraz $r_{1}$ i $r_{2}$ to zmienne losowe z zakresu $0 \le r_{1},r_{2} \le 1$. Jeśli rozwiązanie jest lepsze od $G^{i}$ to $G^{i}$ zostanie zastąpione przez lepsze rozwiązanie, żeby reprezentować $G^{i+1}$ w kroku 4. W przeciwnym razie, nie będzie żadnej zmiany w globalnym najlepszym wyniku i $G^{i} = G^{i+1}$. Te rekurencyjne kroki wykonywane są dopóki nie wystąpi warunek stopu w kroku 5.  
+      \par Kopia lekcji z lokalnie najlepszego planu. \hfill \\
+        \par Losowo wybrana lekcji z lokalnie najlepszego planu zostaje kopjowana do aktualnego planu 
+  \item[Krok 4] \hfill \\
+      \par Kopia lekcji z globalnie najlepszego planu. \hfill \\
+        \par Losowo wybrana lekcji z globalnie najlepszego planu zostaje kopjowana do aktualnego planu 
 \end{description}
-
-\subsubsection{PSO w problemie układania planu}
-\par W proponowanej metodzie każda cząsteczka będzie zamieniać ze sobą dwa swoje zajęcia i będzie posiadała globalnie najlepsze oraz lokalnie najlepsze rozwiązanie. Zwiększa to szanse cząsteczek na znalezienie lepszego rozwiązania oraz ominięcie lokalnie najlepszych rozwiązań. 
-\par Początkowo tak samo jak w przypadku ogólnym startujemy od losowej populacji którą użyjemy do rozwiązania problemu. Przykładowo mamy M cząsteczek do użycia i możemy przedstawić je jako:
-\[X = \{X_{1},X_{2},\cdots,X_{M}\}\]
-
-\par Początkowo tworzymy losowo grupę 20 kandydatów jako rozwiązanie (cząsteczki). Każda z cząsteczka jest równoprawnym kandydatem na rozwiązanie problemu. Następnie oceniamy każdego kandydata. Poprzednie najlepsze rozwiązanie $k$-tej cząsteczki powinno być umieszczone w $P^{i}$
-
+\par Iteracje powtarzamy do czasu aż nie osiągniemy wystarczająco dobrego planu lub osiągniemy maksymalną liczbę iteracji albo skończy nam się limit czasu.
+\subsection{Ewojucja ostatecnego rozwiązania}
