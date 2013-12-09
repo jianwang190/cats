@@ -78,4 +78,5 @@ class TimetableFactory(object):
                 for room in timetable.periods[day][period]:
                     course = timetable.periods[day][period][room]
                     if course != None:
-                        print day * self.data.periodsPerDay + period , course.id, room
+                        print course.id, room, day, period
+                        #print day * self.data.periodsPerDay + period , course.id, room

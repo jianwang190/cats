@@ -33,16 +33,15 @@ class PSO(object):
             #for p in self.particles:
                 #print "Act:", p.actualSolution.penalty
                 #print "best:", p.bestSolution.penalty
-                #print "BEST:", self.globalBestSolution.penalty
+            print "BEST:", self.globalBestSolution.penalty
                 #print "------------------------"
-
-        #self.timetableFactory.echo(self.globalBestSolution)
+        self.timetableFactory.echo(self.globalBestSolution)
         h2 = []
         for particle in self.particles:
             h2.append(particle.history)
 
-        print h2
-        print self.h
+        #print h2
+        #print self.h
 
         return self.globalBestSolution
 
