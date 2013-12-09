@@ -11,21 +11,29 @@ import time
 #noinspection PyPep8Naming
 class GeneticAlgorithm(object):
 
-    def __init__(self, data, timeTables, populationSize = 100, iterations = 100, mutationIndex = 0.01, \
-                 tournamentSelectionIndex = 4, timeout = 1000):
+    def __init__(self, data, timeout=1000):
         self.data = data
-        self.timeTables = timeTables
         self.fitnessTable = dict()
-        self.populationSize = populationSize
-        self.mutationIndex = mutationIndex
-        self.tournamentSelectionIndex = tournamentSelectionIndex
+        self.populationSize = 50
+        self.mutationIndex = 0.01
+        self.tournamentSelectionIndex = 3
         self.fitnessSum = 0
-        self.iterationsMax = iterations
+        self.iterationsMax = 200
         self.bestSolutionIndex = -1
         self.timeout = timeout
         self.startTime = time.time()
         self.fitnessOperations = 0
         self.f = 0
+        self.timeTables = dict()
+        for it in range(self.populationSize):
+            self.timeTables[it] = TimeTableFactory.getTimeTable(self.data)
+
+        self.generateInitialSolutions()
+        self.estimateFitness()
+        self.runAlgorithmLoop()
+
+        #self.saveBestTimeTableToFile("/home/filip/Inzynierka/cats/Plany/plan" + str(random.randint(0, 10000)) + ".sln")
+        self.printFinalOutput()
 
 
     def runAlgorithmLoop(self):
@@ -33,20 +41,20 @@ class GeneticAlgorithm(object):
             self.nextGeneration("tournament")
             self.mutate()
             self.estimateFitness()
-            self.showSolutionStatus(epoch)
-            if self.mutationIndex > 0.5:
-                self.mutationIndex = 0.5
-            else:
-                if self.mutationIndex < 0.5:
-                    self.mutationIndex *= 1.02
+            #self.showSolutionStatus(epoch)
             currentTime = time.time()
+
+            print str(self.fitnessTable[self.bestSolutionIndex]), currentTime - self.startTime
+
             if int(currentTime - self.startTime) > self.timeout:
                 print "Loops:", epoch, "Execution timeout after", currentTime - self.startTime
+                #self.f.close()
                 return
 
-        self.f.close()
+        #self.f.close()
 
-        print "Loops:", self.iterationsMax, "Execution time", currentTime - self.startTime
+        #print "Loops:", self.iterationsMax, "Score:", str(self.fitnessTable[self.bestSolutionIndex]), \
+            "Execution time", currentTime - self.startTime
 
     def generateInitialSolutions(self):
         shuffledCourses = self.data.getAllCourseIds()
@@ -63,8 +71,8 @@ class GeneticAlgorithm(object):
                         unassignedLecturesNum += 1
                 self.timeTables[populationId].assignMissingLectures(self.data, courseId, unassignedLecturesNum)
 
-        self.f = open("/home/filip/Inzynierka/cats/Plany/progres" + str(random.randint(0, 10000)) + ".txt", 'w')
-        self.f.write("0 0\n")
+        #self.f = open("/home/filip/Inzynierka/cats/Plany/progres" + str(random.randint(0, 10000)) + ".txt", 'w')
+        #self.f.write("0 0\n")
 
     def chooseBestRoom(self, populationId, courseId):
         roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(), \
@@ -147,11 +155,12 @@ class GeneticAlgorithm(object):
         fitnesSum = 0.0
         for solutionId in self.timeTables.keys():
             self.fitnessTable[solutionId] = self.fitness(self.timeTables[solutionId])
-            self.fitnessOperations += 1
             fitnesSum += (1000/float(self.fitnessTable[solutionId]))
 
         self.fitnessSum = fitnesSum
-        self.f.write(str(self.fitnessTable[self.getTopSolutionIndex()]) + " " + str(self.fitnessOperations) + "\n")
+        self.fitnessOperations += self.populationSize
+        self.bestSolutionIndex = self.getTopSolutionIndex()
+        #self.f.write(str(self.fitnessTable[self.getTopSolutionIndex()]) + " " + str(self.fitnessOperations) + "\n")
 
     def fitness(self, solution):
         """
@@ -270,6 +279,13 @@ class GeneticAlgorithm(object):
         return False
 
 
+    def updateMutationIndex(self):
+        if self.mutationIndex > 0.5:
+                self.mutationIndex = 0.5
+        else:
+            if self.mutationIndex < 0.5:
+                self.mutationIndex *= 1.02
+
     def mutate(self):
         """
         Mutation make a swap in a timetable between 2 random lectures only if it doesn't make solution worse
@@ -277,6 +293,8 @@ class GeneticAlgorithm(object):
         :param fitnessTable:
         :return:
         """
+        self.updateMutationIndex()
+
         for i in range(int(math.ceil(self.mutationIndex * self.populationSize))):
             """ Prevent the top solution from a potential regression """
             solutionId = self.getTopSolutionIndex()
@@ -386,3 +404,10 @@ class GeneticAlgorithm(object):
         print "Epoka:", epoch, "Hardy:", str(hardConstraintsPenalty), \
             "Softy:", str(bestFitnessValue-hardConstraintsPenalty), "najlepszy wynik:", str(bestFitnessValue)
 
+    def printFinalOutput(self):
+        bestSolutionId = self.getTopSolutionIndex()
+        for slot in self.timeTables[bestSolutionId].getTimeTable().keys():
+            for lecture in self.timeTables[bestSolutionId].getTimeTable()[slot]:
+                line = lecture[0] + ' ' + lecture[1] + ' ' + str(self.timeTables[bestSolutionId].getPeriodPair(slot)[0]) + ' ' + \
+                       str(self.timeTables[bestSolutionId].getPeriodPair(slot)[1])
+                print (line)
