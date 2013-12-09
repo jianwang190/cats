@@ -1,3 +1,5 @@
+import random
+
 class IData(object):
     instanceName = ""
     daysNum = 0
@@ -13,12 +15,14 @@ class Data(IData):
         self.rooms = []
         self.curricula = []
         self.constraints = []
+
         self.instanceName = ""
         self.daysNum = 0
         self.periodsPerDay = 0
 
     def __str__(self):
         return " ".join([str(self.daysNum), str(self.periodsPerDay)])
+
 
 
 
@@ -75,6 +79,8 @@ class DictData(IData):
         return self.curricula.values()
     def getAllConstraints(self):
         return sum(self.constraints.values(),[])
+    def getAllCourseIds(self):
+        return self.courses.keys()
 
 
 
@@ -85,7 +91,10 @@ class DictData(IData):
     def getCurriculum(self, id):
         return self.curricula[id]
     def getConstraintsForCourse(self, id):
-        return self.constraints[id]
+        if id not in self.constraints:
+            return dict()
+        else:
+            return self.constraints[id]
 
     def getCurriculumForCourseId(self, courseId):
         return self.curriculumLookup[courseId] if courseId in self.curriculumLookup else set()
@@ -97,3 +106,23 @@ class DictData(IData):
 
     def getUnfinishedCourses(self):
         return filter(lambda x: x.lectureNum>x.assignedLectureNum, self.getAllCourses())
+
+    def getRandomCourse(self):
+        courseId = random.choice(self.courses.keys())
+        return self.courses[courseId]
+
+    def getBestRoom(self, roomIdList):
+        roomList = filter(lambda x : x.id in roomIdList, self.getAllRooms())
+        return min(roomList, key = lambda x : x.capacity)
+
+    def clearAssignedLectures(self, coursesList):
+        for course in coursesList:
+            course.assignedLectureNum = 0
+
+    def getAllLecturesCount(self):
+        lecturesSum = 0
+        for course in self.getAllCourses():
+            lecturesSum += self.getCourse(course.id).lectureNum
+
+        return lecturesSum
+

@@ -1,6 +1,7 @@
-import collections, json
+import collections, json, random
 from itertools import combinations, groupby
 import sys
+from cats.ga.checkHardConstraints import checkHardConstraintsForSlots
 
 
 class TimeTableFactory(object):
@@ -18,6 +19,7 @@ class TimeTableFactory(object):
         t.timeTable = {x : [] for x in t.timeSlots}
         t.neighbourhoodList = t.createNeighbourhoodList(data.getAllCurricula(), data.getAllCourses())
         t.roomsIdListForCourses = t.getRoomsIdForCourses(data.getAllRooms(), data.getAllCourses())
+        t.assignedLecturesSum = 0
         return t
 
 
@@ -77,6 +79,14 @@ class TimeTable(object):
         key = day * self.periodsPerDay + day_period
         return key
 
+    def getPeriodPair(self, slot):
+        """
+        Converts a timeslot value to a pair of day and the day's period
+        :param slot:
+        :return: [ day , day_period ]
+        """
+        return [(slot/self.periodsPerDay), (slot%self.periodsPerDay)]
+
     def mapKeys(self, constraint):
         """
         Map day and period to key in timetable
@@ -85,6 +95,9 @@ class TimeTable(object):
         """
         key = self.getKey(constraint.day, constraint.dayPeriod)
         return key
+
+    def getAllSlots(self):
+        return self.timeSlots
 
     def createListOfRooms(self, roomList, course):
         """
@@ -120,15 +133,15 @@ class TimeTable(object):
     """Count number of available slots for course, function considers neighourhood, count available positions - periods (slot, room)"""
     """availablePeriodsNum - the total number of available periods for course, availablePeriods - list of available periods"""
     """availablePairsNum - the total number of available positions (period and room pairs), availablePairs - list of available pairs (period- room)"""
-    def availablePeriodsRooms(self, constraintsList, courseId):
-        keysConstraintsOfCourse = set(self.getKeyConstraintsOfCourse(constraintsList, courseId))
+    def availablePeriodsRooms(self, constraintsDict, courseId):
+        keysConstraintsOfCourse = set(self.getKeyConstraintsOfCourse(constraintsDict, courseId))
         availablePeriods = set()
         availablePairs = {}
         for slot in self.timeSlots:
             result = self.checkIfAvailable(self.timeTable[slot], courseId)
             if((result['period'] == True) and (slot not in keysConstraintsOfCourse)):
                 availablePeriods.add(slot)
-                availablePairs[slot] = self.roomsIdListForCourses[courseId] - result['unavailableRooms']
+                availablePairs[slot] = self.getRoomsIdForCourses[courseId] - result['unavailableRooms']
 
         availablePairsNum = sum([len(availablePairs[x]) for x in availablePairs])
 
@@ -137,11 +150,62 @@ class TimeTable(object):
                 'availablePeriods' : availablePeriods, \
                 'availablePairs' : availablePairs }
 
+    def availableSlotRoomPairs(self, data, courseId):
+        rooms = dict()
+        for slot in self.getTimeTable().keys():
+            rooms[slot] = self.availableRoomsForCourseAndSlot(data, courseId, slot)
+        possibleSlots = self.availableSlotsForCourse(data, courseId)
+        pairs = dict()
+        for slot in possibleSlots:
+            if len(rooms[slot]) > 0:
+                pairs[slot] = rooms[slot]
+
+        return pairs
+
+
+    """Returns list of rooms IDs which are available for a specified courseId in a particular slot """
+    def availableRoomsForCourseAndSlot(self, data, courseId, slot):
+        return list(set(self.getRoomsIdForCourses(data.getAllRooms(), [data.getCourse(courseId)])[courseId] \
+            ).intersection(self.availableRoomsList(slot, data)))
+
+    def availableSlotsForCourse(self, data, courseId):
+        bannedSlots = list()
+        for constraint in data.getConstraintsForCourse(courseId):
+            bannedSlots.append(self.getKey(constraint.day, constraint.dayPeriod))
+        possibleSlots = list(set(self.getAllSlots()) - set(bannedSlots))
+        bannedSlots = list()
+        for slot in possibleSlots:
+            for lecture in self.getTimeTable()[slot]:
+               if lecture[0] in self.neighbourhoodList[courseId]:
+                   bannedSlots.append(slot)
+                   continue
+        possibleSlots = list(set(possibleSlots) - set(bannedSlots))
+
+        return possibleSlots
+
+
     def assignedLectures(self, courseId):
-        sum = []
-        for slot, cells in self.getTimeTable().iteritems():\
-            sum += filter(lambda x: x[0] == courseId, cells)
-        return sum
+        sum = dict()
+        for slot, cells in self.getTimeTable().iteritems():
+            sum[slot] = filter(lambda x: x[0] == courseId, cells)
+        return filter(lambda x : len(x[1]) > 0, sum.iteritems())
+
+    def getAssignedDays(self, courseId):
+        lectures = self.assignedLectures(courseId)
+        assignedDays = map(lambda x : self.getPeriodPair(x[0])[0], lectures)
+
+        return set(assignedDays)
+
+    def getAssignedLecturesSum(self, data):
+        """
+        Counts the number of lectures currently assigned in this timeTable
+        :return: amount of lectures
+        """
+        lecturesSum = 0
+        for slot in self.getTimeTable().keys():
+            lecturesSum += len(self.getTimeTable()[slot])
+
+        return lecturesSum
 
     def readLecturesToTimetable(self, path):
         f = open(path, "r")
@@ -176,6 +240,9 @@ class TimeTable(object):
         """
         map(lambda a: self.timeTable[a[0]].append((a[1],a[2])), assignedList)
 
+    def removeFromTimetable(self, assignedList):
+        map(lambda a: self.timeTable[a[0]].remove((a[1], a[2])), assignedList)
+
 
     def serialize(self, data, path=None):
         if path is not None:
@@ -196,3 +263,89 @@ class TimeTable(object):
                 links.append({"source": nodes.index(n), "target": nodes.index(m), "value": 1})
         print json.dumps({"nodes" : map(lambda x: {"name": x, "group": 1}, self.neighbourhoodList.keys()), "links": links}, \
                          indent=4, separators=(',', ': '))
+
+    def assignMissingLectures(self, data, courseId, amount):
+        if amount <= 0:
+            return
+        timeSlots = self.timeSlots
+        for i in range(amount):
+            tries = 0
+            random.shuffle(timeSlots)
+            roomID = -1
+            for slot in timeSlots:
+                tries += 1
+                freeRoomsIDs = self.availableRoomsList(slot, data)
+                if len(freeRoomsIDs) > 0:
+                    if slot in self.availableSlotsForCourse(data, courseId):
+                        #Discard the room capacity, consider constraints and curriculums
+                        roomID = max(freeRoomsIDs, key = lambda x : data.getRoom(x).capacity)
+                        break
+            if roomID == -1:
+                for slot in timeSlots:
+                    #Discard the constraints list
+                    tries += 1
+                    banned = False
+                    freeRoomsIDs = self.availableRoomsList(slot, data)
+                    if len(freeRoomsIDs) > 0:
+                        for lecture in self.getTimeTable()[slot]:
+                            if lecture[0] in self.neighbourhoodList[courseId]:
+                                banned = True
+                                break
+                        if not banned:
+                            roomID = max(freeRoomsIDs, key = lambda x : data.getRoom(x).capacity)
+                            break
+            if roomID == -1:
+                for slot in timeSlots:
+                    #Discard the curriculum conflicts
+                    tries += 1
+                    banned = False
+                    freeRoomsIDs = self.availableRoomsList(slot, data)
+                    if len(freeRoomsIDs) > 0:
+                        for constraint in data.getConstraintsForCourse(courseId):
+                            if constraint.day == self.getPeriodPair(slot)[0] and \
+                                            constraint.dayPeriod == self.getPeriodPair(slot)[1]:
+                                banned = True
+                                break
+                        if not banned:
+                            roomID = max(freeRoomsIDs, key = lambda x : data.getRoom(x).capacity)
+                            break
+            if roomID == -1:
+                for slot in timeSlots:
+                    #Discard constraints and curriculum conflicts
+                    tries += 1
+                    freeRoomsIDs = self.availableRoomsList(slot, data)
+                    if len(freeRoomsIDs) > 0:
+                        roomID = max(freeRoomsIDs, key = lambda x : data.getRoom(x).capacity)
+                        break
+
+            self.addDataToTimetable([(slot, courseId, roomID)])
+
+    def copySolution(self, data):
+        newSolution = TimeTableFactory.getTimeTable(data)
+        for slot in self.getTimeTable().keys():
+            for lecture in self.getTimeTable()[slot]:
+                newSolution.getTimeTable()[slot].append(lecture)
+
+        return newSolution
+
+    def checkIfInsertionIsValid(self, slot, courseId, roomId, data):
+        #remove a random lecture of a course at first
+        oldLecture = random.choice(self.assignedLectures(courseId))
+        self.removeFromTimetable([(oldLecture[0], oldLecture[1][0][0], oldLecture[1][0][1])])
+
+        initialPenalty = checkHardConstraintsForSlots(self, data, [slot])
+        self.addDataToTimetable([(slot, courseId, roomId)])
+        if checkHardConstraintsForSlots(self, data, [slot]) <= initialPenalty:
+            return True
+        else:
+            self.addDataToTimetable([(oldLecture[0], oldLecture[1][0][0], oldLecture[1][0][1])])
+            return False
+
+    def saveResultsToFile(self, fileName):
+        f = open(fileName,'w')
+        for slot in self.getTimeTable().keys():
+            for lecture in self.getTimeTable()[slot]:
+                line = lecture[0] + ' ' + lecture[1] + ' ' + str(self.getPeriodPair(slot)[0]) + ' ' + \
+                       str(self.getPeriodPair(slot)[1]) + '\n'
+                f.write(line)
+        f.close()

@@ -33,8 +33,14 @@ def initialSolution(timetable, data):
         print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
                                " ".join(timetable.neighbourhoodList[c.id])])
 
+""" Dla Filipa """
+def initialSolutionWithReturn(timetable, data):
+    while len(data.getUnfinishedCourses())>0:
+        nextCourse = getNextCourse(timetable, data)
+        if feasibleInsertion(timetable, nextCourse.id, data)==False:
+            break
 
-
+    return timetable
 
 
 def feasibleInsertion(partialTimeTable, courseId, data):

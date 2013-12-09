@@ -9,6 +9,8 @@ class heuristicTest(unittest.TestCase):
         c = CompetitionDictReader()
         self.data = c.readInstance(1)
         self.t = TimeTableFactory.getTimeTable(self.data)
+        self.testInitialSolution()
+
 
     """TODO: write unittests"""
     def testHR1(self):
@@ -26,3 +28,4 @@ class heuristicTest(unittest.TestCase):
 
     def testInitialSolution(self):
         heuristics.initialSolution(self.t, self.data)
+        self.t.getTimeTable().saveResultsToFile("/home/filip/Inzynierka/cats/kumple.txt")
