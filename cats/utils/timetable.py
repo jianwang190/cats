@@ -264,62 +264,6 @@ class TimeTable(object):
         print json.dumps({"nodes" : map(lambda x: {"name": x, "group": 1}, self.neighbourhoodList.keys()), "links": links}, \
                          indent=4, separators=(',', ': '))
 
-    def assignMissingLectures(self, data, courseId, amount):
-        if amount <= 0:
-            return
-        timeSlots = self.timeSlots
-        for i in range(amount):
-            tries = 0
-            random.shuffle(timeSlots)
-            roomID = -1
-            for slot in timeSlots:
-                tries += 1
-                freeRoomsIDs = self.availableRoomsList(slot, data)
-                if len(freeRoomsIDs) > 0:
-                    if slot in self.availableSlotsForCourse(data, courseId):
-                        #Discard the room capacity, consider constraints and curriculums
-                        roomID = max(freeRoomsIDs, key = lambda x : data.getRoom(x).capacity)
-                        break
-            if roomID == -1:
-                for slot in timeSlots:
-                    #Discard the constraints list
-                    tries += 1
-                    banned = False
-                    freeRoomsIDs = self.availableRoomsList(slot, data)
-                    if len(freeRoomsIDs) > 0:
-                        for lecture in self.getTimeTable()[slot]:
-                            if lecture[0] in self.neighbourhoodList[courseId]:
-                                banned = True
-                                break
-                        if not banned:
-                            roomID = max(freeRoomsIDs, key = lambda x : data.getRoom(x).capacity)
-                            break
-            if roomID == -1:
-                for slot in timeSlots:
-                    #Discard the curriculum conflicts
-                    tries += 1
-                    banned = False
-                    freeRoomsIDs = self.availableRoomsList(slot, data)
-                    if len(freeRoomsIDs) > 0:
-                        for constraint in data.getConstraintsForCourse(courseId):
-                            if constraint.day == self.getPeriodPair(slot)[0] and \
-                                            constraint.dayPeriod == self.getPeriodPair(slot)[1]:
-                                banned = True
-                                break
-                        if not banned:
-                            roomID = max(freeRoomsIDs, key = lambda x : data.getRoom(x).capacity)
-                            break
-            if roomID == -1:
-                for slot in timeSlots:
-                    #Discard constraints and curriculum conflicts
-                    tries += 1
-                    freeRoomsIDs = self.availableRoomsList(slot, data)
-                    if len(freeRoomsIDs) > 0:
-                        roomID = max(freeRoomsIDs, key = lambda x : data.getRoom(x).capacity)
-                        break
-
-            self.addDataToTimetable([(slot, courseId, roomID)])
-
     def copySolution(self, data):
         newSolution = TimeTableFactory.getTimeTable(data)
         for slot in self.getTimeTable().keys():
