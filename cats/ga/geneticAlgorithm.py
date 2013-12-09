@@ -12,7 +12,7 @@ import time
 class GeneticAlgorithm(object):
 
     def __init__(self, data, timeTables, populationSize = 100, iterations = 100, mutationIndex = 0.01, \
-                 tournamentSelectionIndex = 4, timeout = 600):
+                 tournamentSelectionIndex = 4, timeout = 1000):
         self.data = data
         self.timeTables = timeTables
         self.fitnessTable = dict()
@@ -24,6 +24,8 @@ class GeneticAlgorithm(object):
         self.bestSolutionIndex = -1
         self.timeout = timeout
         self.startTime = time.time()
+        self.fitnessOperations = 0
+        self.f = 0
 
 
     def runAlgorithmLoop(self):
@@ -32,22 +34,23 @@ class GeneticAlgorithm(object):
             self.mutate()
             self.estimateFitness()
             self.showSolutionStatus(epoch)
+            if self.mutationIndex > 0.5:
+                self.mutationIndex = 0.5
+            else:
+                if self.mutationIndex < 0.5:
+                    self.mutationIndex *= 1.02
             currentTime = time.time()
             if int(currentTime - self.startTime) > self.timeout:
                 print "Loops:", epoch, "Execution timeout after", currentTime - self.startTime
                 return
 
+        self.f.close()
+
         print "Loops:", self.iterationsMax, "Execution time", currentTime - self.startTime
 
-    def lecturesCheck(self, sss):
-        for solutionId in self.timeTables.keys():
-            lecturesSum = self.data.getAllLecturesCount() - self.timeTables[solutionId].getAssignedLecturesSum(self.data)
-            if lecturesSum < 0:
-                print "Cos dziwnego", sss
-
     def generateInitialSolutions(self):
+        shuffledCourses = self.data.getAllCourseIds()
         for populationId in range(self.populationSize):
-            shuffledCourses = self.data.getAllCourseIds()
             random.shuffle(shuffledCourses)
             self.timeTables[populationId] = TimeTableFactory.getTimeTable(self.data)
             for courseId in shuffledCourses:
@@ -60,6 +63,8 @@ class GeneticAlgorithm(object):
                         unassignedLecturesNum += 1
                 self.timeTables[populationId].assignMissingLectures(self.data, courseId, unassignedLecturesNum)
 
+        self.f = open("/home/filip/Inzynierka/cats/Plany/progres" + str(random.randint(0, 10000)) + ".txt", 'w')
+        self.f.write("0 0\n")
 
     def chooseBestRoom(self, populationId, courseId):
         roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(), \
@@ -122,8 +127,8 @@ class GeneticAlgorithm(object):
     def selectSurvivals(self, parents, children):
         # Let the better half of parents and children survive the current generation
         newGeneration = dict()
-        sortedParents = sorted(parents.iteritems(), key = lambda x : self.fitness(x[1]))
-        sortedChildren = sorted(children.iteritems(), key = lambda x : self.fitness(x[1]))
+        sortedParents = sorted(parents.iteritems(), key = lambda x : self.fitnessTable[x[0]])
+        sortedChildren = sorted(children.iteritems(), key = lambda x : self.fitnessTable[x[0]])
         for i in range(self.populationSize):
             if i%2 == 0:
                 newGeneration[i] = sortedParents[i/2][1]
@@ -142,9 +147,11 @@ class GeneticAlgorithm(object):
         fitnesSum = 0.0
         for solutionId in self.timeTables.keys():
             self.fitnessTable[solutionId] = self.fitness(self.timeTables[solutionId])
+            self.fitnessOperations += 1
             fitnesSum += (1000/float(self.fitnessTable[solutionId]))
 
         self.fitnessSum = fitnesSum
+        self.f.write(str(self.fitnessTable[self.getTopSolutionIndex()]) + " " + str(self.fitnessOperations) + "\n")
 
     def fitness(self, solution):
         """
@@ -188,14 +195,24 @@ class GeneticAlgorithm(object):
             for slotItem in lectures1:
                 for lecture in slotItem[1]:
                     if not self.insertGeneWithHardCheck(slotItem[0], lecture, child):
-                        if not self.geneticRepair(slotItem[0], lecture, child):
-                            continue
+                        continue
                     insertedLectures += 1
                     if insertedLectures >= allLecturesCount/2:
                         return child
 
+        """
+        for courseId in courseIds:
+            lectures1 = father.assignedLectures(courseId)
+            for slotItem in lectures1:
+                for lecture in slotItem[1]:
+                    if not self.geneticRepair(slotItem[0], lecture, child):
+                        continue
+                    insertedLectures += 1
+                    if insertedLectures >= allLecturesCount/2:
+                        return child
+        """
+        #print "missing crossover: ", allLecturesCount/2 - insertedLectures
         return child
-
 
     def insertGeneWithHardCheck(self, slot, lecture, solution):
         #Checks if the lectures are identical
@@ -239,15 +256,17 @@ class GeneticAlgorithm(object):
                 return True
             else:
                 solution.removeFromTimetable([(period, lecture[0], lecture[1])])
-
+        """"
         #Look for any valid room in another time slot
         for period in periods:
-            for roomId in solution.availableRoomsForCourseAndSlot(self.data, lecture[0], period):
+            rooms = solution.availableRoomsForCourseAndSlot(self.data, lecture[0], period)
+            rooms = sorted(rooms, key = lambda x : self.data.getRoom(x).capacity)
+            for roomId in rooms:
                 if solution.checkIfInsertionIsValid(period, lecture[0], roomId, self.data):
                     return True
                 else:
                     solution.removeFromTimetable([(period, lecture[0], roomId)])
-
+        """
         return False
 
 
@@ -267,15 +286,15 @@ class GeneticAlgorithm(object):
             for i in range(1000):
                 course1 = self.data.getRandomCourse()
                 course2 = self.data.getRandomCourse()
-                lecture1 = random.choice(self.timeTables[solutionId].assignedLectures(course1.id))
-                lecture2 = random.choice(self.timeTables[solutionId].assignedLectures(course2.id))
-                if self.swapGenesWithHardCheck(lecture1[0], lecture1[1][0], lecture2[0], lecture2[1][0],\
-                                               self.timeTables[solutionId]):
-                    return
-                else:
-                    self.rollBackSwap(lecture1[0], lecture1[1][0], lecture2[0], lecture2[1][0],\
-                                               self.timeTables[solutionId])
-
+                if course1.id != course2.id:
+                    lecture1 = random.choice(self.timeTables[solutionId].assignedLectures(course1.id))
+                    lecture2 = random.choice(self.timeTables[solutionId].assignedLectures(course2.id))
+                    if self.swapGenesWithHardCheck(lecture1[0], lecture1[1][0], lecture2[0], lecture2[1][0],\
+                                                   self.timeTables[solutionId]):
+                        return
+                    else:
+                        self.rollBackSwap(lecture1[0], lecture1[1][0], lecture2[0], lecture2[1][0],\
+                                                   self.timeTables[solutionId])
 
     def swapGenes(self, slot1, gene1, slot2, gene2, solution):
         solution.getTimeTable()[slot2].remove(gene2)
@@ -347,10 +366,8 @@ class GeneticAlgorithm(object):
 
     def showSolutionStatus(self, epoch):
         self.bestSolutionIndex = self.getTopSolutionIndex()
-        penalty = countRoomCapacityPenalty(self.timeTables[self.bestSolutionIndex], \
-                                           self.timeTables[self.bestSolutionIndex].getTimeTable().keys(), self.data)
-        print "Room capacity", penalty
-        penalty += countCurriculumConflicts(self.timeTables[self.bestSolutionIndex], \
+        """
+        penalty = countCurriculumConflicts(self.timeTables[self.bestSolutionIndex], \
                                             self.timeTables[self.bestSolutionIndex].getTimeTable().keys(), self.data)
         print "Przedmioty w tym samym kurikulum", penalty
         penalty += countMissingLectures(self.timeTables[self.bestSolutionIndex], self.data)
@@ -363,7 +380,9 @@ class GeneticAlgorithm(object):
         penalty += countTeachersConflicts(self.timeTables[self.bestSolutionIndex], \
                                           self.timeTables[self.bestSolutionIndex].getTimeTable().keys(), self.data)
         print "Nauczyciel ma 2 kursy na raz", penalty
-        hardConstraintsPenalty = countHardConstraints(self.timeTables[self.bestSolutionIndex], self.data)        
+        """
+        hardConstraintsPenalty = countHardConstraints(self.timeTables[self.bestSolutionIndex], self.data)
         bestFitnessValue = self.fitnessTable[self.bestSolutionIndex]
         print "Epoka:", epoch, "Hardy:", str(hardConstraintsPenalty), \
             "Softy:", str(bestFitnessValue-hardConstraintsPenalty), "najlepszy wynik:", str(bestFitnessValue)
+

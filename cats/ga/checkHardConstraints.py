@@ -3,8 +3,7 @@ __author__ = 'filip'
 def countHardConstraints(solution, data):
     """Return sum of penalties"""
 
-    penalty = countRoomCapacityPenalty(solution, solution.getTimeTable().keys(), data)
-    penalty += countCurriculumConflicts(solution, solution.getTimeTable().keys(), data)
+    penalty = countCurriculumConflicts(solution, solution.getTimeTable().keys(), data)
     penalty += countMissingLectures(solution, data)
     penalty += countRoomOccupancy(solution)
     penalty += countConstraintsList(solution, solution.getTimeTable().keys(), data)
@@ -42,16 +41,13 @@ def countMissingLectures(solution, data):
 def countCurriculumConflicts(solution, slots, data):
     penalty = 0
     for slot in slots:
-        curriculums = dict()
+        curriculums = list()
         for lecture in solution.getTimeTable()[slot]:
             for curriculum in data.getCurriculumForCourseId(lecture[0]):
-                if not curriculum in curriculums.keys():
-                    curriculums[curriculum] = 1
+                if not curriculum in curriculums:
+                    curriculums.append(curriculum)
                 else:
-                    curriculums[curriculum] += 1
-        curriculumSum = sum(curriculums.values())
-        if curriculumSum > len(curriculums.keys()):
-            penalty += (curriculumSum - len(curriculums.keys())) * 100
+                    penalty += 100
 
     return penalty
 
@@ -76,7 +72,7 @@ def countConstraintsList(solution, slots, data):
                 if slot == solution.mapKeys(constraint):
                     penalty += 200
 
-        return penalty
+    return penalty
 
 def countTeachersConflicts(solution, slots, data):
     penalty = 0
