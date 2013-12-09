@@ -19,7 +19,7 @@ class Particle(object):
     def produceNewSolution(self, globalBest):
         """Produce new solution"""
 
-        self.actualSolution = deepcopy(self.bestSolution)
+        self.actualSolution = deepcopy(globalBest)
         #for x in range(10):
             #self.randChange(self.bestSolution)
         #for x in range(100):

@@ -83,6 +83,9 @@ class EvaluationFunction(object):
                 _, _, room = self.factory.unzip(slot)
                 rooms.add(room.id)
 
+            if len(rooms) > 1:
+                penalty += len(rooms) - 1
+
         return penalty
 
     def countConflictsPenalty(self, timetable):
