@@ -42,10 +42,13 @@ class TimetableFactory(object):
         slots = range(self.data.daysNum * self.data.periodsPerDay * len(self.data.rooms))
         random.shuffle(slots)
 
+        l = []
+
         for course in self.data.courses:
             for lecture in range(course.lectureNum):
                 slot = slots.pop()
                 day, period, room = self.unzip(slot)
+                l.append((day,period,room.id))
                 timetable.periods[day][period][room.id] = course
                 timetable.courses[course.id].add(slot)
 
@@ -73,10 +76,18 @@ class TimetableFactory(object):
     def echo(self, timetable):
         """Printe timetable"""
 
+        l=[]
         for day in range(len(timetable.periods)):
             for period in range(len(timetable.periods[day])):
                 for room in timetable.periods[day][period]:
                     course = timetable.periods[day][period][room]
                     if course != None:
-                        print course.id, room, day, period
+                        l.append((course.id, room, day, period))
+                        #print course.id, room, day, period
                         #print day * self.data.periodsPerDay + period , course.id, room
+        l.sort()
+        for id,room,day,period in l:
+            print id, room, day, period
+
+
+
