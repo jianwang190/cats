@@ -72,7 +72,7 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
     """
     initialSolution = timetable.copy()
     selectedLectures = rankingOfLectures(initialSolution.getTimeTable(), data, n, q)
-    print "INITIAL PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+    #print "INITIAL PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
 
     # 0 denote that was no move with this lecture (0, 0) - (simple, kempe)
     # ex. (1, 0) denotes there was a try to do simpleSwap

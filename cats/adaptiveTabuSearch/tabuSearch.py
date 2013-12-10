@@ -74,7 +74,7 @@ class AdaptiveTabuSearch:
         while iterationsWithoutChange>0:
             #print "ATS:", solutionQuality, bestQuality
             # print "THETA: %f ETA: %f xi: %f F: %f" % (theta, eta, xi, softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data))
-            print "PERTURBATION"
+            #print "PERTURBATION"
             perturbedSolution = perturbation.produceRandomlySimpleOrKempeSwap(solution, self.data,  eta, 30)
             perturbedTabu = self.tabuSearch(perturbedSolution, self.data, theta)
 
@@ -109,7 +109,8 @@ class AdaptiveTabuSearch:
             solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
             if  solutionQuality < bestQuality:
                 bestQuality = solutionQuality
-                print "outside loop", bestQuality, softConstraints2.refPenalty
+                #print "outside loop"
+                print bestQuality, softConstraints2.refPenalty
                 self.updateBest(solution)
         #print "ATS FINISHED", bestQuality
         return self.bestSolution
@@ -130,10 +131,10 @@ class AdaptiveTabuSearch:
         while iterations>0:
             simpleNeighborhood = tabuSimpleNeighborhood(initialSolution.copy(), data, int(theta))
             #check hard constraints
-            print "Simple"
+            #print "Simple"
             #checkConstraintsList(simpleNeighborhood, data)
             advancedNeighborhood = tabuAdvancedNeighborhood(simpleNeighborhood.copy(), data, int(theta)/3)
-            print "Advanced"
+            #print "Advanced"
             #checkConstraintsList(advancedNeighborhood, data)
 
 
@@ -144,7 +145,8 @@ class AdaptiveTabuSearch:
                 bestQuality = advancedQuality
                 #moje
                 self.updateBest(bestSolution)
-                print "inside loop", bestQuality, softConstraints2.refPenalty
+                #print "inside loop"
+                print bestQuality, softConstraints2.refPenalty
             else:
                 iterations -=1
             initialSolution = advancedNeighborhood.copy()

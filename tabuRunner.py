@@ -5,11 +5,12 @@ from cats.readers.competitionReader import CompetitionDictReader
 
 def main():
     c= CompetitionDictReader()
-    numberOfInstance = 1
+    numberOfInstance = 22
     data = c.readInstance(numberOfInstance)
-    a = AdaptiveTabuSearch(data, 240)
+    a = AdaptiveTabuSearch(data, 2400)
+
     bestSolution = a.run()
-    o = file('result'+str(numberOfInstance), 'w')
+    o = file('result'+str(numberOfInstance ) + str('add'), 'w')
     for slot in bestSolution.getTimeTable():
         for lecture in bestSolution.getTimeTable()[slot]:
             tuple = (slot/data.periodsPerDay, slot % data.periodsPerDay)
