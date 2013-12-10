@@ -1,4 +1,8 @@
 \chapter{Testy i porównanie algorytmów}
+\section{Analiza działania poszczególnych algorytmów}
+\subsection{Algorytm Roju Cząsteczek}
+\subsection{Algorytm Adaptacyjny Tabu}
+\subsection{Algorytm Genetyczny}
 \section{Specyfikacja testów}
 Dane testowe pobrane zostały z konkursu ,,International Timetabling Competition 2007''
 \subsection{Test 1}
@@ -28,20 +32,21 @@ $Liczba\ sal$ & $6$ \\
 \caption {Specyfikacja danych - Test 1}
 \end{table}
 \subsubsection{Test 1 - wizualizacja}
-Graf przedstawiający wszystkie zależności pomiędzy kursami (uwzględniając tych samych prowadzących nauczycieli oraz należenie kursu do tego samego programu nauczania) 
 
-\begin{figure}[h!]
-  \caption{}
+
+\begin{figure}[H]
+  \caption{Graf przedstawiający wszystkie zależności pomiędzy kursami (uwzględniając tych samych prowadzących nauczycieli oraz należenie kursu do tego samego programu nauczania) }
   \centering
     \includegraphics[width=0.8\textwidth]{test1.PNG}
 \end{figure}
 
-\begin{figure}[h!]
+
+\begin{figure}[H]
   \caption{Graf uwzględniający zależności pomiędzy kursami uwzględniając prowadzących dane kursy}
   \centering
     \includegraphics[width=0.8\textwidth]{test1_teach.PNG}
 \end{figure}
-\begin{figure}[h!]
+\begin{figure}[H]
   \caption{Graf uwględniający grupy zależnych od siebie kursów wchodzących w skład tego samego programu nauczania}
   \centering
     \includegraphics[width=0.8\textwidth]{test1_con.PNG}
@@ -99,59 +104,8 @@ $Liczba\ sal$ & $16$ \\
 \caption {Specyfikacja danych - Test 3}
 \end{table}
 
-\subsection{Test 4}
-\begin{table}[H]
-\begin{center}
 
-\begin{tabular}{ |c|c|c|c| }
-\multicolumn{1}{r}{}
- &  \multicolumn{1}{c}{$$}
- & \multicolumn{1}{c}{$$} 
- \\
-\cline{1-2}
-$Liczba\ kursów$ & $79$\\
-\cline{1-2}
-$Liczba\ programów\ nauczania$ & $57$\\
-\cline{1-2}
-$Liczba\ dni$ & $5$ \\
-\cline{1-2}
-$Licza\ przedziałów\ czasowych$ & $5$ \\
-\cline{1-2}
-$Liczba\ ograniczeń$ & $396$ \\
-\cline{1-2}
-$Liczba\ sal$ & $18$ \\
-\cline{1-2}
-\end{tabular}
-\end{center}
-\caption {Specyfikacja danych - Test 4}
-\end{table}
 
-\subsection{Test 5}
-\begin{table}[H]
-\begin{center}
-
-\begin{tabular}{ |c|c|c|c| }
-\multicolumn{1}{r}{}
- &  \multicolumn{1}{c}{$$}
- & \multicolumn{1}{c}{$$} 
- \\
-\cline{1-2}
-$Liczba\ kursów$ & $54$\\
-\cline{1-2}
-$Liczba\ programów\ nauczania$ & $139$\\
-\cline{1-2}
-$Liczba\ dni$ & $6$ \\
-\cline{1-2}
-$Licza\ przedziałów\ czasowych$ & $6$ \\
-\cline{1-2}
-$Liczba\ ograniczeń$ & $771$ \\
-\cline{1-2}
-$Liczba\ sal$ & $9$ \\
-\cline{1-2}
-\end{tabular}
-\end{center}
-\caption {Specyfikacja danych - Test 5}
-\end{table}
 
 
 
