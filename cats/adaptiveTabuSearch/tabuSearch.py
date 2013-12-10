@@ -52,7 +52,6 @@ class AdaptiveTabuSearch:
 
     def runTimeLimited(self):
         initialSolution(self.bestSolution, self.data)
-        # print "INITIALSOLUTION", softConstraints2.totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
         xi = 0
         mju = 0.6
         theta = INITIAL_TABU_DEPTH
@@ -61,10 +60,12 @@ class AdaptiveTabuSearch:
         solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
         bestQuality = solutionQuality
         self.updateBest(solution)
+
         iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
         while iterationsWithoutChange>0:
             #print "ATS:", solutionQuality, bestQuality
             # print "THETA: %f ETA: %f xi: %f F: %f" % (theta, eta, xi, softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data))
+            print "PERTURBATION"
             perturbedSolution = perturbation.produceRandomlySimpleOrKempeSwap(solution, self.data,  eta, 30)
             perturbedTabu = tabuSearch(perturbedSolution, self.data, theta)
 
@@ -147,13 +148,16 @@ def tabuSimpleNeighborhood(timetable, data, theta):
             break
 
         candidates = map(lambda x: (x, doSimpleSwap(initialSolution.getTimeTable(), x)), neighborhood)
-        initialQuality = softConstraints2.totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+        #initialQuality = softConstraints2.totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
         #print currentBestQuality, initialQuality, len(neighborhood)
 
         candidatesAfterPeriods = map(lambda x:  (x,  softConstraints2.totalSoftConstraintsForTimetable(x[1], data)), candidates)
 
         bestSwap = sorted(candidatesAfterPeriods, key=lambda x: x[1])[0]
+
+
         (first, second) = bestSwap[0][0]
+        #print "swap between courseID ", first.courseId,"period ", first.period, " courseID ", second.courseId,"period ", second.period
 
         if first.courseId!=[]:
             tabuList.addTabuMove(first.courseId, first.period, initialSolution.getTimeTable()[first.period][first.index][1], i)
@@ -165,8 +169,12 @@ def tabuSimpleNeighborhood(timetable, data, theta):
             currentBestQuality, currentBestSolution = bestSwap[1], bestSwap[0][1]
             print currentBestQuality, softConstraints2.refPenalty
 
+
     initialSolution.timeTable = currentBestSolution
 
+    #print "Check hard constraints - unavailable time and "
+    #checkConstraintsList(initialSolution, data)
+    #countCurriculumConflicts(initialSolution, data)
 
     sortedRoomIdList = sorted(data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
     for x in currentBestSolution.keys():
@@ -218,9 +226,6 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
     for x in currentBestSolution.keys():
         currentBestSolution[x] = matchingRoomAllocations(currentBestSolution, x, data, sortedRoomIdList)
 
-
-
-
     initialSolution.timeTable = {x: currentBestSolution[x][:] for x in currentBestSolution.keys()}
     #print "ADVANCED TABU END:", softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data)
 
@@ -229,6 +234,34 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
     return initialSolution
 
 
+def checkConstraintsList(solution, data):
+    print "check constraints"
+    for slot in range(0, data.periodsPerDay * data.daysNum):
+        for lecture in solution.getTimeTable()[slot]:
+            for constraint in data.getConstraintsForCourse(lecture[0]):
+                if slot == solution.mapKeys(constraint):
+                    print "Naruszono ", lecture, "SlOT", slot
+
+def countCurriculumConflicts(solution,  data):
+    print "count curriculum conflicts"
+    for slot in range(0, data.periodsPerDay * data.daysNum):
+        curriculums = list()
+        for lecture in solution.getTimeTable()[slot]:
+            for curriculum in data.getCurriculumForCourseId(lecture[0]):
+                if not curriculum in curriculums:
+                    curriculums.append(curriculum)
+                else:
+                    print "Violation lecture ", lecture[0], "with curriculum ", curriculum
+
+
+def checkConstraintsList2(solution, data):
+    print "count curriculum conflicts"
+    for slot in range(0, data.periodsPerDay * data.daysNum):
+        for lecture in solution[slot]:
+            for constraint in data.getConstraintsForCourse(lecture[0]):
+                if slot == solution.mapKeys(constraint):
+                    print "Violation lecture", lecture, "slot", slot
+
 def tabuSearch(initialSolution, data, theta):
     improved = True
     bestSolution= initialSolution.copy()
@@ -236,8 +269,14 @@ def tabuSearch(initialSolution, data, theta):
     iterations = INITIAL_ITERATIONS_WITHOUT_CHANGE
     while iterations>0:
         simpleNeighborhood = tabuSimpleNeighborhood(initialSolution.copy(), data, int(theta))
-
+        #check hard constraints
+        print "Simple"
+        checkConstraintsList(simpleNeighborhood, data)
         advancedNeighborhood = tabuAdvancedNeighborhood(simpleNeighborhood.copy(), data, int(theta)/3)
+        print "Advanced"
+        checkConstraintsList(advancedNeighborhood, data)
+
+
         advancedQuality = softConstraints2.totalSoftConstraintsForTimetable(advancedNeighborhood.getTimeTable(), data)
         if advancedQuality < bestQuality:
             print advancedQuality, softConstraints2.refPenalty
@@ -248,6 +287,7 @@ def tabuSearch(initialSolution, data, theta):
         else:
             iterations -=1
         initialSolution = advancedNeighborhood.copy()
+
     #print "TABU", bestQuality, "DEPTH", theta
     return bestSolution
 

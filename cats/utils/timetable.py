@@ -65,6 +65,7 @@ class TimeTable(object):
             for i in comb:
                 self.neighbourhoodList[i[0]].add(i[1])
                 self.neighbourhoodList[i[1]].add(i[0])
+
         return self.neighbourhoodList
 
     def getKey(self, day, day_period):
@@ -93,7 +94,8 @@ class TimeTable(object):
         :param courseStudentsNum: number of students attending to course
         :return:
         """
-        listOfRooms = set([r.id for r in roomList if (r.capacity >= course.studentsNum and r.type == course.typeOfRoom)])
+        listOfRooms = set([r.id for r in roomList if (r.capacity >= course.studentsNum)])
+        #and r.type == course.typeOfRoom)])
         return listOfRooms
 
     """Get rooms ids for each of courses (considering number of students)"""
@@ -122,6 +124,7 @@ class TimeTable(object):
     """availablePairsNum - the total number of available positions (period and room pairs), availablePairs - list of available pairs (period- room)"""
     def availablePeriodsRooms(self, constraintsList, courseId):
         keysConstraintsOfCourse = set(self.getKeyConstraintsOfCourse(constraintsList, courseId))
+
         availablePeriods = set()
         availablePairs = {}
         for slot in self.timeSlots:
@@ -129,7 +132,6 @@ class TimeTable(object):
             if((result['period'] == True) and (slot not in keysConstraintsOfCourse)):
                 availablePeriods.add(slot)
                 availablePairs[slot] = self.roomsIdListForCourses[courseId] - result['unavailableRooms']
-
         availablePairsNum = sum([len(availablePairs[x]) for x in availablePairs])
 
         return {'availablePeriodsNum' : len(availablePeriods), \
@@ -148,7 +150,6 @@ class TimeTable(object):
         lecturesBuffer = map(lambda x: x.rstrip('\n'), f.readlines())
         for lecture in lecturesBuffer:
             l = lecture.split()
-            #courseId l[1], roomId l[2]
             self.timeTable[int(l[0])].append((l[1], l[2]))
 
     """ returns number of conflicting courses """

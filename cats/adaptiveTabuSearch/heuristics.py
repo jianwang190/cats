@@ -62,7 +62,6 @@ def feasibleInsertion(partialTimeTable, courseId, data):
     if len(solutionRankings)>0:
         period = solutionRankings[0][1][0]
         room = solutionRankings[0][1][1]
-
         # assign matching course-room to period
         partialTimeTable.getTimeTable()[period].append((courseId, room))
         # update course assigned lecture number

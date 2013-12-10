@@ -84,6 +84,7 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
         choice = random.choice(['kempeSwap', 'simpleSwap'])
         lecture = getFirstUndone(selectedLecturesDict)
         if choice == 'simpleSwap':
+
             b.clearBasicList()
             b.simpleSwap(initialSolution.getTimeTable(), initialSolution.neighbourhoodList, len(data.getAllRooms()))
             possibleSwaps = filter(lambda swap: (swap[0].courseId == lecture[0] and swap[0].period == lecture[2])\
@@ -96,7 +97,7 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
             else:
                 selectedLecturesDict[lecture] = (1, 1) if selectedLecturesDict[lecture] == (0, 1) else (1, 0)
 
-            print "SIMPLE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+            #print "SIMPLE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
         else:
             neighborhood = filter(lambda x: x[0][0] == lecture[2] or x[0][1] == lecture[2],\
                                   a.exploreNeighborhood(initialSolution, data))
@@ -115,14 +116,11 @@ def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
             else:
                 selectedLecturesDict[lecture] = (1, 1) if selectedLecturesDict[lecture] == (1, 0) else (0, 1)
 
-            print "KEMPE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+
+            #print "KEMPE COST PENALTY", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
 
 
-    #sortedRoomIdList = sorted(data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
-    #for x in initialSolution.timeTable.keys():
-    #    initialSolution.timeTable[x] = tabuSearch.matchingRoomAllocations(initialSolution.timeTable, x, data, sortedRoomIdList)
-
-    print "cost after perturbation", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
+    #print "cost after perturbation", totalSoftConstraintsForTimetable(initialSolution.getTimeTable(), data)
     return initialSolution
 
 

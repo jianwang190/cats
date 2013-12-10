@@ -23,6 +23,7 @@ class CompetitionReader(object):
 
         return self.data
 
+
     def readF(self, fileName):
         """Return content of file"""
 

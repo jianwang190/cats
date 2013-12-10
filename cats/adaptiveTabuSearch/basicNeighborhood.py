@@ -30,10 +30,11 @@ class BasicNeighborhood(object):
 
     """Check is swap between two courses if possible regarding other courses in slot (neighbourhoodList)"""
     """if courseIdSecond can be assigned to slot"""
-    def checkSimpleSwapMove(self, timetable, neighbourhoodList, courseIdFirst, courseIdSecond, slot):
-        curCourseSet = filter(lambda z: z != set([]), map(lambda x : neighbourhoodList[courseIdSecond] & neighbourhoodList[x[0]], \
-                           filter(lambda y : y[0] != courseIdFirst, timetable[slot])))
-        return False if len(curCourseSet) > 0 else True
+    def checkSimpleSwapMove(self, timetable, neighbourhoodList,  courseIdSecond, slot):
+        for x in timetable[slot]:
+            if (x[0] in neighbourhoodList[courseIdSecond]) or (x[0] == courseIdSecond):
+                return False
+        return True
 
 
     def checkIfNotInBasicNeighbourhood(self, courseIdFirst, slotFirst, courseIdSecond, slotSecond):
@@ -53,6 +54,13 @@ class BasicNeighborhood(object):
                       and cells[0].courseId == courseIdSecond and cells[0].period == slotSecond):
                 return True
         return False
+
+    def checkPeriodIfInConstraints(self, firstCourseId, firstPeriod, secondCourseId, secondPeriod):
+        if (secondCourseId is not []) and (firstPeriod in self.data.getConstraintsOnlyKeysForCourse(secondCourseId)):
+            return False
+        elif (firstCourseId is not []) and (secondPeriod in self.data.getConstraintsOnlyKeysForCourse(firstCourseId)):
+            return False
+        return True
 
 
     def simpleSwap(self, timetable, neighborhoodList, numberOfRooms):
@@ -77,9 +85,10 @@ class BasicNeighborhood(object):
                                 self.data.getCourse(timetable[i][indexFirst][0]).typeOfRoom, range(0, len(timetable[j]))):
 
                             cellSecond = timetable[j][indexSecond]
-                            if cellSecond[0] != cellFirst[0]:
-                                if self.checkSimpleSwapMove(timetable, neighborhoodList, cellSecond[0], cellFirst[0], j) \
-                                        & self.checkSimpleSwapMove(timetable, neighborhoodList, cellFirst[0], cellSecond[0], i):
+                            if cellSecond[0] != cellFirst[0] and self.checkPeriodIfInConstraints(cellFirst[0], i, cellSecond[0], j):
+
+                                if self.checkSimpleSwapMove(timetable, neighborhoodList, cellFirst[0], j) \
+                                        & self.checkSimpleSwapMove(timetable, neighborhoodList, cellSecond[0], i):
 
                                     if self.checkIfNotInBasicNeighbourhood(cellFirst[0], i, cellSecond[0], j) is False:
                                         basicFirst = CellBasicNeighborhood(cellFirst[0], i, indexFirst)
@@ -87,7 +96,8 @@ class BasicNeighborhood(object):
                                         self.addCell(basicFirst, basicSecond)
 
                         """Swap (assign) course with empty position"""
-                        if self.checkSimpleSwapMove(timetable, neighborhoodList, [], cellFirst[0], j) and len(timetable[j]) < numberOfRooms:
+                        if self.checkSimpleSwapMove(timetable, neighborhoodList, cellFirst[0], j) and len(timetable[j]) < numberOfRooms\
+                            and self.checkPeriodIfInConstraints(cellFirst[0], i, [], j):
                             if self.checkIfNotInBasicNeighbourhood(cellFirst[0], i, [], j) is False:
                                 basicFirst = CellBasicNeighborhood(cellFirst[0], i, indexFirst)
                                 basicSecond = CellBasicNeighborhood([], j, [])
