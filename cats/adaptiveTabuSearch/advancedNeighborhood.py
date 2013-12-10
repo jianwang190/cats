@@ -72,8 +72,9 @@ class AdvancedNeighborhood(object):
         #x[1]["moves"][0][1] moves1
         ##x[1]["moves"][1][1] moves2
         #getConstraintsOnlyKeysForCourse
-        result = filter(lambda x: self.checkIfIn(x[1]["moves"][1][1],x[1]["moves"][0][0], data) == False, result)
-        result = filter(lambda x: self.checkIfIn(x[1]["moves"][0][1],x[1]["moves"][1][0], data) == False, result)
+        result = filter(lambda x: self.checkIfIn(x[1]["moves"][1][1],x[1]["moves"][0][0], data) == False\
+            and self.checkIfIn(x[1]["moves"][0][1],x[1]["moves"][1][0], data) == False, result)
+        #result = filter(lambda x: self.checkIfIn(x[1]["moves"][0][1],x[1]["moves"][1][0], data) == False, result)
         return result
 
 

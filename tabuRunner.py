@@ -5,7 +5,7 @@ from cats.readers.competitionReader import CompetitionDictReader
 
 def main():
     c= CompetitionDictReader()
-    numberOfInstance = 1
+    numberOfInstance = 3
     data = c.readInstance(numberOfInstance)
     a = AdaptiveTabuSearch(data, 120)
     bestSolution = a.run()
