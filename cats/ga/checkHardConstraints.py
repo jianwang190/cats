@@ -8,6 +8,7 @@ def countHardConstraints(solution, data):
     penalty += countRoomOccupancy(solution, solution.getTimeTable().keys())
     penalty += countConstraintsList(solution, solution.getTimeTable().keys(), data)
     penalty += countTeachersConflicts(solution, solution.getTimeTable().keys(), data)
+    penalty += countRoomTypeViolations(solution, solution.getTimeTable().keys(), data)
 
     return penalty
 
@@ -16,16 +17,7 @@ def checkHardConstraintsForSlots(solution, data, slots):
     penalty += countRoomOccupancy(solution, slots)
     penalty += countConstraintsList(solution, slots, data)
     penalty += countTeachersConflicts(solution, slots, data)
-
-    return penalty
-
-def countRoomCapacityPenalty(solution, slots, data):
-    penalty = 0
-    for period in slots:
-        for lecture in solution.getTimeTable()[period]:
-            overDose = data.getCourse(lecture[0]).studentsNum - data.getRoom(lecture[1]).capacity
-            if overDose > 0:
-                penalty += (overDose * 10)
+    penalty += countRoomTypeViolations(solution, slots, data)
 
     return penalty
 
@@ -45,7 +37,7 @@ def countCurriculumConflicts(solution, slots, data):
                 if not curriculum in curriculums:
                     curriculums.append(curriculum)
                 else:
-                    penalty += 1000
+                    penalty += 2000
 
     return penalty
 
@@ -81,5 +73,14 @@ def countTeachersConflicts(solution, slots, data):
                 teachers[data.getCourse(lecture[0]).teacher] = 1
             else:
                 penalty += 2000
+
+    return penalty
+
+def countRoomTypeViolations(solution, slots, data):
+    penalty = 0
+    for period in slots:
+        for lecture in solution.getTimeTable()[period]:
+            if data.getCourse(lecture[0]).typeOfRoom != None and data.getCourse(lecture[0]).typeOfRoom != data.getRoom(lecture[1]).type:
+                penalty += 4000
 
     return penalty
