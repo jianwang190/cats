@@ -45,6 +45,7 @@ class DictData(IData):
     rooms = {}
     curricula = {}
     constraints = {}
+    constraintsPeriods = {}
 
     curriculumLookup = {}
 
@@ -64,8 +65,10 @@ class DictData(IData):
                 self.curriculumLookup[m].add(c)
 
         self.constraints = { c.id: [] for c in data.constraints}
+        self.constraintsPeriods = { c.id: [] for c in data.constraints}
         for c in data.constraints:
             self.constraints[c.id].append(c)
+            self.constraintsPeriods[c.id].append(c.day * self.periodsPerDay + c.dayPeriod)
 
 
 
@@ -91,10 +94,10 @@ class DictData(IData):
     def getCurriculum(self, id):
         return self.curricula[id]
     def getConstraintsForCourse(self, id):
-        if id not in self.constraints:
-            return dict()
-        else:
+        if id in self.constraints.keys():
             return self.constraints[id]
+        else:
+            return []
 
     def getCurriculumForCourseId(self, courseId):
         return self.curriculumLookup[courseId] if courseId in self.curriculumLookup else set()

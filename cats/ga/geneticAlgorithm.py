@@ -1,39 +1,35 @@
-import itertools, math, random
-from cats.utils.data import Data
-from cats.utils.inputDataStructures import *
-from cats.utils.timetable import TimeTable, TimeTableFactory
+import math, random
+from cats.utils.timetable import TimeTableFactory
 from cats.adaptiveTabuSearch.softConstraints2 import totalSoftConstraintsForTimetable
-from cats.adaptiveTabuSearch.heuristics import initialSolutionWithReturn
-from cats.ga.checkHardConstraints import countHardConstraints, checkHardConstraintsForSlots, countConstraintsList, \
-    countCurriculumConflicts, countMissingLectures, countRoomCapacityPenalty, countRoomOccupancy, countTeachersConflicts
+from cats.ga.checkHardConstraints import countHardConstraints, checkHardConstraintsForSlots, countTeachersConflicts, \
+    countCurriculumConflicts, countRoomOccupancy, countConstraintsList, countMissingLectures, countRoomTypeViolations
 import time
 
 #noinspection PyPep8Naming
 class GeneticAlgorithm(object):
 
-    def __init__(self, data, timeout=1000):
+    def __init__(self, data, timeout=4500):
         self.data = data
         self.fitnessTable = dict()
-        self.populationSize = 50
+        self.populationSize = 100
         self.mutationIndex = 0.01
         self.tournamentSelectionIndex = 3
         self.fitnessSum = 0
-        self.iterationsMax = 200
+        self.iterationsMax = 800
         self.bestSolutionIndex = -1
         self.timeout = timeout
         self.startTime = time.time()
         self.fitnessOperations = 0
         self.f = 0
+        self.f2 = 0
         self.timeTables = dict()
-        for it in range(self.populationSize):
-            self.timeTables[it] = TimeTableFactory.getTimeTable(self.data)
 
         self.generateInitialSolutions()
         self.estimateFitness()
         self.runAlgorithmLoop()
 
-        #self.saveBestTimeTableToFile("/home/filip/Inzynierka/cats/Plany/plan" + str(random.randint(0, 10000)) + ".sln")
-        self.printFinalOutput()
+        self.saveBestTimeTableToFile("/home/filip/Inzynierka/cats/Plany/plan" + str(random.randint(0, 10000)) + ".sln")
+        #self.printFinalOutput()
 
 
     def runAlgorithmLoop(self):
@@ -42,19 +38,22 @@ class GeneticAlgorithm(object):
             self.mutate()
             self.estimateFitness()
             #self.showSolutionStatus(epoch)
+            self.f2.write(str(epoch) + " " + str(self.fitnessTable[self.bestSolutionIndex]) + "\n")
             currentTime = time.time()
 
             print str(self.fitnessTable[self.bestSolutionIndex]), currentTime - self.startTime
 
             if int(currentTime - self.startTime) > self.timeout:
                 print "Loops:", epoch, "Execution timeout after", currentTime - self.startTime
-                #self.f.close()
+                self.f.close()
+                self.f2.close()
                 return
 
-        #self.f.close()
+        self.f.close()
+        self.f2.close()
 
         #print "Loops:", self.iterationsMax, "Score:", str(self.fitnessTable[self.bestSolutionIndex]), \
-            "Execution time", currentTime - self.startTime
+        #    "Execution time", currentTime - self.startTime
 
     def generateInitialSolutions(self):
         shuffledCourses = self.data.getAllCourseIds()
@@ -69,10 +68,12 @@ class GeneticAlgorithm(object):
                         self.timeTables[populationId].addDataToTimetable([(slotRoomPair[0], courseId, slotRoomPair[1])])
                     else:
                         unassignedLecturesNum += 1
-                self.timeTables[populationId].assignMissingLectures(self.data, courseId, unassignedLecturesNum)
+                self.assignMissingLectures(self.timeTables[populationId], courseId, unassignedLecturesNum)
 
-        #self.f = open("/home/filip/Inzynierka/cats/Plany/progres" + str(random.randint(0, 10000)) + ".txt", 'w')
-        #self.f.write("0 0\n")
+        self.f = open("/home/filip/Inzynierka/cats/Plany/progres" + str(random.randint(0, 10000)) + ".txt", 'w')
+        self.f.write("0 0\n")
+        self.f2 = open("/home/filip/Inzynierka/cats/Plany/iteracje" + str(random.randint(0, 10000)) + ".txt", 'w')
+        self.f2.write("0 0\n")
 
     def chooseBestRoom(self, populationId, courseId):
         roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(), \
@@ -107,6 +108,72 @@ class GeneticAlgorithm(object):
             roomList.remove(bestRoom.id)
 
         return ()
+
+    def assignMissingLectures(self, solution, courseId, amount):
+        if amount <= 0:
+            return
+        timeSlots = solution.timeSlots
+        for i in range(amount):
+            tries = 0
+            random.shuffle(timeSlots)
+            roomID = -1
+            for slot in timeSlots:
+                tries += 1
+                freeRoomsIDs = solution.availableRoomsList(slot, self.data, courseId)
+                if len(freeRoomsIDs) > 0:
+                    if slot in solution.availableSlotsForCourse(self.data, courseId):
+                        #Discard the room capacity, consider room type, constraints and curriculums
+                        roomID = max(freeRoomsIDs, key = lambda x : self.data.getRoom(x).capacity)
+                        break
+            if roomID == -1:
+                for slot in timeSlots:
+                    #Discard the constraints list, consider curriculum conflicts and room type
+                    tries += 1
+                    banned = False
+                    freeRoomsIDs = solution.availableRoomsList(slot, self.data, courseId)
+                    if len(freeRoomsIDs) > 0:
+                        for lecture in solution.getTimeTable()[slot]:
+                            if lecture[0] in solution.neighbourhoodList[courseId]:
+                                banned = True
+                                break
+                        if not banned:
+                            roomID = max(freeRoomsIDs, key = lambda x : self.data.getRoom(x).capacity)
+                            break
+            if roomID == -1:
+                for slot in timeSlots:
+                    #Discard the curriculum conflicts, consider constraints and room type
+                    tries += 1
+                    banned = False
+                    freeRoomsIDs = solution.availableRoomsList(slot, self.data, courseId)
+                    if len(freeRoomsIDs) > 0:
+                        for constraint in self.data.getConstraintsForCourse(courseId):
+                            if constraint.day == solution.getPeriodPair(slot)[0] and \
+                                            constraint.dayPeriod == solution.getPeriodPair(slot)[1]:
+                                banned = True
+                                break
+                        if not banned:
+                            roomID = max(freeRoomsIDs, key = lambda x : self.data.getRoom(x).capacity)
+                            break
+            if roomID == -1:
+                for slot in timeSlots:
+                    #Discard constraints and curriculum conflicts, consider room type
+                    tries += 1
+                    freeRoomsIDs = solution.availableRoomsList(slot, self.data, courseId)
+                    if len(freeRoomsIDs) > 0:
+                        roomID = max(freeRoomsIDs, key = lambda x : self.data.getRoom(x).capacity)
+                        break
+
+            if roomID == -1:
+                for slot in timeSlots:
+                    #Discard constraints, curriculum conflicts and room type
+                    tries += 1
+                    freeRoomsIDs = solution.allAvailableRoomsList(slot, self.data)
+                    if len(freeRoomsIDs) > 0:
+                        roomID = max(freeRoomsIDs, key = lambda x : self.data.getRoom(x).capacity)
+                        break
+
+            solution.addDataToTimetable([(slot, courseId, roomID)])
+
 
     def nextGeneration(self, selectionMethod):
         """
@@ -160,7 +227,7 @@ class GeneticAlgorithm(object):
         self.fitnessSum = fitnesSum
         self.fitnessOperations += self.populationSize
         self.bestSolutionIndex = self.getTopSolutionIndex()
-        #self.f.write(str(self.fitnessTable[self.getTopSolutionIndex()]) + " " + str(self.fitnessOperations) + "\n")
+        self.f.write(str(self.fitnessTable[self.bestSolutionIndex]) + " " + str(self.fitnessOperations) + "\n")
 
     def fitness(self, solution):
         """
@@ -200,7 +267,7 @@ class GeneticAlgorithm(object):
         allLecturesCount = self.data.getAllLecturesCount()
 
         for courseId in courseIds:
-            lectures1 = father.assignedLectures(courseId)
+            lectures1 = father.assignedLecturesWithSlots(courseId)
             for slotItem in lectures1:
                 for lecture in slotItem[1]:
                     if not self.insertGeneWithHardCheck(slotItem[0], lecture, child):
@@ -211,7 +278,7 @@ class GeneticAlgorithm(object):
 
         """
         for courseId in courseIds:
-            lectures1 = father.assignedLectures(courseId)
+            lectures1 = father.assignedLecturesWithSlots(courseId)
             for slotItem in lectures1:
                 for lecture in slotItem[1]:
                     if not self.geneticRepair(slotItem[0], lecture, child):
@@ -220,7 +287,6 @@ class GeneticAlgorithm(object):
                     if insertedLectures >= allLecturesCount/2:
                         return child
         """
-        #print "missing crossover: ", allLecturesCount/2 - insertedLectures
         return child
 
     def insertGeneWithHardCheck(self, slot, lecture, solution):
@@ -305,8 +371,8 @@ class GeneticAlgorithm(object):
                 course1 = self.data.getRandomCourse()
                 course2 = self.data.getRandomCourse()
                 if course1.id != course2.id:
-                    lecture1 = random.choice(self.timeTables[solutionId].assignedLectures(course1.id))
-                    lecture2 = random.choice(self.timeTables[solutionId].assignedLectures(course2.id))
+                    lecture1 = random.choice(self.timeTables[solutionId].assignedLecturesWithSlots(course1.id))
+                    lecture2 = random.choice(self.timeTables[solutionId].assignedLecturesWithSlots(course2.id))
                     if self.swapGenesWithHardCheck(lecture1[0], lecture1[1][0], lecture2[0], lecture2[1][0],\
                                                    self.timeTables[solutionId]):
                         return
@@ -384,13 +450,14 @@ class GeneticAlgorithm(object):
 
     def showSolutionStatus(self, epoch):
         self.bestSolutionIndex = self.getTopSolutionIndex()
-        """
+
         penalty = countCurriculumConflicts(self.timeTables[self.bestSolutionIndex], \
                                             self.timeTables[self.bestSolutionIndex].getTimeTable().keys(), self.data)
         print "Przedmioty w tym samym kurikulum", penalty
         penalty += countMissingLectures(self.timeTables[self.bestSolutionIndex], self.data)
         print "Brakujace zajecia", penalty
-        penalty += countRoomOccupancy(self.timeTables[self.bestSolutionIndex])
+        penalty += countRoomOccupancy(self.timeTables[self.bestSolutionIndex],
+                                      self.timeTables[self.bestSolutionIndex].getTimeTable().keys())
         print "Dwa zajecia w tej samej sali", penalty
         penalty += countConstraintsList(self.timeTables[self.bestSolutionIndex], \
                                         self.timeTables[self.bestSolutionIndex].getTimeTable().keys(), self.data)
@@ -398,7 +465,10 @@ class GeneticAlgorithm(object):
         penalty += countTeachersConflicts(self.timeTables[self.bestSolutionIndex], \
                                           self.timeTables[self.bestSolutionIndex].getTimeTable().keys(), self.data)
         print "Nauczyciel ma 2 kursy na raz", penalty
-        """
+        penalty += countRoomTypeViolations(self.timeTables[self.bestSolutionIndex], \
+                                          self.timeTables[self.bestSolutionIndex].getTimeTable().keys(), self.data)
+        print "Typ sali", penalty
+
         hardConstraintsPenalty = countHardConstraints(self.timeTables[self.bestSolutionIndex], self.data)
         bestFitnessValue = self.fitnessTable[self.bestSolutionIndex]
         print "Epoka:", epoch, "Hardy:", str(hardConstraintsPenalty), \
@@ -408,6 +478,6 @@ class GeneticAlgorithm(object):
         bestSolutionId = self.getTopSolutionIndex()
         for slot in self.timeTables[bestSolutionId].getTimeTable().keys():
             for lecture in self.timeTables[bestSolutionId].getTimeTable()[slot]:
-                line = lecture[0] + ' ' + lecture[1] + ' ' + str(self.timeTables[bestSolutionId].getPeriodPair(slot)[0]) + ' ' + \
-                       str(self.timeTables[bestSolutionId].getPeriodPair(slot)[1])
-                print (line)
+                line = lecture[0] + ' ' + lecture[1] + ' ' + str(self.timeTables[bestSolutionId].getPeriodPair(slot)[0])\
+                       + ' ' + str(self.timeTables[bestSolutionId].getPeriodPair(slot)[1])
+                print line
