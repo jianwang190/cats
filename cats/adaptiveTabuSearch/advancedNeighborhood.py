@@ -67,12 +67,22 @@ class AdvancedNeighborhood(object):
 
         
         result = filter(lambda x: len(x[1]["newPeriods"][0])<=len(data.rooms) and len(x[1]["newPeriods"][1])<=len(data.rooms), result)
-
+        #x[1]["moves"][0][0] period1
+        #x[1]["moves"][1][0] period2
+        #x[1]["moves"][0][1] moves1
+        ##x[1]["moves"][1][1] moves2
+        #getConstraintsOnlyKeysForCourse
+        result = filter(lambda x: self.checkIfIn(x[1]["moves"][1][1],x[1]["moves"][0][0], data) == False, result)
+        result = filter(lambda x: self.checkIfIn(x[1]["moves"][0][1],x[1]["moves"][1][0], data) == False, result)
         return result
 
 
 
-
+    def checkIfIn(self, movesSet, period, data):
+        for m in movesSet:
+            if period in data.getConstraintsOnlyKeysForCourse(m[0]):
+                return True
+        return False
 
 
     def kempeSwap(self, timetable, period1, period2, chains):
