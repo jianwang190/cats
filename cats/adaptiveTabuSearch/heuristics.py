@@ -9,7 +9,12 @@ SOFT_CONST = 0.5
 
 
 def initialSolution(timetable, data):
-
+    """
+    Create initial solution (timetable)
+    :param timetable:
+    :param data:
+    :return:
+    """
 
     while len(data.getUnfinishedCourses())>0:
 
@@ -73,6 +78,13 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 
 
 def costFunctionStage1(partialTimetable, data, courseId):
+    """
+    Cost function in stage 1
+    :param partialTimetable:
+    :param data:
+    :param courseId:
+    :return:
+    """
     apd = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriodsNum"]
     nl = data.getCourse(courseId).lectureNum - data.getCourse(courseId).assignedLectureNum
 
@@ -80,6 +92,13 @@ def costFunctionStage1(partialTimetable, data, courseId):
 
 
 def costFunctionStage2(partialTimetable, data, courseId):
+    """
+    Cost function in stage 2
+    :param partialTimetable:
+    :param data:
+    :param courseId:
+    :return:
+    """
     aps = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)
     nl = data.getCourse(courseId).lectureNum - data.getCourse(courseId).assignedLectureNum
 
@@ -90,6 +109,12 @@ def costFunctionStage2(partialTimetable, data, courseId):
 
 
 def getNextCourse(partialTimetable, data):
+    """
+    Get next Course to assign to timetable
+    :param partialTimetable:
+    :param data:
+    :return:
+    """
     courses = sorted([(x, costFunctionStage1(partialTimetable, data, x.id)) \
                       for x in data.getUnfinishedCourses()], \
                      key=lambda x: x[1])

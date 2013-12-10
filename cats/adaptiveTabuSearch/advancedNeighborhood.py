@@ -80,6 +80,12 @@ class AdvancedNeighborhood(object):
 
 
     def checkIfIn(self, movesSet, period, data):
+        """
+        check if move is possible regarding constraints
+        :param movesSet: Set of available moves
+        :param period: period with which we swap
+        :param data: data
+        """
         for m in movesSet:
             if period in data.getConstraintsOnlyKeysForCourse(m[0]):
                 return True
@@ -109,6 +115,11 @@ class AdvancedNeighborhood(object):
 
 
 def doKempeSwap(((period1, period2), swap), timetable):
+    """
+    Perform Kempe Swap
+    :param timetable: timetable containing lectures
+    :return: new timetable
+    """
     newTimetable = {x: timetable[x][:] for x in timetable.keys()}
     newTimetable[period1] = [x for x in swap["newPeriods"][0]]
     newTimetable[period2] = [x for x in swap["newPeriods"][1]]

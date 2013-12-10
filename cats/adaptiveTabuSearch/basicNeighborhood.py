@@ -1,16 +1,22 @@
 
 """Basic Neighborhood - exchanging the hosting periods and rooms assigned to two lectures of different courses """
 
-"""Cell to keep data about course for BasicNeighborhood structure"""
 class CellBasicNeighborhood(object):
-    """"Index - index on list in timeTable[period]"""
+    """
+    Cell to keep data about course for BasicNeighborhood structure
+    Index - index on list in timeTable[period]
+    """
+
     def __init__(self, courseId, period, index):
         self.courseId = courseId
         self.period = period
         self.index = index
 
-"""Structure containing all possible swaps between courses"""
+
 class BasicNeighborhood(object):
+    """
+    Structure containing all possible swaps between courses"
+    """
     def __init__(self, data):
         self.basicList = []
         self.data = data
@@ -18,19 +24,34 @@ class BasicNeighborhood(object):
     def clearBasicList(self):
         self.basicList = []
 
-    """Add possible swap between courses"""
     def addCell(self, cellFirst, cellSecond):
 
+        """
+        Add possible swap between courses"
+        :param cellFirst: first cell
+        :param cellSecond:  second cell
+        """
         self.basicList.append((cellFirst, cellSecond))
 
-    """Get list containing possible swaps"""
     def getBasicList(self):
+        """
+        Get list containing possible swaps
+        :return:basic list
+        """
         return self.basicList
 
 
-    """Check is swap between two courses if possible regarding other courses in slot (neighbourhoodList)"""
-    """if courseIdSecond can be assigned to slot"""
+
     def checkSimpleSwapMove(self, timetable, neighbourhoodList,  courseIdSecond, slot):
+        """
+        Check is swap between two courses if possible regarding other courses in slot (neighbourhoodList
+        if courseIdSecond can be assigned to slot
+        :param timetable: timetable
+        :param neighbourhoodList: neighbourhoodList containing all conflicts between courses
+        :param courseIdSecond: id of second course
+        :param slot:
+        :return:
+        """
         for x in timetable[slot]:
             if (x[0] in neighbourhoodList[courseIdSecond]) or (x[0] == courseIdSecond):
                 return False
@@ -56,6 +77,14 @@ class BasicNeighborhood(object):
         return False
 
     def checkPeriodIfInConstraints(self, firstCourseId, firstPeriod, secondCourseId, secondPeriod):
+        """
+        Check unavailable constraints for course
+        :param firstCourseId:
+        :param firstPeriod:
+        :param secondCourseId:
+        :param secondPeriod:
+        :return:
+        """
         if (secondCourseId is not []) and (firstPeriod in self.data.getConstraintsOnlyKeysForCourse(secondCourseId)):
             return False
         elif (firstCourseId is not []) and (secondPeriod in self.data.getConstraintsOnlyKeysForCourse(firstCourseId)):
@@ -79,7 +108,7 @@ class BasicNeighborhood(object):
                 cellFirst = timetable[i][indexFirst]
 
                 for j in range(0, SIZE):
-                    """Swap two courses"""
+                    #Swap two courses
                     if j != i:
                         for indexSecond in filter(lambda x: self.data.getCourse(timetable[j][x][0]).typeOfRoom == \
                                 self.data.getCourse(timetable[i][indexFirst][0]).typeOfRoom, range(0, len(timetable[j]))):
@@ -95,7 +124,7 @@ class BasicNeighborhood(object):
                                         basicSecond = CellBasicNeighborhood(cellSecond[0], j, indexSecond)
                                         self.addCell(basicFirst, basicSecond)
 
-                        """Swap (assign) course with empty position"""
+                        #Swap (assign) course with empty position
                         if self.checkSimpleSwapMove(timetable, neighborhoodList, cellFirst[0], j) and len(timetable[j]) < numberOfRooms\
                             and self.checkPeriodIfInConstraints(cellFirst[0], i, [], j):
                             if self.checkIfNotInBasicNeighbourhood(cellFirst[0], i, [], j) is False:
@@ -103,8 +132,13 @@ class BasicNeighborhood(object):
                                 basicSecond = CellBasicNeighborhood([], j, [])
                                 self.addCell(basicFirst, basicSecond)
 
-    """Get all possible swaps for courseId - helper function for tests"""
     def getPossibleSwapsForCourse(self, courseId, slot):
+        """
+        Get all possible swaps for courseId - helper function for tests
+        :param courseId:
+        :param slot:
+        :return:
+        """
         listForCourse = []
         for x in self.basicList:
             if((x[0].courseId == courseId and x[0].period == slot) or (x[1].courseId == courseId and x[1].period == slot)):
@@ -113,6 +147,11 @@ class BasicNeighborhood(object):
 
 
 def doSimpleSwap(timetable, (swap1, swap2)):
+    """
+    Perform simple swap
+    :param timetable:
+    :return:
+    """
     newTimetable = {x: timetable[x][:] for x in timetable.keys()}
     if(swap2.index == []):
         newTimetable[swap2.period].append(newTimetable[swap1.period][swap1.index])

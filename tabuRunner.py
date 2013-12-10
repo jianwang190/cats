@@ -5,9 +5,9 @@ from cats.readers.competitionReader import CompetitionDictReader
 
 def main():
     c= CompetitionDictReader()
-    numberOfInstance = 2
+    numberOfInstance = 1
     data = c.readInstance(numberOfInstance)
-    a = AdaptiveTabuSearch(data, 120)
+    a = AdaptiveTabuSearch(data, 240)
     bestSolution = a.run()
     o = file('result'+str(numberOfInstance), 'w')
     for slot in bestSolution.getTimeTable():

@@ -30,9 +30,15 @@ class AdaptiveTabuSearch:
         self.lock = threading.Lock()
 
     def signal_handler(self):
+        """
+        Signal handler
+        """
         raise Exception()
 
     def run(self):
+        """
+        Run algorithm
+        """
         signal.signal(signal.SIGALRM, self.signal_handler)
         signal.alarm(self.timeLimit)
         try:
@@ -45,6 +51,9 @@ class AdaptiveTabuSearch:
 
 
     def updateBest(self, better):
+        """
+        Update best solution
+        """
         with self.lock:
             self.bestSolution = better.copy()
             #print softConstraints2.refPenalty
@@ -106,6 +115,14 @@ class AdaptiveTabuSearch:
         return self.bestSolution
 
     def tabuSearch(self, initialSolution, data, theta):
+
+        """
+        Tabu search
+        :param initialSolution: initial solution
+        :param data: data
+        :param theta:
+        :return:
+        """
         improved = True
         bestSolution= initialSolution.copy()
         bestQuality = softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data)
@@ -143,6 +160,13 @@ class AdaptiveTabuSearch:
 
 def tabuSimpleNeighborhood(timetable, data, theta):
 
+    """
+    Tabu simple neighbourhood
+    :param timetable:
+    :param data:
+    :param theta:
+    :return:
+    """
     initialSolution = timetable.copy()
 
     tabuList = TabuList(data.getAllCourses(), initialSolution.neighbourhoodList)
@@ -220,6 +244,13 @@ def tabuSimpleNeighborhood(timetable, data, theta):
 
 def tabuAdvancedNeighborhood(timetable, data, theta):
 
+    """
+    Tabu advanced Neighbourhood
+    :param timetable:
+    :param data:
+    :param theta:
+    :return:
+    """
     initialSolution = timetable.copy()
 
     tabuList = AdvancedTabuList(data.getAllCourses(), initialSolution.neighbourhoodList)
@@ -252,6 +283,7 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
             #print softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data), bestCandidateQuality
 
 
+    # only for competition data
     sortedRoomIdList = sorted(data.getAllRooms(), key=lambda room: room.capacity, reverse=True)
     for x in currentBestSolution.keys():
         currentBestSolution[x] = matchingRoomAllocations(currentBestSolution, x, data, sortedRoomIdList)
@@ -265,6 +297,11 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
 
 
 def checkConstraintsList(solution, data):
+    """
+    Check hard Constraints
+    :param solution:
+    :param data:
+    """
     print "check constraints"
     for slot in range(0, data.periodsPerDay * data.daysNum):
         for lecture in solution.getTimeTable()[slot]:
@@ -273,6 +310,11 @@ def checkConstraintsList(solution, data):
                     print "Naruszono ", lecture, "SlOT", slot
 
 def countCurriculumConflicts(solution,  data):
+    """
+    Check curriculum conflicts (hard constraints)
+    :param solution:
+    :param data:
+    """
     print "count curriculum conflicts"
     for slot in range(0, data.periodsPerDay * data.daysNum):
         curriculums = list()
@@ -285,6 +327,11 @@ def countCurriculumConflicts(solution,  data):
 
 
 def checkConstraintsList2(solution, data):
+    """
+    Check hard constraints
+    :param solution:
+    :param data:
+    """
     print "count curriculum conflicts"
     for slot in range(0, data.periodsPerDay * data.daysNum):
         for lecture in solution[slot]:
