@@ -94,8 +94,7 @@ class TimeTable(object):
         :param courseStudentsNum: number of students attending to course
         :return:
         """
-        listOfRooms = set([r.id for r in roomList if (r.capacity >= course.studentsNum)])
-        #and r.type == course.typeOfRoom)])
+        listOfRooms = set([r.id for r in roomList if (r.capacity >= course.studentsNum and r.type == course.typeOfRoom)])
         return listOfRooms
 
     """Get rooms ids for each of courses (considering number of students)"""
@@ -165,10 +164,10 @@ class TimeTable(object):
                 result += course.lectureNum - course.assignedLectureNum
         return result
     
-    def availableRoomsList(self, period, data):
-        return list(set(map(lambda x: x.id, data.getAllRooms())) \
+    def availableRoomsList(self, period, data, courseId):
+        allAvailableRooms = list(set(map(lambda x: data.rooms[x].id, filter(lambda r: data.rooms[r].type == data.courses[courseId].typeOfRoom, data.rooms))) \
                - set(map(lambda x: x[1], self.getTimeTable()[period])))
-
+        return allAvailableRooms
 
     def addDataToTimetable(self, assignedList):
         """

@@ -17,21 +17,21 @@ def initialSolution(timetable, data):
         if feasibleInsertion(timetable, nextCourse.id, data)==False:
             break
 
-        #print ">>> TIMETABLE"
-        #
-        #for k in timetable.getTimeTable():
-        #    print k, [(x[0], x[1]) for x in timetable.getTimeTable()[k]]
-        #print ">>>>> OCENA"
-        #print totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
-
-    print
-
-
-    print "##### INITIAL SOLUTION FINISHED #####"
-    print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
-    for c in data.getUnfinishedCourses():
-        print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
-                               " ".join(timetable.neighbourhoodList[c.id])])
+    #    print ">>> TIMETABLE"
+    #
+    #    for k in timetable.getTimeTable():
+    #        print k, [(x[0], x[1]) for x in timetable.getTimeTable()[k]]
+    #    print ">>>>> OCENA"
+    #    print totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
+    #
+    #print
+    #
+    #
+    #print "##### INITIAL SOLUTION FINISHED #####"
+    #print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
+    #for c in data.getUnfinishedCourses():
+    #    print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
+    #                           " ".join(timetable.neighbourhoodList[c.id])])
 
 
 
@@ -50,7 +50,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 
     periods = partialTimeTable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriods"]
     for p in periods:
-        for r in partialTimeTable.availableRoomsList(p, data):
+        for r in partialTimeTable.availableRoomsList(p, data, courseId):
             availablePairs.append((p,r))
 
     solutionRankings = \
