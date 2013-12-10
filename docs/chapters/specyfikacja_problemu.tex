@@ -53,12 +53,12 @@ Ograniczenia te w bezpośredni sposób nie wpływają na wykonywalność planu z
 \item \textbf{Minimalna liczba dni}
 Jeżeli liczba dni podczas których odbywają się zajęcia jest mniejsza niż minimalna liczba dni, podczas których powinny odbywać się zajęcia to do kary doliczamy rożnicę między minimalną liczbą dni a liczbą dni, w których zajęcia się odbywają pomnożoną o współczynnik $a_{2} = 5$ 
 \item \textbf{Zwartość zajęc}
-Za każde zajęcia w planie należące do danego programu nauczania nieprzylegające do innych zajęć punkt kary pomnożony o współczynnik ${a_{3} = 2}$
+Za każde zajęcia w planie, które nie przylegają do żadnych innych zajęć z tego samego programu nauczania, punkt kary pomnożony o współczynnik ${a_{3} = 2}$
 \item \textbf{Stabilność pomieszczenia}
-Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomieszczań, za każde nowe pomieszczenie punkt kary pomnożony o współczynnik ${a_{2} = 1}$
+Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomieszczań, za każde nowe pomieszczenie punkt kary pomnożony o współczynnik ${a_{4} = 1}$
 \end{enumerate}
 
-\subsection{Matematyczne sformułowanie problemu} \cite{tabu}
+\subsection{Matematyczny zapis przestrzeni rozwiązań} \cite{tabu}
 \par Na problem składa się ${n}$ kursów ${C = \{c_{1}, c_{2},...,c_{n}\}}$ które powinny być przydzielone do ${p}$ różnych okresów ${T = \{t_{1}, t_{2},...,t_{p}\}}$ oraz ${m}$ pomieszczeń w których mogą odbywać się zajęcia ${R = \{r_{1}, r_{2},...,r_{m}\}}$. Okres jest to para składająca się z dnia i przedziału czasowego (${d}$ - liczba dni a ${h}$ - liczba dziennych przedziałów czasowych, czyli ${p = d * h}$). Każdy z kursów składa się z ${n}$ zajęć ${L = \{l_{1},l_{2},...,l_{n}\}}$. Kursy wchodzą w skład ${s}$ programów nauczania ${CR = \{cr_{1}, cr_{2}, ..., cr_{s}\}}$, na program nauczania składają się kursy, na które uczęszczają ci sami studenci. 
 
 \section{Dane wejściowe}
