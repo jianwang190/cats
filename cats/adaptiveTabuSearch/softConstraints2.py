@@ -3,7 +3,6 @@ MIN_WORKINGS_DAY_PENALTY = 5
 COMPACTNESS_PENALTY = 2
 #stability_penalty not important in data school
 STABILITY_PENALTY = 1
-STABILITY_PENALTY = 0
 
 refPenalty = 0
 
