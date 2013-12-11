@@ -69,7 +69,7 @@ Testy szczegółowo zostały opisane w kolejnej sekcji.
   \centering
     \includegraphics[width=10cm]{ogolny.png}
 \end{figure}
-Na wykresie wyraźnie widać wyodrębioną fazę inicjalizacji, w której tworzone jest początkowe rozwiązanie nienaruszające twardych ograniczeń. Nagła zmiana wartości funkcji oceny wynika z wywołania w algorytmie funkcji przypasowującej sale do poszczególnych zajęć. Celem tej funkcji jest początkowe przypasowanie największych sal do kursów, na które uczęszcza największa liczba studentów, dzięki temu zmiejszana jest funkcja oceny miękkich ograniczeń dotycząca wielkości sali wykładowej.
+Na wykresie wyraźnie widać wyodrębioną fazę inicjalizacji, w której tworzone jest początkowe rozwiązanie nienaruszające twardych ograniczeń. Nagła zmiana wartości funkcji oceny wynika z wywołania w algorytmie funkcji przypasowującej sale do poszczególnych zajęć. Celem tej funkcji jest początkowe przypasowanie największych sal do kursów, na które uczęszcza największa liczba studentów, dzięki temu zmiejszana jest funkcja oceny miękkich ograniczeń dotycząca wielkości sali wykładowej. Stosunkowo długi czas działania algorytmu wynika z bardzo dużej ilości wywołań funkcji oceny, niezbędnej do stworzenia rozwiązania początkowego oraz do określenia najlepszych mozliwych zmian, które mogą zostać wprowadzone w kolejnych fazach: intensyfikacji i dywersyfikacji. Problem mógłby zostać rozwiązany implementacją modułu w języku \verb#C#, który w znacznie szybszy sposób wylicza funkcję kary, niż zaimplementowana optymalnie ta sama funkcjonalność w języki \verb#python#.
 \begin{figure}[H]
   \caption{Wykres zależności funkcji oceny od czasu, bez uwzględnienia fazy inicjalizacji}
   \centering
@@ -170,14 +170,15 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
   \centering
     \includegraphics[width=10cm]{ats_test_1.png}
 \end{figure}
-
+W powyższych wykresów można zaobserwować funkcję oceny początkowych rozwiązań wygenerowanych przez każdy z algorytmów. Najniższą wartość oceny na początku uzyskał algorytm GA, najwyższą zaś PSO. Dla każdego z wywołań alorytmu GA, czy też PSO funkcja oceny rozwiązania początkowego będzie inna, ze względu na losowość zaś w algorytmie ATS taka sama. W ATS początkowe rozwiązanie jest tworzone przy pomocy heurystyki, która w ten sam sposób, dla tej samej instancji tworzy inicjalny plan zajęć. Ciekawą cechą algorytmu ATS jest stosunkowo duża liczba odwołań algorytmu do funkcji oceny, choćby dla początkowej fazy działania algorytmu. Wykres funkcji oceny od liczby referencji dla PSO ma kształt wykresu funkcji wykładniczej malejącej. Nietypowy kształ wykresu dla ATS wynika z nagłej zmiany najlepszego rozwiązania, spowodowanej wywołaniem funkcji przypasowującej sale do poszczególnych zajęć. 
 \subsubsection{Test 1 - wizualizacja}
+Celem stworzenia wizualizacji jest zobrazowanie instancji problemu, jak również pokazanie, że wprowadzanie kolejnych nawet minimalnych ograniczeń znacznie komplikuje problem.
 \begin{figure}[H]
   \caption{Graf przedstawiający wszystkie zależności pomiędzy kursami (uwzględniając tych samych prowadzących nauczycieli oraz należenie kursu do tego samego programu nauczania) }
   \centering
     \includegraphics[width=10cm]{test1.PNG}
 \end{figure}
-
+\par Oddzielne przestawienie poszczególnych oraniczeń na grafach. Wierzchołkami są kursy, a krawędzie są to konflikty pomiędzy kursami, oznaczające, że zajęcia z kursów połączonych krawędzią nie mogą odbywać się w tym samym czasie.
 
 \begin{figure}[H]
   \caption{Graf uwzględniający zależności pomiędzy kursami uwzględniając prowadzących dane kursy}
