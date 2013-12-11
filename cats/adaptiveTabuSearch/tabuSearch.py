@@ -28,6 +28,8 @@ class AdaptiveTabuSearch:
         self.timeLimit = timeLimit
         self.bestSolution = TimeTableFactory.getTimeTable(self.data)
         self.lock = threading.Lock()
+        self.startTime = 0
+
 
     def signal_handler(self):
         """
@@ -56,16 +58,20 @@ class AdaptiveTabuSearch:
         """
         with self.lock:
             self.bestSolution = better.copy()
+            #print "It took", time.time() - self.startTime
             #print softConstraints2.refPenalty
 
 
     def runTimeLimited(self):
+        self.startTime = time.time()
         initialSolution(self.bestSolution, self.data)
+        print softConstraints2.totalSoftConstraintsForTimetable(self.bestSolution.getTimeTable(), self.data),\
+            int(time.time() - self.startTime)
         xi = 0
         mju = 0.6
         theta = INITIAL_TABU_DEPTH
         eta = INITIAL_PERTURBATION_STRENGTH
-        solution = self.tabuSearch(self.bestSolution, self.data, theta)
+        solution = self.tabuSearch(self.bestSolution, self.data, theta, self.startTime)
         solutionQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
         bestQuality = solutionQuality
         self.updateBest(solution)
@@ -76,7 +82,7 @@ class AdaptiveTabuSearch:
             # print "THETA: %f ETA: %f xi: %f F: %f" % (theta, eta, xi, softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data))
             #print "PERTURBATION"
             perturbedSolution = perturbation.produceRandomlySimpleOrKempeSwap(solution, self.data,  eta, 30)
-            perturbedTabu = self.tabuSearch(perturbedSolution, self.data, theta)
+            perturbedTabu = self.tabuSearch(perturbedSolution, self.data, theta, self.startTime)
 
             perturbedQuality = softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), self.data)
             perturbedTabuQuality = softConstraints2.totalSoftConstraintsForTimetable(solution.getTimeTable(), self.data)
@@ -91,7 +97,7 @@ class AdaptiveTabuSearch:
                     intensification -= 1
                     theta = (1+mju)*theta
                     perturbedTabuQuality = softConstraints2.totalSoftConstraintsForTimetable(perturbedSolution.getTimeTable(), self.data)
-                    perturbedTabu = self.tabuSearch(perturbedTabu, self.data, theta)
+                    perturbedTabu = self.tabuSearch(perturbedTabu, self.data, theta, self.startTime)
 
                     if perturbedTabuQuality<=softConstraints2.totalSoftConstraintsForTimetable(perturbedTabu.getTimeTable(), self.data):
                         break
@@ -110,12 +116,14 @@ class AdaptiveTabuSearch:
             if  solutionQuality < bestQuality:
                 bestQuality = solutionQuality
                 #print "outside loop"
-                print bestQuality, softConstraints2.refPenalty
+                #REFERENCES
+                #print bestQuality, softConstraints2.refPenalty
+                print bestQuality, time.time() - self.startTime
                 self.updateBest(solution)
         #print "ATS FINISHED", bestQuality
         return self.bestSolution
 
-    def tabuSearch(self, initialSolution, data, theta):
+    def tabuSearch(self, initialSolution, data, theta, startTime):
 
         """
         Tabu search
@@ -129,11 +137,11 @@ class AdaptiveTabuSearch:
         bestQuality = softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data)
         iterations = INITIAL_ITERATIONS_WITHOUT_CHANGE
         while iterations>0:
-            simpleNeighborhood = tabuSimpleNeighborhood(initialSolution.copy(), data, int(theta))
+            simpleNeighborhood = tabuSimpleNeighborhood(initialSolution.copy(), data, int(theta), startTime)
             #check hard constraints
             #print "Simple"
             #checkConstraintsList(simpleNeighborhood, data)
-            advancedNeighborhood = tabuAdvancedNeighborhood(simpleNeighborhood.copy(), data, int(theta)/3)
+            advancedNeighborhood = tabuAdvancedNeighborhood(simpleNeighborhood.copy(), data, int(theta)/3, startTime)
             #print "Advanced"
             #checkConstraintsList(advancedNeighborhood, data)
 
@@ -146,7 +154,9 @@ class AdaptiveTabuSearch:
                 #moje
                 self.updateBest(bestSolution)
                 #print "inside loop"
-                print bestQuality, softConstraints2.refPenalty
+                #REFERENCES
+                #print bestQuality, softConstraints2.refPenalty
+                print bestQuality, int(time.time() - startTime)
             else:
                 iterations -=1
             initialSolution = advancedNeighborhood.copy()
@@ -160,7 +170,7 @@ class AdaptiveTabuSearch:
 
 
 
-def tabuSimpleNeighborhood(timetable, data, theta):
+def tabuSimpleNeighborhood(timetable, data, theta, startTime):
 
     """
     Tabu simple neighbourhood
@@ -223,7 +233,9 @@ def tabuSimpleNeighborhood(timetable, data, theta):
         initialSolution.timeTable = bestSwap[0][1]
         if bestSwap[1]<currentBestQuality:
             currentBestQuality, currentBestSolution = bestSwap[1], bestSwap[0][1]
-            print currentBestQuality, softConstraints2.refPenalty
+            print currentBestQuality, int(time.time() - startTime)
+            #REFERENCES
+            #print currentBestQuality, softConstraints2.refPenalty
 
 
     initialSolution.timeTable = currentBestSolution
@@ -244,7 +256,7 @@ def tabuSimpleNeighborhood(timetable, data, theta):
 
 
 
-def tabuAdvancedNeighborhood(timetable, data, theta):
+def tabuAdvancedNeighborhood(timetable, data, theta, startTime):
 
     """
     Tabu advanced Neighbourhood
@@ -281,7 +293,9 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
         if bestCandidateQuality<currentBestQuality:
             currentBestSolution = {x: bestCandidate[x][:] for x in bestCandidate.keys()}
             currentBestQuality = bestCandidateQuality
-            print currentBestQuality, softConstraints2.refPenalty
+            print currentBestQuality, int(time.time() - startTime)
+            #REFERENCJE
+            #print currentBestQuality, softConstraints2.refPenalty
             #print softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data), bestCandidateQuality
 
 
