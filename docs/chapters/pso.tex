@@ -23,11 +23,15 @@
     \end{itemize}
 \end{description}
 \par Przebieg algorytmu można opisać poniższymi krokami: 
-\par Używane oznaczenia:
+\par Używane oznaczenia: 
 \begin{itemize}
   \item $P^{i}_{k}$ - najlepsza poprzednia pozycja k-tej cząsteczki w i-tej iteracji 
   \item $V^{i}_{k}$ - prędkość k-tej cząsteczki w i-tej iteracji 
-  \item $X^{i}_{k}$ - pozycja 
+  \item $X^{i}_{k}$ - pozycja k-tej cząsteczki w i-tej iteracji
+  \item $G^{i}_{k}$ - najlepsza pozycja osiągnięta przez wszystkie cząsteczki od pierwszej do i-tej 
+  \item $C_{n}$ - stała numer n
+  \item $r_{n}$ - liczba losowa numer n
+
 \end{itemize}
 \begin{description}
   \item[Krok 1:] 
@@ -43,6 +47,10 @@
         \par Wyliczenie wartości funkcji dla aktualnych pozycji cząsteczek.
   \item[Krok 5:] 
       \par Sprawdzanie czy któraś cząsteczka poprawiła najlepszą pozycję roju lub samej siebie. Jeśli tak to aktualizujemy odpowiednią najlepszą pozycję.
+\begin{itemize}
+    \item \[ Jeżeli\ f(X^{i}_{k}) \lt f(P^{i}_{k}) \ to \ P^{i}_{k} = X^{i}_{k})\]
+    \item \[ Jeżeli\ f(X^{i}_{k}) \lt f(G^{i})\ to \  P^{i} = X^{i}_{k})\]
+\end{itemize}
 
 \end{description}
     \par Kroki 2 - 5 są powtarzane aż do osiągnięcia wystarczająco dobrego wyniku lub maksymalnej liczby iteracji.
@@ -67,3 +75,7 @@
         \par Losowo wybrana lekcja z globalnie najlepszego planu zostaje skopiowana do aktualnego planu 
 \end{description}
 \par Iteracje powtarzamy do czasu aż nie osiągniemy wystarczająco dobrego planu lub do osiągnięcia maksymalnej liczby iteracji albo ustalonego limit czasu.
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/schemat_pso.png}
+\centering
+\end{figure}
