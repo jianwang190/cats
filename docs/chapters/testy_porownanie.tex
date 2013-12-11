@@ -1,57 +1,6 @@
 \chapter{Testy i porównanie algorytmów}
 \section{Analiza działania poszczególnych algorytmów}
 \subsection{Algorytm Roju Cząsteczek}
-\subsubsection{Problem z proponowanym rozwiązaniem}
-\par Podczas testowania proponowanego rozwiązania wystąpił problem. Algorytm wykazał się słabą skutecznością i nie był w stanie usunąć całkowicie problemów związanych z twadrymi ograniczeniami. Jak wiemy z rozdziału drugiego ograniczania te w ostatecznym rozwiązaniu nie mają prawa być łamane.
-\par Aby algorytm brał pod uwagę w pierwszej kolejności twarde ograniczenia, naruszenie każdego z tych ograniczeń związane jest z przydzieleniem dodatkowej kary pomnożonej przez milion.
-Poniższy wykres pokazuje efektywność algorytmu. Uwagę należy zwrócić na skalę przyjętą na osi y. Wartości nie schodzą poniżej $10^{7}$ czyli wynik w najlepszym wypadku nadal łamie 10 twardych ograniczeń.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/standard_penalty.png}
-\centering
-\end{figure}
-\par W celu sprawdzenia przyczyny tego zachowania przyjrzałem się zachowaniu pojedynczej cząsteczki. Okazało się, że kara za kolejno generowane plany oscyluje wokół kary wyliczonej dla początkowego planu, co potwierdza poniższy wykres.  
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/standard_particle.png}
-\centering
-\end{figure}
-\par Na podstawie dalszej analizy okazało się, że wszystkie cząsteczki zachowują się bardzo podobnie. Widać to na poniższym wykresie.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/standard_particle_all.png}
-\centering
-\end{figure}
-\subsubsection{Rozważane modyfikacje}
-\par Rozważyłem dwie modyfikacje do aktualnego algorytmu. Jedną nazwałem podążaniem za lokalnie najlepszym planem, a drugą podążanie za globalnie najlepszym planem. Obie modyfikacje są względem siebie analogiczne, a różnią się tylko tym który plan bierzemy pod uwagę. Modyfikacją została objęta faza oceny aktualnego rozwiązania, która zachodzi na początku każdej iteracji. Dodany został warunek, że jeśli aktualny plan jest gorszy od najlepszego planu to zostaje on zamieniony na najlepszy plan. Usunięte też zostały kroki 3 i 4 czyli kopie z najlepszych planów.
-\par W przypadku gdy każda cząsteczka podąża za swoim lokalnie najlepszym planem istnieje mniejsze ryzyko, że algorytm utknie w minimum lokalnym przestrzeni rozwiązań. Natomiast podczas podążania za globalnie najlepszym planem algorytm będzie znacznie szybciej dążył do najbliższego minimum.
-\par Opcja podążania za lokalnie najlepszym planem okazała się być dużo efektywniejsza od podstawowego algorytmu. W tym przypadku twarde ograniczenia nie stanowiły problemu. Można to zobaczyć na poniższym wykresie.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/localbest_penalty.png}
-\centering
-\end{figure}
-\par Analizując pojedynczą cząsteczkę można zauważyć, że często kara waha się od małych wartości do wartości milionowych. Jest to spowodowane tym, że w po zamianie dwóch lekcji w poprzedniej iteracji pojawił się konflikt z twardymi ograniczeniami. Nie stanowi to problemu, ponieważ w takim przypadku wracamy do poprzedniego rozwiązania. Na poniższych wykresach widać zachowanie dla pojedynczej cząsteczki oraz dla wszystkich cząsteczek.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/localbest_particle.png}
-\centering
-\end{figure}
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/localbest_particle_all.png}
-\centering
-\end{figure}
-\par Opcja podążania za globalnie najlepszym planem okazała się jeszcze bardziej efektywna. Sporym zaskoczeniem był brak problemów z lokalnymi minimami przestrzeni rozwiązań. Poniższy wykres pokazuje skuteczność modyfikacji.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/globalbest_penalty.png}
-\centering
-\end{figure}
-\par W tym przypadku cząsteczki zachowywały się bardzo podobnie. Jedyną różnicą była prędkość z jaką spadała kara. Widać to na poniższych wykresach. 
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/globalbest_particle.png}
-\centering
-\end{figure}
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/globalbest_particle_all.png}
-\centering
-\end{figure}
-\subsubsection{Ostateczne rozwiązanie}
-\par Jako ostateczne rozwiązanie wybrałem podążanie za globalnie najlepszym planem. Jest to spowodowane tym, że mimo wielu testów nie udało mi się znaleźć przypadku kiedy podążanie za lokalnie najlepszym planem wypadłoby lepiej. 
 \subsection{Algorytm Adaptacyjny Tabu}
 Przedstawienie działania algorytmu dla wybranych testów.
 \par \textbf{Test 1}
@@ -78,36 +27,65 @@ Przedstawienie działania algorytmu dla wybranych testów.
 \end{figure}
 \subsection{Algorytm Genetyczny}
 \section{Specyfikacja testów}
-Dane testowe pobrane zostały z konkursu ,,International Timetabling Competition 2007''
+Dane testowe pobrane zostały z konkursu ,,International Timetabling Competition 2007''. Do oceny rozwiązań używany jest oryginalny walidator rozwiązań, zapewniony przez organizatorów konkursu.
 \subsection{Test 1}
 \begin{table}[H]
 \begin{center}
-
-\begin{tabular}{ |c|c|c|c| }
-\multicolumn{1}{r}{}
- &  \multicolumn{1}{c}{$$}
- & \multicolumn{1}{c}{$$} 
- \\
-\cline{1-2}
+ 
+\begin{tabular}{ |l|l| }
+\hline
 $Liczba\ kursów$ & $30$\\
-\cline{1-2}
+\hline
 $Liczba\ programów\ nauczania$ & $14$\\
-\cline{1-2}
+\hline
 $Liczba\ dni$ & $5$ \\
-\cline{1-2}
+\hline
 $Licza\ przedziałów\ czasowych$ & $6$ \\
-\cline{1-2}
+\hline
 $Liczba\ ograniczeń$ & $53$ \\
-\cline{1-2}
+\hline
 $Liczba\ sal$ & $6$ \\
-\cline{1-2}
+\hline
 \end{tabular}
 \end{center}
-\caption {Specyfikacja danych - Test 1}
+\end{table}
+\par Wyniki działania algorytmów- ocena wygenerowanych planów zajęć: \\
+Parametry dla algorytmów:
+\begin{enumerate}
+\item GA - liczba osobników: 100, liczba iteracji: 500, szacowany czas działania algorytmu: 150 s
+\item PSO - liczba cząsteczek: 20, liczba iteracji 10000, szacowany czas działania algorytmu: 40 min
+\item ATS - czas działania: 120 s
+\end{enumerate}
+\begin{table}[H]
+\begin{center}
+
+\begin{tabular}{ |l|l|l|l| }
+\hline
+ & $GA$ & $PSO$ & $ATS$\\
+\hline
+${H}_{1}\ Wykłady$ & $0$ & $0$ & $0$\\
+\hline
+$H_{2}\ Zajętość\ sali$ & $0$ & $0$ & $0$\\
+\hline
+$H_{3}\ Konflikty\ pomiędzy\ kursami$ & $0$ & $0$ & $0$ \\
+\hline
+$H_{4}\ Dostępność\ wykładowcy$ & $0$ & $0$ & $0$ \\
+\hline
+$S_{1}\ Wielkość\ sali$ & $4$ & $5$ & $205$ \\
+\hline
+$S_{2}\ Stabilność\ pomieszczenia$ & $14$ & $24$ & $32$ \\
+\hline
+$S_{3}\ Minimalna\ liczba\ dni$ & $0$ & $0$ & $0$ \\
+\hline
+$S_{4}\ Zwartość\ zajęć$ & $56$ & $8$ & $6$ \\
+\hline
+$Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
+\hline
+\end{tabular}
+\end{center}
+\caption {Wyniki uzyskane przez poszczególne algorytm}
 \end{table}
 \subsubsection{Test 1 - wizualizacja}
-
-
 \begin{figure}[H]
   \caption{Graf przedstawiający wszystkie zależności pomiędzy kursami (uwzględniając tych samych prowadzących nauczycieli oraz należenie kursu do tego samego programu nauczania) }
   \centering
@@ -151,6 +129,42 @@ $Liczba\ sal$ & $16$ \\
 \end{center}
 \caption {Specyfikacja danych - Test 2}
 \end{table}
+\par Wyniki działania algorytmów- ocena wygenerowanych planów zajęć: \\
+Parametry dla algorytmów:
+\begin{enumerate}
+\item GA - liczba osobników: 200, liczba iteracji: 1000, szacowany czas działania algorytmu: 33 min
+\item PSO - liczba cząsteczek: 20, liczba iteracji 10000, szacowany czas działania algorytmu: 180 min
+\item ATS - czas działania: 480 s
+\end{enumerate}
+\begin{table}[H]
+\begin{center}
+
+\begin{tabular}{ |l|l|l|l| }
+\hline
+ & $GA$ & $PSO$ & $ATS$\\
+\hline
+${H}_{1}\ Wykłady$ & $0$ & $1$ & $0$\\
+\hline
+$H_{2}\ Zajętość\ sali$ & $0$ & $0$ & $0$\\
+\hline
+$H_{3}\ Konflikty\ pomiędzy\ kursami$ & $0$ & $0$ & $0$ \\
+\hline
+$H_{4}\ Dostępność\ wykładowcy$ & $0$ & $2$ & $0$ \\
+\hline
+$S_{1}\ Wielkość\ sali$ & $119$ & $54$ & $0$ \\
+\hline
+$S_{2}\ Stabilność\ pomieszczenia$ & $63$ & $51$ & $143$ \\
+\hline
+$S_{3}\ Minimalna\ liczba\ dni$ & $70$ & $74$ & $40$ \\
+\hline
+$S_{4}\ Zwartość\ zajęć$ & $424$ & $150$ & $104$ \\
+\hline
+$Funkcja\ oceny$ & $676$ & $330$ & $287$ \\
+\hline
+\end{tabular}
+\end{center}
+\caption {Wyniki uzyskane przez poszczególne algorytmy}
+\end{table}
 \subsection{Test 3}
 \begin{table}[H]
 \begin{center}
@@ -177,6 +191,46 @@ $Liczba\ sal$ & $16$ \\
 \end{center}
 \caption {Specyfikacja danych - Test 3}
 \end{table}
+\par Wyniki działania algorytmów- ocena wygenerowanych planów zajęć: \\
+Parametry dla algorytmów:
+\begin{enumerate}
+\item GA - liczba osobników: 200, liczba iteracji: 1000, szacowany czas działania algorytmu: 33 min
+\item PSO - liczba cząsteczek: 20, liczba iteracji 5000, szacowany czas działania algorytmu: 90 min
+\item ATS - czas działania: 16min
+\end{enumerate}
+\begin{table}[H]
+\begin{center}
+
+\begin{tabular}{ |l|l|l|l| }
+\hline
+ & $GA$ & $PSO$ & $ATS$\\
+\hline
+${H}_{1}\ Wykłady$ & $0$ & $0$ & $0$\\
+\hline
+$H_{2}\ Zajętość\ sali$ & $0$ & $0$ & $0$\\
+\hline
+$H_{3}\ Konflikty\ pomiędzy\ kursami$ & $0$ & $0$ & $0$ \\
+\hline
+$H_{4}\ Dostępność\ wykładowcy$ & $0$ & $1$ & $0$ \\
+\hline
+$S_{1}\ Wielkość\ sali$ & $82$ & $109$ & $12$ \\
+\hline
+$S_{2}\ Stabilność\ pomieszczenia$ & $50$ & $57$ & $125$ \\
+\hline
+$S_{3}\ Minimalna\ liczba\ dni$ & $20$ & $70$ & $40$ \\
+\hline
+$S_{4}\ Zwartość\ zajęć$ & $412$ & $202$ & $102$ \\
+\hline
+$Funkcja\ oceny$ & $564$ & $438$ & $279$ \\
+\hline
+\end{tabular}
+\end{center}
+\caption {Wyniki uzyskane przez poszczególne algorytmy}
+\end{table}
+\par PSO nie usuwan hardów (wybrana metoda nie odporna na lokane minima), . Ostateczne rozw jest najprostsze - to slabo dziala
+\par badawczo 
+GA - niepewne rozw element losow (roznie generuje poczatkowe rozwiazania), duza liczba osobnikow, upodobniaja zwiekszenie wspolczynnika mutacji do wyjscia z lokalnego minimum
+\par system prosty do wykorzystania alg, otwarty na rozbudowe: rezcna edycja planu, wprowadzenie przez nuczycieli 
 
 
 
