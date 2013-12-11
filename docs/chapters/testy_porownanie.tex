@@ -59,34 +59,41 @@ Poniższy wykres pokazuje efektywność algorytmu. Uwagę należy zwrócić na s
 
 \subsubsection{Ostateczne rozwiązanie}
 
--\par Jako ostateczne rozwiązanie wybrałem podążanie za globalnie najlepszym planem. Jest to spowodowane tym, że mimo wielu testów nie udało mi się znaleźć przypadku kiedy podążanie za lokalnie najlepszym planem wypadłoby lepiej. 
+\par Jako ostateczne rozwiązanie wybrałem podążanie za globalnie najlepszym planem. Jest to spowodowane tym, że mimo wielu testów nie udało mi się znaleźć przypadku kiedy podążanie za lokalnie najlepszym planem wypadłoby lepiej. 
 \subsection{Algorytm Adaptacyjny Tabu}
-Przedstawienie działania algorytmu dla wybranych testów.
+Przedstawienie działania algorytmu dla wybranych testów.\\
+Testy szczegółowo zostały opisane w kolejnej sekcji.
 \par \textbf{Test 1}
 \begin{figure}[H]
   \caption{Wykres zależności funkcji oceny od czasu}
   \centering
     \includegraphics[width=10cm]{ogolny.png}
 \end{figure}
+Na wykresie wyraźnie widać wyodrębioną fazę inicjalizacji, w której tworzone jest początkowe rozwiązanie nienaruszające twardych ograniczeń. Nagła zmiana wartości funkcji oceny wynika z wywołania w algorytmie funkcji przypasowującej sale do poszczególnych zajęć. Celem tej funkcji jest początkowe przypasowanie największych sal do kursów, na które uczęszcza największa liczba studentów, dzięki temu zmiejszana jest funkcja oceny miękkich ograniczeń dotycząca wielkości sali wykładowej.
 \begin{figure}[H]
   \caption{Wykres zależności funkcji oceny od czasu, bez uwzględnienia fazy inicjalizacji}
   \centering
     \includegraphics[width=10cm]{szczeg.png}
 \end{figure}
+Wykres ten obrazuje działanie losowego operatora zaburzeń w fazie dywersyfikacji, którego celem jest zniszczenie osiągniętego lokalnego minimum.
 \par \textbf{Test 2}
 \begin{figure}[H]
   \caption{Wykres zależności funkcji oceny od czasu}
   \centering
     \includegraphics[width=10cm]{ogolny2_instancja.png}
 \end{figure}
+Wykres obrazuje jak zmieniała się funkcja oceny w czasie. Dla testu 2 początkowe rozwiązanie zostało stworzone w czasie 29 sekund zaś dla testu 1 w czasie 3 sekund. Czas tworzenia początkowego rozwiązania jest ściśle związany ze złożonością danych wejściowych: liczbą kursów, programów nauczania, dostępnych sal i dodatkowych ograniczeń. Drugi test jest znacznie bardziej złożony niż test 1, dlatego też czas wykonania fazy inicjalizacji jest znacznie dłuższy.
 \begin{figure}[H]
   \caption{Wykres zależności funkcji oceny od czasu, bez uwzględnienia fazy inicjalizacji}
   \centering
     \includegraphics[width=10cm]{szczegolowy2_instancja.png}
 \end{figure}
-\subsection{Algorytm Genetyczny}
+Wykres przedstawiający działanie algorytmu w fazie dywersyfikacji i intensyfikacji.
 \section{Specyfikacja testów}
+\textit{Katarzyna Śmietanka} 
+\\
 Dane testowe pobrane zostały z konkursu ,,International Timetabling Competition 2007''. Do oceny rozwiązań używany jest oryginalny walidator rozwiązań, zapewniony przez organizatorów konkursu.
+\par Poworównanie działania poszczególnych algorytmów okazało się być stosunkowo trudne, ze względu na różnorodność zaimplementowanych przez nas algorytmów. Algorytm Adaptacyjny Tabu ma odmienne iteracje niż Algorytm Genetyczny czy też Roju Cząsteczek. Ponadto wpływowym czynnikiem na szybkość działania algorytmu jest sposób implementacji, a jest on odmienny dla każdego z naszych algorytmów. Dodatkowo część z nas korzystała z wbudowanych funkcji z języka \verb#python# oraz programowania funkcjonalnego, które w znaczny sposób przyspieszają wykonywanie złożonych operacji. Dlatego też zdecydowaliśmy się, że każdy z algorytmów dla poszczególnych instancji zostanie uruchomiony z najlepszymi, zaobserwowanymi parametrami, dla których uzyskane rozwiązanie jest optymalne. Dla poszczególnych instancji zostanie przedstawiona szczegółowa specyfikacja danych testowych, wyniki działania algorytmów oraz wykresy zależności funkcji oceny od liczby odwołań do tej funkcji oceny.
 \subsection{Test 1}
 \begin{table}[H]
 \begin{center}
@@ -108,6 +115,7 @@ $Liczba\ sal$ & $6$ \\
 \end{tabular}
 \end{center}
 \end{table}
+
 \par Wyniki działania algorytmów- ocena wygenerowanych planów zajęć: \\
 Parametry dla algorytmów:
 \begin{enumerate}
@@ -144,8 +152,9 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
 \end{center}
 \caption {Wyniki uzyskane przez poszczególne algorytm}
 \end{table}
-
-\par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów.
+\par Jak można zaobserwować najlepszy rezultat dla pierwszej instancji uzyskał algorytm PSO, jednak czas potrzebny do uzyskania tego wyniku był stosunkowo długi w porównaniu do algorytmu GA. Żaden z wygenerowanych planów nie narusza ograniczeń twardych. Najgorsze wyniki uzyskał Algorytm Adaptacyjny Tabu, prawdopodobnie czas działania algorymu był zbyt krótki, tak aby zmiejszyć funkcję oceny.
+\par Ciekawym spostrzeżeniem jest to, że żaden z algorytmów nie miał problemu z minimalizacją do zera ograniczenia miękkiego,  $S_{3}$, które dotyczy minimalnej liczby dni na które muszą być rozłożone zajęcia z danego kursu. Kara uzyskana za $S_{2}$ stabilnośc pomieszczenia jest porównywalna dla wszystkich algorytmów.
+\par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów. 
 \begin{figure}[H]
   \caption{Algorytm Genetyczny}
   \centering
@@ -166,19 +175,19 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
 \begin{figure}[H]
   \caption{Graf przedstawiający wszystkie zależności pomiędzy kursami (uwzględniając tych samych prowadzących nauczycieli oraz należenie kursu do tego samego programu nauczania) }
   \centering
-    \includegraphics[width=0.8\textwidth]{test1.PNG}
+    \includegraphics[width=10cm]{test1.PNG}
 \end{figure}
 
 
 \begin{figure}[H]
   \caption{Graf uwzględniający zależności pomiędzy kursami uwzględniając prowadzących dane kursy}
   \centering
-    \includegraphics[width=0.8\textwidth]{test1_teach.PNG}
+    \includegraphics[width=10cm]{test1_teach.PNG}
 \end{figure}
 \begin{figure}[H]
   \caption{Graf uwględniający grupy zależnych od siebie kursów wchodzących w skład tego samego programu nauczania}
   \centering
-    \includegraphics[width=0.8\textwidth]{test1_con.PNG}
+    \includegraphics[width=10cm]{test1_con.PNG}
 \end{figure}
 \subsection{Test 2}
 \begin{table}[H]
@@ -337,7 +346,7 @@ $Funkcja\ oceny$ & $564$ & $438$ & $279$ \\
   \centering
     \includegraphics[width=10cm]{ats_test_2.png}
 \end{figure}
-
+\label{etykietka}
 \par PSO nie usuwan hardów (wybrana metoda nie odporna na lokane minima), . Ostateczne rozw jest najprostsze - to slabo dziala
 \par badawczo 
 GA - niepewne rozw element losow (roznie generuje poczatkowe rozwiazania), duza liczba osobnikow, upodobniaja zwiekszenie wspolczynnika mutacji do wyjscia z lokalnego minimum
