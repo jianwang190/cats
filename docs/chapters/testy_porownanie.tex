@@ -1,6 +1,72 @@
 \chapter{Testy i porównanie algorytmów}
 \section{Analiza działania poszczególnych algorytmów}
 \subsection{Algorytm Roju Cząsteczek}
+\subsubsection{Problemy związane z rozwiązaniem}
+\par Podczas analizy oraz testowania zaimplementowanego rozwiązania, okazało się, że algorytm jest mało skuteczny, gdyż nie był w stanie usunąć całkowicie naruszeń ograniczeń twardych. Ograniczenia te w bezpośredni sposób wpływają na prawidłowość wygenerowanego planu zajęć.
+\par W związku z tym zdecydowałem się na wprowadzenie dodatkowej kary: do kary za ograniczenia miękkie dodaję za każde naruszenie ograniczenia twardego 1 milion punktów kary. Dzięki temu, algorytm w pierwszej kolejności bierze pod uwagę ograniczenia twarde, próbując je wyeliminować, a potem dopiero ograniczenia miękkie. \\
+
+Poniższy wykres pokazuje efektywność algorytmu. Uwagę należy zwrócić na skalę przyjętą na osi y. Wartości nie schodzą poniżej $10^{7}$ czyli wynik w najlepszym wypadku nadal łamie 10 twardych ograniczeń.
+
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/standard_penalty.png}
+\centering
+\end{figure}
+\par W celu sprawdzenia przyczyny tego zachowania przyjrzałem się zachowaniu pojedynczej cząsteczki. Okazało się, że kara za kolejno generowane plany oscyluje wokół kary wyliczonej dla początkowego planu, co potwierdza poniższy wykres.  
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/standard_particle.png}
+\centering
+\end{figure}
+\par Na podstawie dalszej analizy okazało się, że wszystkie cząsteczki zachowują się bardzo podobnie, co można zaobserwować na wykresie. 
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/standard_particle_all.png}
+\centering
+\end{figure}
+\subsubsection{Modyfikacje}
+\par W celu dojścia do lepszego rozwiązania problemu układania planu zajęć za pomocą algorytmu PSO, rozważyłem dwie modyfikacje zaproponowanego wcześniej algorytmu.Pierwsza z nich to  ,,podążanie za lokalnie najlepszym planem'', a druga zaś ,,podążanie za globalnie najlepszym planem''. Obie modyfikacje są analogiczne do siebie, jedyną ich różnicą jest tylko plan, który jest brany pod uwagę. Dokonałem również modyfikacji fazy dotyczącej oceny aktualnego rozwiązania, która jest przeprowadzana na początku każdej iteracji. Ponadto został dodany warunek, że jeśli aktualny plan jest gorszy od najlepszego planu to zostaje on zamieniony na najlepszy plan. Zrezygnowałem również z realizacji krotów 3 i 4, opisanych w algorytmie PSO.
+
+\par W przypadku gdy każda cząsteczka ,,podąża za swoim lokalnie najlepszym planem'' istnieje mniejsze ryzyko, że algorytm pozostanie w lokalnym minimum przestrzeni rozwiązań. Natomiast podczas ,,podążania za globalnie najlepszym planem'' algorytm będzie znacznie szybciej dążył do najbliższego minimum.
+
+\par Opcja ,,podążania za lokalnie najlepszym planem'' okazała się być dużo efektywniejsza od podstawowego algorytmu. W tym przypadku twarde ograniczenia nie były naruszone, co potwierdza poniższy wykres.
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/localbest_penalty.png}
+\centering
+\end{figure}
+\par Analizując pojedynczą cząsteczkę można zauważyć, że kara często zmienia się od małych wartości do wartości powyżej miliona. Spowodowane jest to tym, że po zamianie dwóch lekcji w poprzedniej iteracji pojawił się konflikt z twardymi ograniczeniami. W tej sytuacji algorytm powraca do poprzedniego rozwiązania. Na poniższych wykresach widać zachowanie dla pojedynczej cząsteczki oraz dla wszystkich cząsteczek.
+\begin{figure}[H]
+
+\includegraphics[width=10cm]{img/localbest_particle.png}
+
+\centering
+\end{figure}
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/localbest_particle_all.png}
+\centering
+\end{figure}
+\par Opcja podążania za globalnie najlepszym planem okazała się być bardziej efektywna. Sporym zaskoczeniem był brak problemów z lokalnymi minimami przestrzeni rozwiązań. Poniższy wykres pokazuje skuteczność modyfikacji.
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/globalbest_penalty.png}
+\centering
+\end{figure}
+\par W tym przypadku cząsteczki zachowywały się bardzo podobnie. Jedyną różnicą była prędkość z jaką malała funkcja kary, można to zauważyć na poniższych wykresach. 
+
+\begin{figure}[H]
+\includegraphics[width=10cm]{img/globalbest_particle.png}
+
+\centering
+
+\end{figure}
+
+\begin{figure}[H]
+
+\includegraphics[width=10cm]{img/globalbest_particle_all.png}
+
+\centering
+
+\end{figure}
+
+\subsubsection{Ostateczne rozwiązanie}
+
+-\par Jako ostateczne rozwiązanie wybrałem podążanie za globalnie najlepszym planem. Jest to spowodowane tym, że mimo wielu testów nie udało mi się znaleźć przypadku kiedy podążanie za lokalnie najlepszym planem wypadłoby lepiej. 
 \subsection{Algorytm Adaptacyjny Tabu}
 Przedstawienie działania algorytmu dla wybranych testów.
 \par \textbf{Test 1}
@@ -85,6 +151,10 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
 \end{center}
 \caption {Wyniki uzyskane przez poszczególne algorytm}
 \end{table}
+\par Porównania \\
+Wykres zmiany funkcji kosztu w zależności od liczby odwołań do funkcji kosztu \\
+Nie obchodzi nas jakoś cimplementacji ale liczba przejrzanych rozwiazan\\
+nasz - funkcja kosztu jako moduł w C wiele szybciej
 \subsubsection{Test 1 - wizualizacja}
 \begin{figure}[H]
   \caption{Graf przedstawiający wszystkie zależności pomiędzy kursami (uwzględniając tych samych prowadzących nauczycieli oraz należenie kursu do tego samego programu nauczania) }
