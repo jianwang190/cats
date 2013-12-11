@@ -6,7 +6,7 @@ from cats.ga.checkHardConstraints import countHardConstraints, checkHardConstrai
 import time
 
 #noinspection PyPep8Naming
-class GeneticAlgorithm(object):
+class GeneticAlgorithmSchool(object):
 
     def __init__(self, data, timeout=3600):
         self.data = data
@@ -78,25 +78,24 @@ class GeneticAlgorithm(object):
         self.f.write("0+0 0\n")
 
     def chooseBestRoom(self, populationId, courseId):
-        roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(), \
-                                                                      [self.data.getCourse(courseId)])[courseId]
+        #roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(),[self.data.getCourse(courseId)])[courseId]
 
         #Take MinWorkingDays into account
-        while len(roomList) > 0:
-            bestRoom = self.data.getBestRoom(roomList)
-            pairs = self.timeTables[populationId].availableSlotRoomPairs(self.data, courseId)
-            pairs = filter(lambda x : bestRoom.id in x[1], pairs.iteritems())
-            assignedDays = self.timeTables[populationId].getAssignedDays(courseId)
-            if self.data.getCourse(courseId).minWorkingDays > len(assignedDays):
-                pairs = filter(lambda x : self.timeTables[populationId].getPeriodPair(x[0])[0] not in assignedDays,\
-                             pairs)
-                if len(pairs) > 0:
-                    sortedPairs = sorted(pairs, key = lambda x : len(x[1]), reverse = True)
-                    return (sortedPairs[0][0], bestRoom.id)
-                else:
-                    roomList.remove(bestRoom.id)
-            else:
-                break
+        #while len(roomList) > 0:
+        #    bestRoom = self.data.getBestRoom(roomList)
+        #    pairs = self.timeTables[populationId].availableSlotRoomPairs(self.data, courseId)
+        #    pairs = filter(lambda x : bestRoom.id in x[1], pairs.iteritems())
+        #    assignedDays = self.timeTables[populationId].getAssignedDays(courseId)
+        #    if self.data.getCourse(courseId).minWorkingDays > len(assignedDays):
+        #        pairs = filter(lambda x : self.timeTables[populationId].getPeriodPair(x[0])[0] not in assignedDays,\
+        #                     pairs)
+        #        if len(pairs) > 0:
+        #            sortedPairs = sorted(pairs, key = lambda x : len(x[1]), reverse = True)
+        #            return (sortedPairs[0][0], bestRoom.id)
+        #        else:
+        #            roomList.remove(bestRoom.id)
+        #    else:
+        #        break
 
         #Discard MinWorkingDays
         roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(), \
