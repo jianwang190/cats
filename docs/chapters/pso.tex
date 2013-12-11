@@ -2,7 +2,7 @@
 \section{Particle Swarm Optimization (PSO)}
 \author{Paweł Jastrzębski}
 \subsection{Ogólny opis algorytmu}
-\par Particle Swarm Optimaliation (PSO) lub optymalizacja rojem cząsteczek jest algorytmem zaproponowanym przez Jamesa Kennedy'ego oraz Russela Eberhart'a w roku 1995. Jest to technika wzorowana na zachowaniach występujących w przyrodzie. Algorytm naśladuje inteligencję i sposób poruszania się roju owadów poszukujących pożywienia. 
+\par Particle Swarm Optimaliation (PSO) lub optymalizacja rojem cząsteczek jest algorytmem zaproponowanym przez Jamesa Kennedy'ego oraz Russela Eberhart'a w roku 1995. Jest to technika wzorowana na zachowaniach występujących w przyrodzie. Algorytm naśladuje inteligencję i sposób poruszania się roju owadów poszukujących pożywienia. PSO ma wiele elementów wspólnych z technikami ewolucyjnymi, takimi jak algorytmy genetyczne czy programowanie ewolucyjne.
 \par Zachowania te są w pewien sposób uproszczone, zamiast roju owadów mamy pewną liczbę cząsteczek (agentów) poruszających się w n-wymiarowej przestrzeni. Cząsteczki przemieszczają się w różnych kierunkach poszukując optymalnego rozwiązania, korzystają przy tym ze swoich indywidualnych doświadczeń jak i doświadczenia ogółu.
 \subsection{Działanie algorytmu}
 \subsubsection{Oryginalna wersja}
@@ -22,14 +22,23 @@
       \item Najlepsza pozycja (najlepsza pozycja osiągnięta przez tą konkretną cząsteczkę)
     \end{itemize}
 \end{description}
-\par Przebieg algorytmu można opisać poniższymi krokami:
+\par Przebieg algorytmu można opisać poniższymi krokami: 
+\par Używane oznaczenia:
+\begin{itemize}
+  \item $P^{i}_{k}$ - najlepsza poprzednia pozycja k-tej cząsteczki w i-tej iteracji 
+  \item $V^{i}_{k}$ - prędkość k-tej cząsteczki w i-tej iteracji 
+  \item $X^{i}_{k}$ - pozycja 
+\end{itemize}
 \begin{description}
   \item[Krok 1:] 
      \par Stworzenie cząsteczek. Polega ono na ustawieniu ich pozycji i prędkości w sposób losowy. 
+  \[f(P^{i}_{k}) \le f(P^{i-1}_{k}) \le \ldots \le f(P^{1}_{k})\].
   \item[Krok 2:]
     \par Obliczenie prędkości dla każdej cząsteczki z osobna. 
+\[V^{i+1}_{k} = V^{i}_{k} + C_{1} \cdot r_{1} \cdot (P^{i}_{k} - X^{i}_{k}) + C_{2} \cdot r_{2} \cdot (G^{i} - X^{i}_{k})\].
   \item[Krok 3:]
         \par Zmiana pozycji każdej cząsteczki zgodnie z jej prędkością.
+\[X^{i+1}_{k} = X^{i}_{k} + V^{i+1}_{k}, i = 0,1,\cdots, M-1,\]
   \item[Krok 4:]
         \par Wyliczenie wartości funkcji dla aktualnych pozycji cząsteczek.
   \item[Krok 5:] 
@@ -58,55 +67,3 @@
         \par Losowo wybrana lekcja z globalnie najlepszego planu zostaje skopiowana do aktualnego planu 
 \end{description}
 \par Iteracje powtarzamy do czasu aż nie osiągniemy wystarczająco dobrego planu lub do osiągnięcia maksymalnej liczby iteracji albo ustalonego limit czasu.
-\subsection{Ścieżka dojścia do ostatecznego rozwiązania}
-\subsubsection{Problem z proponowanym rozwiązaniem}
-\par Podczas testowania proponowanego rozwiązania wystąpił problem. Algorytm wykazał się słabą skutecznością i nie był w stanie usunąć całkowicie problemów związanych z twadrymi ograniczeniami. Jak wiemy z rozdziału drugiego ograniczania te w ostatecznym rozwiązaniu nie mają prawa być łamane.
-\par Aby algorytm brał pod uwagę w pierwszej kolejności twarde ograniczenia, naruszenie każdego z tych ograniczeń związane jest z przydzieleniem dodatkowej kary pomnożonej przez milion.
-Poniższy wykres pokazuje efektywność algorytmu. Uwagę należy zwrócić na skalę przyjętą na osi y. Wartości nie schodzą poniżej $10^{7}$ czyli wynik w najlepszym wypadku nadal łamie 10 twardych ograniczeń.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/standard_penalty.png}
-\centering
-\end{figure}
-\par W celu sprawdzenia przyczyny tego zachowania przyjrzałem się zachowaniu pojedynczej cząsteczki. Okazało się, że kara za kolejno generowane plany oscyluje wokół kary wyliczonej dla początkowego planu, co potwierdza poniższy wykres.  
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/standard_particle.png}
-\centering
-\end{figure}
-\par Na podstawie dalszej analizy okazało się, że wszystkie cząsteczki zachowują się bardzo podobnie. Widać to na poniższym wykresie.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/standard_particle_all.png}
-\centering
-\end{figure}
-\subsubsection{Rozważane modyfikacje}
-\par Rozważyłem dwie modyfikacje do aktualnego algorytmu. Jedną nazwałem podążaniem za lokalnie najlepszym planem, a drugą podążanie za globalnie najlepszym planem. Obie modyfikacje są względem siebie analogiczne, a różnią się tylko tym który plan bierzemy pod uwagę. Modyfikacją została objęta faza oceny aktualnego rozwiązania, która zachodzi na początku każdej iteracji. Dodany został warunek, że jeśli aktualny plan jest gorszy od najlepszego planu to zostaje on zamieniony na najlepszy plan. Usunięte też zostały kroki 3 i 4 czyli kopie z najlepszych planów.
-\par W przypadku gdy każda cząsteczka podąża za swoim lokalnie najlepszym planem istnieje mniejsze ryzyko, że algorytm utknie w minimum lokalnym przestrzeni rozwiązań. Natomiast podczas podążania za globalnie najlepszym planem algorytm będzie znacznie szybciej dążył do najbliższego minimum.
-\par Opcja podążania za lokalnie najlepszym planem okazała się być dużo efektywniejsza od podstawowego algorytmu. W tym przypadku twarde ograniczenia nie stanowiły problemu. Można to zobaczyć na poniższym wykresie.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/localbest_penalty.png}
-\centering
-\end{figure}
-\par Analizując pojedynczą cząsteczkę można zauważyć, że często kara waha się od małych wartości do wartości milionowych. Jest to spowodowane tym, że w po zamianie dwóch lekcji w poprzedniej iteracji pojawił się konflikt z twardymi ograniczeniami. Nie stanowi to problemu, ponieważ w takim przypadku wracamy do poprzedniego rozwiązania. Na poniższych wykresach widać zachowanie dla pojedynczej cząsteczki oraz dla wszystkich cząsteczek.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/localbest_particle.png}
-\centering
-\end{figure}
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/localbest_particle_all.png}
-\centering
-\end{figure}
-\par Opcja podążania za globalnie najlepszym planem okazała się jeszcze bardziej efektywna. Sporym zaskoczeniem był brak problemów z lokalnymi minimami przestrzeni rozwiązań. Poniższy wykres pokazuje skuteczność modyfikacji.
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/globalbest_penalty.png}
-\centering
-\end{figure}
-\par W tym przypadku cząsteczki zachowywały się bardzo podobnie. Jedyną różnicą była prędkość z jaką spadała kara. Widać to na poniższych wykresach. 
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/globalbest_particle.png}
-\centering
-\end{figure}
-\begin{figure}[H]
-\includegraphics[width=10cm]{img/globalbest_particle_all.png}
-\centering
-\end{figure}
-\subsubsection{Ostateczne rozwiązanie}
-\par Jako ostateczne rozwiązanie wybrałem podążanie za globalnie najlepszym planem. Jest to spowodowane tym, że mimo wielu testów nie udało mi się znaleźć przypadku kiedy podążanie za lokalnie najlepszym planem wypadłoby lepiej. 
