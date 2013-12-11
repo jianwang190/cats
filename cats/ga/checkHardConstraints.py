@@ -24,7 +24,7 @@ def checkHardConstraintsForSlots(solution, data, slots):
 def countMissingLectures(solution, data):
     lecturesSum = data.getAllLecturesCount() - solution.getAssignedLecturesSum(data)
     if lecturesSum > 0:
-        return lecturesSum * 20000
+        return lecturesSum * 1000000
     else:
         return 0
 
@@ -37,7 +37,7 @@ def countCurriculumConflicts(solution, slots, data):
                 if not curriculum in curriculums:
                     curriculums.append(curriculum)
                 else:
-                    penalty += 2000
+                    penalty += 1000000
 
     return penalty
 
@@ -50,7 +50,7 @@ def countRoomOccupancy(solution, slots):
             if not lecture[1] in rooms.keys():
                 rooms[lecture[1]] = 1
             else:
-                penalty += 2000
+                penalty += 1000000
 
     return penalty
 
@@ -60,7 +60,7 @@ def countConstraintsList(solution, slots, data):
         for lecture in solution.getTimeTable()[slot]:
             for constraint in data.getConstraintsForCourse(lecture[0]):
                 if slot == solution.mapKeys(constraint):
-                    penalty += 2000
+                    penalty += 1000000
 
     return penalty
 
@@ -72,7 +72,7 @@ def countTeachersConflicts(solution, slots, data):
             if not data.getCourse(lecture[0]).teacher in teachers.keys():
                 teachers[data.getCourse(lecture[0]).teacher] = 1
             else:
-                penalty += 2000
+                penalty += 1000000
 
     return penalty
 
@@ -81,6 +81,6 @@ def countRoomTypeViolations(solution, slots, data):
     for period in slots:
         for lecture in solution.getTimeTable()[period]:
             if data.getCourse(lecture[0]).typeOfRoom != None and data.getCourse(lecture[0]).typeOfRoom != data.getRoom(lecture[1]).type:
-                penalty += 4000
+                penalty += 1000000
 
     return penalty
