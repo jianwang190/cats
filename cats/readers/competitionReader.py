@@ -4,14 +4,20 @@ from cats.utils.inputDataStructures import Course, Room, Curriculum, Constraint
 from cats.utils.data import Data, DictData
 
 class CompetitionReader(object):
-    """Read data from file"""
+    """
+    Read data from file
+
+    """
 
     def __init__(self):
         self.data = Data()
         self.buffer = []
 
     def read(self, fileName):
-        """Return data object with data from fileName"""
+        """
+        Return data object with data from fileName
+
+        """
 
         self.buffer = self.readF(fileName)
 
@@ -25,7 +31,10 @@ class CompetitionReader(object):
 
 
     def readF(self, fileName):
-        """Return content of file"""
+        """
+        Return content of file
+
+        """
 
         path = u"input/" + fileName
         f = open(path, "r")
@@ -34,7 +43,10 @@ class CompetitionReader(object):
         return content
 
     def readInstance(self, instanceNr):
-        """Return data object with data from instance file"""
+        """
+        Return data object with data from instance file
+
+        """
 
         self.buffer = self.readFile(instanceNr)
 
@@ -47,7 +59,10 @@ class CompetitionReader(object):
         return self.data
 
     def readFile(self, instanceNr):
-        """Return content of file"""
+        """
+        Return content of file
+
+        """
 
         path = u"data/Curriculum_based_Course_timetabling/datasets/comp" + str(instanceNr) + ".ctt"
         f = open(path, "r")
@@ -56,14 +71,18 @@ class CompetitionReader(object):
         return content
 
     def getHeader(self):
-        """Get header from buffer"""
+        """
+        Get header from buffer
+        """
 
         self.data.instanceName = self.buffer[0].strip('Name: ')
         self.data.daysNum = int(self.buffer[3].strip('Days: '))
         self.data.periodsPerDay = int(self.buffer[4].strip('Periods_per_day: '))
 
     def getCourses(self):
-        """Get courses from buffer"""
+        """
+        Get courses from buffer
+        """
 
         index = self.buffer.index('COURSES:') + 1
 
@@ -78,7 +97,9 @@ class CompetitionReader(object):
             index += 1
 
     def getRooms(self):
-        """Get rooms from buffer"""
+        """
+        Get rooms from buffer
+        """
 
         index = self.buffer.index('ROOMS:') + 1
 
@@ -93,7 +114,10 @@ class CompetitionReader(object):
             index += 1
 
     def getCurricula(self):
-        """Get curricula from buffer"""
+        """
+        Get curricula from buffer
+
+        """
 
         index = self.buffer.index('CURRICULA:') + 1
 
@@ -105,7 +129,10 @@ class CompetitionReader(object):
             index += 1
 
     def getConstraints(self):
-        """Get constraints from buffer"""
+        """
+        Get constraints from buffer
+
+        """
 
         index = self.buffer.index('UNAVAILABILITY_CONSTRAINTS:') + 1
 

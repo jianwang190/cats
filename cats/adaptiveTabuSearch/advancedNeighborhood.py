@@ -8,6 +8,7 @@ class AdvancedNeighborhood(object):
 
         """
         Generates Kempe chain from timetable neighborhood for period1 and period2
+
         :param timetable:
         :param period1:
         :param period2:
@@ -37,6 +38,7 @@ class AdvancedNeighborhood(object):
     def generatePossibleSwappingPairs(self, timetable, chains):
         """
         Generate swapping pairs (without checking room allocation)
+
         :param timetable:
         :param chains: output from generateChains
         :return: pairs of indices
@@ -46,6 +48,14 @@ class AdvancedNeighborhood(object):
         return pairs
 
     def exploreNeighborhood(self, timetable, data):
+
+        """
+        Explore neighbourhood
+
+        :param timetable:
+        :param data:
+        :return:
+        """
         result = []
         for pair in combinations(range(0, len(timetable.getTimeTable())),2):
 
@@ -82,6 +92,7 @@ class AdvancedNeighborhood(object):
     def checkIfIn(self, movesSet, period, data):
         """
         check if move is possible regarding constraints
+
         :param movesSet: Set of available moves
         :param period: period with which we swap
         :param data: data
@@ -95,6 +106,7 @@ class AdvancedNeighborhood(object):
     def kempeSwap(self, timetable, period1, period2, chains):
         """
         Perform Kempe swap on 2 chains
+
         :param timetable:
         :param period1:
         :param period2:
@@ -117,6 +129,7 @@ class AdvancedNeighborhood(object):
 def doKempeSwap(((period1, period2), swap), timetable):
     """
     Perform Kempe Swap
+
     :param timetable: timetable containing lectures
     :return: new timetable
     """

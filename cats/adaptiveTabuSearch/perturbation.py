@@ -14,6 +14,7 @@ def rankingOfLectures(partialTimetable, data, n, q):
     """
     Function to identify a set of the first q highly-penalized lectures and select n lectures from them,
     the lecture of rank k is selected with probability distribution, n <= q
+
     :param partialTimetable: timetable
     :param data: information about data
     :param n: number of selected lectures from first q highly penalized ones
@@ -31,6 +32,7 @@ def rankingOfLectures(partialTimetable, data, n, q):
 def checkIfAllDone(selectedLecturesDict):
     """
     Check if all selected lectures occurred in at least one swap
+
     :param selectedLecturesDict:
     :return:
     """
@@ -42,6 +44,7 @@ def checkIfAllDone(selectedLecturesDict):
 def getFirstUndone(selectedLecturesDict):
     """
     Get first lecture which does not occurred in at least one swap
+
     :param selectedLecturesDict:
     :return:
     """
@@ -52,6 +55,7 @@ def getFirstUndone(selectedLecturesDict):
 def checkIfOtherLecturesWillBeSwap(selectedLecturesDict, selectedKempeSwap):
     """
     Check if during kempe swap we swapped other lecture which was selected to be swapped
+
     :param selectedLecturesDict:
     :param selectedKempeSwap:
     :return:
@@ -67,7 +71,8 @@ def checkIfOtherLecturesWillBeSwap(selectedLecturesDict, selectedKempeSwap):
 def produceRandomlySimpleOrKempeSwap(timetable, data, n, q):
     """
     n feasible moves of SimpleSwap or KempeSwap are randomly and sequentially produces each
-     involving at least one of selected n lectures
+    involving at least one of selected n lectures
+
     :param selectedLectures: list of selected lectures to swa
     """
     initialSolution = timetable.copy()
@@ -129,6 +134,7 @@ def selectRandom(listItems, numberOfSelectedItems):
     """
     random selection of elements in list with following distribution for elements :
     P(k) ~ k (DISTRIBUTION_PARAMETER), where k is number of lecture in rank
+
     :param listItems: list of tuples
     :param numberOfSelectedItems: number of selected unique tuples from listItems
     :return: list with tuples of selected items

@@ -60,6 +60,10 @@ class AdaptiveTabuSearch:
 
 
     def runTimeLimited(self):
+        """
+        Run algorithm limited time
+
+        """
         initialSolution(self.bestSolution, self.data)
         xi = 0
         mju = 0.6

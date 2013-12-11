@@ -11,6 +11,7 @@ SOFT_CONST = 0.5
 def initialSolution(timetable, data):
     """
     Create initial solution (timetable)
+
     :param timetable:
     :param data:
     :return:
@@ -46,6 +47,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 
     """
     do the feasible insertion of lecture of course to period and room
+
     :param partialTimeTable:
     :param courseId:
     :param data:
@@ -80,6 +82,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 def costFunctionStage1(partialTimetable, data, courseId):
     """
     Cost function in stage 1
+
     :param partialTimetable:
     :param data:
     :param courseId:
@@ -94,6 +97,7 @@ def costFunctionStage1(partialTimetable, data, courseId):
 def costFunctionStage2(partialTimetable, data, courseId):
     """
     Cost function in stage 2
+
     :param partialTimetable:
     :param data:
     :param courseId:
@@ -111,6 +115,7 @@ def costFunctionStage2(partialTimetable, data, courseId):
 def getNextCourse(partialTimetable, data):
     """
     Get next Course to assign to timetable
+
     :param partialTimetable:
     :param data:
     :return:
