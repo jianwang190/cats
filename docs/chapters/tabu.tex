@@ -3,7 +3,7 @@
 \textit{Katarzyna Śmietanka, Tomasz Dziopa}
 \subsection{Rozszerzenie sformułowania problemu }
 Rozszerzenie specyfikacji problemu z sekcji 3.2.4.
-\par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p \times m}$ gdzie ${x_{i,j}}$ ($x$ - unikalna etykieta zajęć) definiuje przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
+\par Problem definiujemy w postaci macierzy ${X}$  rozmiaru ${p \times m}$ gdzie ${x_{i,j}}$ ($x$ - unikalna etykieta zajęć) oznacza przypisanie danych zajęć do ${t_{j}}$ okresu oraz sali ${r_{i}}$. Jeżeli w danym czasie w danej sali nie odbywają się zajęcia wartość ${x_{i,j}}$ będzie przyjmowała wartość ${null}$. Dzięki takiemu sposobowi zdefiniowania problemu nigdy nie zostanie naruszone ograniczenie twarde ${H_{2}}$ dotyczące zajętości sali.
 
 \begin{table}[H]
 \begin{center}
@@ -40,7 +40,7 @@ $t_{p}$ & $null$ & $matematyka$ & $chemia$ & $...$ & $fizyka$ \\
 \subsection{Ogólny opis algorytmu}
 \label{ats_description}
 \par Opis zaimplementowanego przez nas algorytmu został zaczerpnięty z pracy ,,Adaptive TabuSearch for Course Timetabling'' \cite{tabu}
-\par Na całość algorytmu składają się trzy fazy: faza inicjalizacji podczas której tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki, faza intensyfikacji, która jest właściwą fazą algorytmu Adaptive Tabu Search, której celem jest optymalizacja funkcji oceny ograniczeń miękkich. Końcowa faza - faza dywersyfikacji gdzie dokonywana jest redukcja naruszeń miękkich, tak aby nie łamać twardych ograniczeń. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
+\par Na całość algorytmu składają się trzy fazy. Najpierw w fazie inicjalizacji tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki. Następnie wykonywane są naprzemiennie fazy intensyfikacji i dywersyfikacji. W fazie intensyfikacji staramy się minimalizować funkcję oceny, natomiast w fazie dywersyfikacji poprzez operator zaburzeń nieco zmniejszamy jakość naszego rozwiązania, w celu opuszczenia lokalnego minimum. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
 
 \subsection{Tabu Search}
 \label{tabu_search}
@@ -106,14 +106,13 @@ $t_{p}$ & $null$ & $matematyka$ & $chemia$ & $...$ & $fizyka$ \\
 
 
 \subsubsection{Faza intensyfikacji}
-\par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączenia zamian w obrębie tych dwóch struktur, które przeprowadzane są w cyklu token - ring. Celem tej fazy jest minimalizacja funkcji kary w taki sposób, by nie zostały złamane żadne ograniczenia twarde. Przestrzeń wykonywanych zamian dla poszczególnych zajęć jest ograniczona tylko do wykonywalnych zamian czyli takich, które po przeprowadzeniu ich nie naruszają ${H1-H4}$.
+\par W fazie intensyfikacji zostają wprowadzone struktury sąsiedztwa prostego oraz pojedyncze i podwójne łańcuchy Kempe, w obrębie tych struktur dochodzi do zamian poszczególnych zajęć tak, by nie naruszyć ograniczeń twardych. Na algorytm Tabu Search składa się kombinacja połączenia zamian w obrębie tych dwóch struktur, które przeprowadzane są w cyklu token - ring. Celem tej fazy jest minimalizacja funkcji kary w taki sposób, by nie zostały złamane żadne ograniczenia twarde. Przestrzeń wykonywanych zamian dla poszczególnych zajęć jest ograniczona tylko do wykonywalnych zamian czyli takich, które po przeprowadzeniu ich nie naruszają ${H1-H4}$.
 \paragraph{Struktury sasiedztwa}
 \begin{enumerate}
 \item \textbf{Podstawowa struktura sąsiedztwa} \\
-Jest to struktura, która zawiera wszystkie możliwe zamiany dla pary dwóch zajęć należących do różnych kursów i nie należących do tego samego okresu w planie zajęć. \\
+Jest to struktura, która zawiera wszystkie możliwe zamiany dla pary dwóch zajęć należących do różnych kursw i nie należących do tego samego okresu w planie zajęć. \\
 Zamiana jest przypisaniem zajęć $x_{i_{1},j_{1}}$ w miejsce zajęć ${x_{i_{2}, j_{2}}}$ oraz zajęć ${x_{i_{2}, j_{2}}}$ w miejsce zajęć $x_{i_{1},j_{1}}$ \\
-Możliwe przypadki zamian
-
+Możliwe przypadki zamian:
 \begin{enumerate}
 \item Zamiana pomiędzy dwoma różnymi zajęciami należącymi do dwóch różnych kursów i okresów
 \item Przypisanie zajęcia ${x_{i,j}}$ do wolnej pozycji - do okresu dla którego zajęcie ${x_{i,j}}$ nie wchodzi w konflikt z pozostałymi zajęciami w tym okresie (tzn. nie narusza ${H1-H4}$ )
@@ -240,8 +239,7 @@ Na rysunku \ref{fig:kempe_swap} po lewej stronie przedstawiono podgraf $G$, któ
 %-  dokłady opis tabu list
 \subparagraph{}W przypadku sąsiedztwa prostego, jeśli zajęcia z kursu $c_i$ zostały przeniesione z okresu $t_j$ i sali $r_k$ w inne miejsce, wtedy przeniesienie jakichkolwiek zajęć z kursu $c_i$ do przedziału czasowego $t_j$ i sali $r_k$ przez kolejne $tt$ iteracji jest ruchem tabu. Podobnie dla sąsiedztwa zaawansowanego, jeśli zajęcia z kursu $c_i$ zostały przeniesione z przedziału czasowego $t_j$ do jakiegoś innego, wtedy przeniesienie jakichkolwiek zajęć z kursu $c_i$ do przedziału czasowego $t_j$ przez kolejne $tt$ iteracji jest ruchem tabu.\\
 
-\textbf{Liczba iteracji, przez które ruch jest na liście tabu}\\
-Funkcja określająca liczbę iteracji, przez które ruch jest pamiętany na liście tabu $tt(c_{i})$ obliczana jest na podstawie obecnie uzyskanego rozwiązania oraz częstotliwości przenoszenia zajęć z kursu $c_{i}$ oznaczonej przez $freq(c_{i})$. \\
+\subparagraph{Funkcja określająca liczbę iteracji, przez które ruch jest pamiętany na liście tabu} $tt(c_{i})$ obliczana jest na podstawie obecnie uzyskanego rozwiązania oraz częstotliwości przenoszenia zajęć z kursu $c_{i}$ oznaczonej przez $freq(c_{i})$. \\
 Funkcję określono poniższym wzorem: 
  \[tt(c_{i}) = funkcja\ kary\ dla\ obecnego\ rozwiązania + \alpha * freq(c_{i}) \] 
 gdzie ${\alpha = \frac{liczba\ konfliktujących\ kursów\ z\ c_{i}}{liczba\ kursów}}$ wobec tego wartość parametru ${\alpha \in [0, 1]}$ \\
@@ -303,6 +301,9 @@ Przykład dla parametrów $q = 5$ i $n = 3$:
 	\end{enumerate}
 \item Dla każdego z zajęć losujemy typ zamiany: podstawowa zamiana lub Kempe oraz znajdujemy wszystkie wykonywalne zamiany dla tego typu. Losowo wybieramy zamianę i przeprowadzamy ją. Odznaczając zajęcia, które są na liście [*], a dla których została już wykonana zamiana zawierająca te zajęcia.
 \end{enumerate}
+
+
+
 
 \subsection{Szczegóły implementacyjne}
 \subsubsection{Struktury danych}
