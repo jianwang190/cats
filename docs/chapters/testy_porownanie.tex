@@ -178,7 +178,7 @@ Celem stworzenia wizualizacji jest zobrazowanie instancji problemu, jak równie�
   \centering
     \includegraphics[width=10cm]{test1.PNG}
 \end{figure}
-\par Oddzielne przestawienie poszczególnych oraniczeń na grafach. Wierzchołkami są kursy, a krawędzie są to konflikty pomiędzy kursami, oznaczające, że zajęcia z kursów połączonych krawędzią nie mogą odbywać się w tym samym czasie.
+\par Oddzielne przestawienie poszczególnych ograniczeń na grafach\\ Wierzchołkami są kursy, a krawędzie są to konflikty pomiędzy kursami, oznaczające, że zajęcia z kursów połączonych krawędzią nie mogą odbywać się w tym samym czasie.
 
 \begin{figure}[H]
   \caption{Graf uwzględniający zależności pomiędzy kursami uwzględniając prowadzących dane kursy}
@@ -221,7 +221,7 @@ Parametry dla algorytmów:
 \begin{enumerate}
 \item GA - liczba osobników: 200, liczba iteracji: 1000, szacowany czas działania algorytmu: 33 min
 \item PSO - liczba cząsteczek: 20, liczba iteracji 10000, szacowany czas działania algorytmu: 180 min
-\item ATS - czas działania: 480 s
+\item ATS - czas działania: 10 min
 \end{enumerate}
 \begin{table}[H]
 \begin{center}
@@ -252,7 +252,8 @@ $Funkcja\ oceny$ & $676$ & $330$ & $287$ \\
 \end{center}
 \caption {Wyniki uzyskane przez poszczególne algorytmy}
 \end{table}
-
+Jak można zauważyć z powyższej tabeli algorytm PSO mimo bardzo długiego czasu działania nie usunął wszystkich naruszeń związanych z ograniczeniami twardymi dotyczącymi: ${H}_{1}$ przyporządkowania wszystkich wykładów oraz $H_{4}$ dostępności wykładowcy. Najlepszy rezultat działania został uzyskany przez ATS, którego czas działania był najkrótszy w stosunku do pozostałych algorytmów. Największym problemem do minimalizacyjnym dla wszystkich algorytmów było zmiejszenie funkcji oceny za $S_{4}$ zwartość zajęc, a kara otrzymana za $S_{3}$ jest porównywalna dla wszystkich algorytmów. 
+Zarówno Algorytm Genetyczny jak również Algorytm Róju cząsteczek nie dają gwarancji wygenerowania całkowicie poprawnego planu zajęć, nie naruszającego żadnych z ograniczeń $H_{1}-H_{4}$. Algorytm Adaptacyjny Tabu gwarantuje, że ograniczenia $H_{2}-H_{4}$ będą spełnione dla stworzonego planu zajęć, ale nie zapewnia o spełnieniu ograniczenia ${H}_{1}$. Niespełnienie tego ograniczenia może zajść w fazie inicjalizacji, gdzie nie będzie możliwe przyporządkowanie zajęć do żadnego z przedziałów czasowych nie naruszając innych ograniczeń.
 \par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów.
 \begin{figure}[H]
   \caption{Algorytm Genetyczny}
@@ -269,6 +270,7 @@ $Funkcja\ oceny$ & $676$ & $330$ & $287$ \\
   \centering
     \includegraphics[width=10cm]{ats_test_2.png}
 \end{figure}
+Przedstwione wykresy potwierdzają wcześniej postawioną tezę o bardzo dużej liczbie odwołań do funkcji oceny dla algotytmu ATS. Początkowe rozwiązanie dla tego algotymu miało najniższą wartość funkcji oceny. Mimo początkowej wysokiej funkcji oceny dla algorytmu GA i PSO, końcowe rezultaty (wartości funkcji oceny) zostały w znaczący sposób pomniejszone, niestety dla PSO nie usuwając wszystkich ograniczeń twardych.
 \subsection{Test 3}
 \begin{table}[H]
 \begin{center}
@@ -331,6 +333,7 @@ $Funkcja\ oceny$ & $564$ & $438$ & $279$ \\
 \end{center}
 \caption {Wyniki uzyskane przez poszczególne algorytmy}
 \end{table}
+Wyniki te potwierdzają najlepszą skuteczność działania algorytmu ATS, który generuje wykonywalny plan oraz jego funkcja oceny jest najniższa spośród pozostałych algorytmów. Warto również zauważyć dość dobrą skuteczność działania algorytmu GA, który eliminuje wszystkie ograniczenia twarde.
 \par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów.
 \begin{figure}[H]
   \caption{Algorytm Genetyczny}
@@ -347,11 +350,10 @@ $Funkcja\ oceny$ & $564$ & $438$ & $279$ \\
   \centering
     \includegraphics[width=10cm]{ats_test_2.png}
 \end{figure}
-\label{etykietka}
-\par PSO nie usuwan hardów (wybrana metoda nie odporna na lokane minima), . Ostateczne rozw jest najprostsze - to slabo dziala
-\par badawczo 
-GA - niepewne rozw element losow (roznie generuje poczatkowe rozwiazania), duza liczba osobnikow, upodobniaja zwiekszenie wspolczynnika mutacji do wyjscia z lokalnego minimum
-\par system prosty do wykorzystania alg, otwarty na rozbudowe: rezcna edycja planu, wprowadzenie przez nuczycieli 
+\subsection{Podsumowanie działania algorytmów}
+\par Algorytm Roju Cząsteczek nie dla wszystkich instancji był w stanie wygeneregować wykonywalnego planu zajęć, pomimo stosunkowo długiego czasu działania. Algorytm ten nie daje gwarancji, że ograniczenia twarde zostaną całkowicie wyeliminowane.Ponadto metoda ta jest mało odporna na lokalne minima. Rozpatrywanie różnych modyfikacji algorytmu dało możliwość badawczego zapoznania się z tym jakże trudnym problemem, jakim jest układanie planu zajęc.
+\par Algorytm Genetyczny jest również stosunkowo niepewnym rozwiązaniem, niedającym gwarancji o nie naruszeniu ograniczeń twardych. Głównym czynnikiem wpływającym na działanie algorytmu jest element losowy wprowadzony do niego, który w różny sposób tworzy początkowe rozwiązania. Zastosowanie zwiększonego współczynnika mutacji umożliwia wyjście algorytmu z lokalnego minimum. Algorytm mimo swojej prostoty dla wybranych instancji uzyskał stosunkowo dobre wyniki.
+\par Algorytm Adaptacyjny Tabu uzyskał dla większości instancji najlepsze wyniki. Algorytm ten gwarantuje zawsze spełnienie części z ograniczeń twardych $H_{2}-H_{4}$, nie zawsze zaś ograniczenia $H_{1}$. Ograniczenie ${H_{1}}$ jest naruszane w przypadku kiedy niemożliwe jest znalezienie przedziału czasu, gdzie może zostać przyporządkowany kurs nie naruszając $H_{2}-H_{4}$. ATS charakteryzuje się największą liczbą odwołań do funkcji oceny, w celu znalezienia optymalnego rozwiązania.
 
 
 
