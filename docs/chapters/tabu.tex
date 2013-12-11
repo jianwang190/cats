@@ -42,6 +42,7 @@ $t_{p}$ & $null$ & $matematyka$ & $chemia$ & $...$ & $fizyka$ \\
 \par Na całość algorytmu składają się trzy fazy: faza inicjalizacji podczas której tworzony jest początkowy plan zajęć, przy pomocy zachłannej heurystyki, faza intensyfikacji, która jest właściwą fazą algorytmu Adaptive Tabu Search, której celem jest optymalizacja funkcji oceny ograniczeń miękkich. Końcowa faza - faza dywersyfikacji gdzie dokonywana jest redukcja naruszeń miękkich, tak aby nie łamać twardych ograniczeń. Na algorytm ten składa się wiele unikalnych cech między innymi struktury sąsiedztwa - podwójne łańcuchy Kempe, operator zaburzeń oraz dynamiczna integracja operacji przeszukiwania tabu z operatorem zaburzeń.
 
 \subsection{Tabu Search}
+\label{tabu_search}
 \par Algorytm Tabu Search został zaprezentowany w 1986 roku przez Freda W. Glovera \cite{glover}. Jest to metaheurystyka, która opiera się na obserwacji, że proces przeszukiwania przestrzeni rozwiązań w poszukiwaniu najlepszego u ludzi i zwierząt opiera się na pamięci krótko- i długoterminowej. 
 \par Pamięć krótkoterminowa realizowana jest w postaci listy ruchów zabronionych. W każdej iteracji przeglądamy strukturę sąsiedztwa w poszukiwaniu najlepszego rozwiązania. Sprawdzamy, czy ruch prowadzący do uzyskania najlepszego sąsiada nie znajduje się na liście ruchów zabronionych; jeżeli tak - rozważamy kolejnego najlepszego sąsiada, w przeciwnym wypadku - aktualizujemy rozwiązanie i dodajemy ruch prowadzący do niego jako ruch zabroniony.
 
