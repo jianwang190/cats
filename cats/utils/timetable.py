@@ -97,18 +97,37 @@ class TimeTable(object):
         listOfRooms = set([r.id for r in roomList if (r.capacity >= course.studentsNum and r.type == course.typeOfRoom)])
         return listOfRooms
 
-    """Get rooms ids for each of courses (considering number of students)"""
+
     def getRoomsIdForCourses(self, roomList, courseList):
+        """
+        Get rooms ids for each of courses (considering number of students)
+
+        :param roomList:
+        :param courseList:
+        :return:
+        """
         roomsForCourses = {x.id: self.createListOfRooms(roomList, x) for x in courseList}
         return roomsForCourses
 
-    """Get list of constraints for course"""
+
     def getKeyConstraintsOfCourse(self, constraintsList, courseId):
+        """
+        Get list of constraints for course
+
+        :rtype : object
+        """
         keysConstraintsOfCourse = map(self.mapKeys, [ x for x in constraintsList if x.id == courseId])
         return keysConstraintsOfCourse
 
-    """Check if slot is available for course, considering neighbourhood (conflicts courses)"""
+
     def checkIfAvailable(self, timeTableList, courseId):
+        """
+        Check if slot is available for course, considering neighbourhood (conflicts courses)
+
+        :param timeTableList:
+        :param courseId:
+        :return:
+        """
         rooms = set()
         for cell in timeTableList:
             if (cell is not []) and ((cell[0] in self.neighbourhoodList[courseId]) or (cell[0] == courseId)):
@@ -118,10 +137,17 @@ class TimeTable(object):
         return {'period': True, 'unavailableRooms' : rooms}
 
 
-    """Count number of available slots for course, function considers neighourhood, count available positions - periods (slot, room)"""
-    """availablePeriodsNum - the total number of available periods for course, availablePeriods - list of available periods"""
-    """availablePairsNum - the total number of available positions (period and room pairs), availablePairs - list of available pairs (period- room)"""
+
     def availablePeriodsRooms(self, constraintsList, courseId):
+        """
+        Count number of available slots for course, function considers neighourhood, count available positions - periods (slot, room)
+        availablePeriodsNum - the total number of available periods for course, availablePeriods - list of available perio
+        availablePairsNum - the total number of available positions (period and room pairs), availablePairs - list of available pairs (period- room)
+
+        :param constraintsList:
+        :param courseId:
+        :return:
+        """
         keysConstraintsOfCourse = set(self.getKeyConstraintsOfCourse(constraintsList, courseId))
 
         availablePeriods = set()
@@ -139,6 +165,11 @@ class TimeTable(object):
                 'availablePairs' : availablePairs }
 
     def assignedLectures(self, courseId):
+        """
+        Assigned lectures to timetable
+        :param courseId:
+        :return:
+        """
         sum = []
         for slot, cells in self.getTimeTable().iteritems():\
             sum += filter(lambda x: x[0] == courseId, cells)
@@ -151,12 +182,25 @@ class TimeTable(object):
             l = lecture.split()
             self.timeTable[int(l[0])].append((l[1], l[2]))
 
-    """ returns number of conflicting courses """
-    """ assumes all conflicts are stored in neighbourhoodList """
+
     def conflictingCourses(self, courseId):
+        """
+        returns number of conflicting courses
+        assumes all conflicts are stored in neighbourhoodList
+
+        :param courseId:
+        :return:
+        """
         return len(self.neighbourhoodList[courseId])
     
     def unavailableUnfinishedCoursesLectureNum(self, period, courseId, data):
+        """
+        Get unavailable unfinished courses lectures number
+        :param period:
+        :param courseId:
+        :param data:
+        :return:
+        """
         result = 0
         for course in data.getUnfinishedCourses():
             if self.neighbourhoodList.has_key(courseId) and \
@@ -165,6 +209,11 @@ class TimeTable(object):
         return result
     
     def availableRoomsList(self, period, data, courseId):
+        """
+        Return list of available rooms
+
+        :rtype : object
+        """
         allAvailableRooms = list(set(map(lambda x: data.rooms[x].id, filter(lambda r: data.rooms[r].type == data.courses[courseId].typeOfRoom, data.rooms))) \
                - set(map(lambda x: x[1], self.getTimeTable()[period])))
         return allAvailableRooms
@@ -173,6 +222,7 @@ class TimeTable(object):
         """
         Add data to timetable (period, courseId, roomId, curId - optional)
         :param assignedList: courses and rooms to add to timetable
+
         """
         map(lambda a: self.timeTable[a[0]].append((a[1],a[2])), assignedList)
 
@@ -188,6 +238,7 @@ class TimeTable(object):
         """
         Serialize timetables neighbourhood list to json, d3.js readable
         Check http://bl.ocks.org/mbostock/4062045
+
         """
         links = []
         nodes = self.neighbourhoodList.keys()

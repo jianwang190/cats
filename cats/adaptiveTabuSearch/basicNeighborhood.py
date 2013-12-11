@@ -5,6 +5,7 @@ class CellBasicNeighborhood(object):
     """
     Cell to keep data about course for BasicNeighborhood structure
     Index - index on list in timeTable[period]
+
     """
 
     def __init__(self, courseId, period, index):
@@ -15,7 +16,8 @@ class CellBasicNeighborhood(object):
 
 class BasicNeighborhood(object):
     """
-    Structure containing all possible swaps between courses"
+    Structure containing all possible swaps between courses
+
     """
     def __init__(self, data):
         self.basicList = []
@@ -27,7 +29,8 @@ class BasicNeighborhood(object):
     def addCell(self, cellFirst, cellSecond):
 
         """
-        Add possible swap between courses"
+        Add possible swap between courses
+
         :param cellFirst: first cell
         :param cellSecond:  second cell
         """
@@ -36,6 +39,7 @@ class BasicNeighborhood(object):
     def getBasicList(self):
         """
         Get list containing possible swaps
+
         :return:basic list
         """
         return self.basicList
@@ -46,6 +50,7 @@ class BasicNeighborhood(object):
         """
         Check is swap between two courses if possible regarding other courses in slot (neighbourhoodList
         if courseIdSecond can be assigned to slot
+
         :param timetable: timetable
         :param neighbourhoodList: neighbourhoodList containing all conflicts between courses
         :param courseIdSecond: id of second course
@@ -61,6 +66,7 @@ class BasicNeighborhood(object):
     def checkIfNotInBasicNeighbourhood(self, courseIdFirst, slotFirst, courseIdSecond, slotSecond):
         """
         Check if swap between courses exists in BasicNeighbourhood structure
+
         :param courseIdFirst:first course id
         :param slotFirst: slot to which first course id is assigned
         :param courseIdSecond: second course id
@@ -79,6 +85,7 @@ class BasicNeighborhood(object):
     def checkPeriodIfInConstraints(self, firstCourseId, firstPeriod, secondCourseId, secondPeriod):
         """
         Check unavailable constraints for course
+
         :param firstCourseId:
         :param firstPeriod:
         :param secondCourseId:
@@ -96,6 +103,7 @@ class BasicNeighborhood(object):
 
         """
         Finds all possible swaps between courses or to empty position, create basicList structure
+
         :param timetable:
         :param neighborhoodList:
         :param numberOfRooms:
@@ -135,6 +143,7 @@ class BasicNeighborhood(object):
     def getPossibleSwapsForCourse(self, courseId, slot):
         """
         Get all possible swaps for courseId - helper function for tests
+
         :param courseId:
         :param slot:
         :return:
@@ -149,6 +158,7 @@ class BasicNeighborhood(object):
 def doSimpleSwap(timetable, (swap1, swap2)):
     """
     Perform simple swap
+
     :param timetable:
     :return:
     """

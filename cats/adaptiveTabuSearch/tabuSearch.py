@@ -63,7 +63,6 @@ class AdaptiveTabuSearch:
 
 
     def runTimeLimited(self):
-        self.startTime = time.time()
         initialSolution(self.bestSolution, self.data)
         print softConstraints2.totalSoftConstraintsForTimetable(self.bestSolution.getTimeTable(), self.data),\
             int(time.time() - self.startTime)

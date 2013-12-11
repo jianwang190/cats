@@ -32,6 +32,7 @@ class GenericTabuList(object):
     def coefficientTabuTenure(self, courseList, neighborhoodList):
         """
         Function to count coefficient for tabu tenure (number of conflicting courses / total number of courses)
+
         :param courseList: list of course ids
         :param neighborhoodList:neighborhood list for courses
         :return: dictionary with coefficient for each courseId

@@ -9,6 +9,7 @@ refPenalty = 0
 def countPenaltyForCurriculumCompactnessPerturbation(periodsList, periodsPerDay, perturbation, perturbationPenalty):
     """
     Count curriculum compactness penalty for one curriculum
+
     :param periodsList: list with slots for curriculum (when the course of curriculum took place)
     :param periodsPerDay: periods per day in timetable
     :return:
@@ -35,6 +36,7 @@ def countPenaltyForCurriculumCompactnessPerturbation(periodsList, periodsPerDay,
 def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
     """
     Count curriculum compactness penalty for one curriculum
+
     :param periodsList: list with slots for curriculum (when the course of curriculum took place)
     :param periodsPerDay: periods per day in timetable
     :return:
@@ -56,6 +58,7 @@ def countPenaltyForCurriculumCompactness(periodsList, periodsPerDay):
 def totalSoftConstraintsForTimetable(partialTimetable, data):
     """
     Get total soft constrains penalty for timetable
+
     :param partialTimetable: timetable for which soft constraints penalty is counted
     :param data: data describing courses
     :return: total soft constraints penalty
@@ -71,6 +74,7 @@ def softConstraintsPenalty(partialTimetable, data, perturbation = None):
     """
     Count soft penalty for timetable
     perturbation penalty for each lecture include : room stability penalty, room capacity, min workings days
+
     :param partialTimetable: timetable to grade
     :param data: data for tested timetable
     :return: dictionary with penalty for : min working days, curriculum compactness, room stability and capacity, total penalty
