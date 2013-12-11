@@ -9,7 +9,7 @@ class heuristicTest(unittest.TestCase):
         c = CompetitionDictReader()
         self.data = c.readInstance(1)
         self.t = TimeTableFactory.getTimeTable(self.data)
-        
+
 
 
     """TODO: write unittests"""
