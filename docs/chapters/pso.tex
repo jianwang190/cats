@@ -36,10 +36,10 @@
 \begin{description}
   \item[Krok 1:] 
      \par Stworzenie cząsteczek. Polega ono na ustawieniu ich pozycji i prędkości w sposób losowy. 
-  \[f(P^{i}_{k}) \le f(P^{i-1}_{k}) \le \ldots \le f(P^{1}_{k})\].
+  \[f(P^{i}_{k}) \le f(P^{i-1}_{k}) \le \ldots \le f(P^{1}_{k})\]
   \item[Krok 2:]
     \par Obliczenie prędkości dla każdej cząsteczki z osobna. 
-\[V^{i+1}_{k} = V^{i}_{k} + C_{1} \cdot r_{1} \cdot (P^{i}_{k} - X^{i}_{k}) + C_{2} \cdot r_{2} \cdot (G^{i} - X^{i}_{k})\].
+\[V^{i+1}_{k} = V^{i}_{k} + C_{1} \cdot r_{1} \cdot (P^{i}_{k} - X^{i}_{k}) + C_{2} \cdot r_{2} \cdot (G^{i} - X^{i}_{k})\]
   \item[Krok 3:]
         \par Zmiana pozycji każdej cząsteczki zgodnie z jej prędkością.
 \[X^{i+1}_{k} = X^{i}_{k} + V^{i+1}_{k}, i = 0,1,\cdots, M-1,\]
@@ -78,4 +78,5 @@
 \begin{figure}[H]
 \includegraphics[width=10cm]{img/schemat_pso.png}
 \centering
+\caption{schemat blokowy algorytmu}
 \end{figure}
