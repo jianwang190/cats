@@ -15,7 +15,7 @@
 \begin{enumerate}
 \item System do automatyzacji procesu układania planu zajęć
 \begin{enumerate}
-\item Frontend — aplikacja kliencka, odpowiadająca za interakcję z użytkownikiem: wprowadzanie danych wejściowych, wybór algorytmu do generowania planu zajęć oraz wizualizacja wygenerowanego planu zajęc w API Google Calendar.
+\item Frontend — aplikacja kliencka, odpowiadająca za interakcję z użytkownikiem: wprowadzanie danych wejściowych, wybór algorytmu do generowania planu zajęć oraz wizualizacja wygenerowanego planu zajęc w Ext JS Calendar.
 \item Backend - generowanie planu zajęć z danych prowadzonych przez użytkownika 
 \end{enumerate}
 \item Implementacja algorytmów
@@ -24,20 +24,38 @@
 \item Algorytm Roju Cząsteczek
 \item Algorytm Adaptacyjny Tabu
 \end{enumerate}
-\item Przystosowanie danych szkolnych do zaimplementowanych algorytmów
+\item Przetworzenie danych szkolnych do zaimplementowanych algorytmów
 \item Porównanie działania algorytmów
-
-
 
 \end{enumerate}
 
 
 \section{Podział zadań i obowiązków}
 \begin{enumerate}
-\item Tomasz Dziopa
+\item Tomasz Dziopa 
+\begin{itemize}
+\item Implementacja Algorytmu Adaptacyjnego Tabu
+\item Przystosowanie działania algorytmu (ATS) do danych szkolnych
+\item Implementacja systemu do automatyzacji procesu układania planów zajęć: stworzenie interfejsu użytkownika, wizualizacja wygenerowanych planów w Ext JS Calendar
+\end{itemize}
 \item Paweł Jastrzębski
+\begin{itemize}
+\item Implementacja Algorytmu Roju Cząsteczek
+\item Implementacja systemu do automatyzacji procesu układania planów zajęć: stworzenie formularza do dodawania zadań, list do wyświetlania zadań, zdalne uruchamianie zadań poprzez rozproszoną kolejkę 
+\end{itemize}
 \item Filip Czajkowski
+\begin{itemize}
+\item Implementacja Algorytmu Genetycznego
+\item Przystosowanie działania algorytmu (GA) do danych szkolnych
+\item Przygotowanie dokumentacji dla Systemu do automatyzacji procesu układania planów zajęć
+\end{itemize}
 \item Katarzyna Śmietanka
+\begin{itemize}
+\item Implementacja Algorytmu Adaptacyjnego
+\item Przystosowanie działania algorytmu (ATS) do danych szkolnych
+\item Przetworzenie danych szkolnych do struktury zaimplementowanych algorytmów
+\item Porównanie działania algorytmów, przygotowanie wizualizacji danych wejściowych
+\end{itemize}
 \end{enumerate}
 \section{Środowisko pracy i narzędzia}
 \paragraph{} Przy tworzeniu pracy inżynierskiej korzystaliśmy z repozytorium git w serwisie github.com \cite{github} z podpiętym narzędziem typu \textit{continuous integration} o nazwie travis \cite{travis}. Praktycznie cały kod został napisany w języku Python w wersji interpretera 2.7.6. Do testów jednostkowych użyto modułu \verb#nosetests#, aplikacja webowa została oparta o framework \verb#django# w wersji 1.6 i rozproszoną kolejkę zadań \verb#celery# \cite{celery}.
