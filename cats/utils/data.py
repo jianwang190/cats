@@ -102,6 +102,12 @@ class DictData(IData):
     def getCurriculumForCourseId(self, courseId):
         return self.curriculumLookup[courseId] if courseId in self.curriculumLookup else set()
 
+    def getConstraintsOnlyKeysForCourse(self, id):
+        if id in self.constraintsPeriods.keys():
+            return self.constraintsPeriods[id]
+        else:
+            return []
+
 
     def popCourse(self, id):
         self.courses[id].assignedLectureNum+=1
