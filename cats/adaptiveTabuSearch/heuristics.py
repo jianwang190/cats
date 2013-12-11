@@ -9,7 +9,13 @@ SOFT_CONST = 0.5
 
 
 def initialSolution(timetable, data):
+    """
+    Create initial solution (timetable)
 
+    :param timetable:
+    :param data:
+    :return:
+    """
 
     while len(data.getUnfinishedCourses())>0:
 
@@ -17,21 +23,21 @@ def initialSolution(timetable, data):
         if feasibleInsertion(timetable, nextCourse.id, data)==False:
             break
 
-        #print ">>> TIMETABLE"
-        #
-        #for k in timetable.getTimeTable():
-        #    print k, [(x[0], x[1]) for x in timetable.getTimeTable()[k]]
-        #print ">>>>> OCENA"
-        #print totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
-
-    print
-
-
-    print "##### INITIAL SOLUTION FINISHED #####"
-    print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
-    for c in data.getUnfinishedCourses():
-        print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
-                               " ".join(timetable.neighbourhoodList[c.id])])
+    #    print ">>> TIMETABLE"
+    #
+    #    for k in timetable.getTimeTable():
+    #        print k, [(x[0], x[1]) for x in timetable.getTimeTable()[k]]
+    #    print ">>>>> OCENA"
+    #    print totalSoftConstraintsForTimetable(timetable.getTimeTable(), data)
+    #
+    #print
+    #
+    #
+    #print "##### INITIAL SOLUTION FINISHED #####"
+    #print ">>> UNASSIGNED COURSES:\n\tid\tlectureNum\tassigned"
+    #for c in data.getUnfinishedCourses():
+    #    print "\t", "\t".join([c.id, str(c.lectureNum), " ", str(c.assignedLectureNum), \
+    #                           " ".join(timetable.neighbourhoodList[c.id])])
 
 """ Dla Filipa """
 def initialSolutionWithReturn(timetable, data):
@@ -47,6 +53,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 
     """
     do the feasible insertion of lecture of course to period and room
+
     :param partialTimeTable:
     :param courseId:
     :param data:
@@ -56,7 +63,7 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 
     periods = partialTimeTable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriods"]
     for p in periods:
-        for r in partialTimeTable.availableRoomsList(p, data):
+        for r in partialTimeTable.availableRoomsList(p, data, courseId):
             availablePairs.append((p,r))
 
     solutionRankings = \
@@ -68,7 +75,6 @@ def feasibleInsertion(partialTimeTable, courseId, data):
     if len(solutionRankings)>0:
         period = solutionRankings[0][1][0]
         room = solutionRankings[0][1][1]
-
         # assign matching course-room to period
         partialTimeTable.getTimeTable()[period].append((courseId, room))
         # update course assigned lecture number
@@ -80,6 +86,14 @@ def feasibleInsertion(partialTimeTable, courseId, data):
 
 
 def costFunctionStage1(partialTimetable, data, courseId):
+    """
+    Cost function in stage 1
+
+    :param partialTimetable:
+    :param data:
+    :param courseId:
+    :return:
+    """
     apd = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)["availablePeriodsNum"]
     nl = data.getCourse(courseId).lectureNum - data.getCourse(courseId).assignedLectureNum
 
@@ -87,6 +101,14 @@ def costFunctionStage1(partialTimetable, data, courseId):
 
 
 def costFunctionStage2(partialTimetable, data, courseId):
+    """
+    Cost function in stage 2
+
+    :param partialTimetable:
+    :param data:
+    :param courseId:
+    :return:
+    """
     aps = partialTimetable.availablePeriodsRooms(data.getAllConstraints(), courseId)
     nl = data.getCourse(courseId).lectureNum - data.getCourse(courseId).assignedLectureNum
 
@@ -97,6 +119,13 @@ def costFunctionStage2(partialTimetable, data, courseId):
 
 
 def getNextCourse(partialTimetable, data):
+    """
+    Get next Course to assign to timetable
+
+    :param partialTimetable:
+    :param data:
+    :return:
+    """
     courses = sorted([(x, costFunctionStage1(partialTimetable, data, x.id)) \
                       for x in data.getUnfinishedCourses()], \
                      key=lambda x: x[1])

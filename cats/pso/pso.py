@@ -1,4 +1,5 @@
 import time
+import sys
 
 import conf
 from particle import Particle
@@ -16,6 +17,7 @@ class PSO(object):
         self.timetableFactory = TimetableFactory(data)
         self.evaluationFunction = EvaluationFunction(data, self.timetableFactory)
         self.h = []
+        self.counter = 0
 
     def run(self):
         self.genParticles()
@@ -33,7 +35,7 @@ class PSO(object):
             #for p in self.particles:
                 #print "Act:", p.actualSolution.penalty
                 #print "best:", p.bestSolution.penalty
-            print "BEST:", self.globalBestSolution.penalty
+            #print "BEST:", self.globalBestSolution.penalty
                 #print "------------------------"
         self.timetableFactory.echo(self.globalBestSolution)
         h2 = []
@@ -42,7 +44,8 @@ class PSO(object):
 
         #print h2
         #print self.h
-
+        #print self.globalBestSolution.courses
+        #self.evaluationFunction.evaluate(self.globalBestSolution)
         return self.globalBestSolution
 
     def genParticles(self):
@@ -64,6 +67,7 @@ class PSO(object):
 
     def evaluate(self, particle):
         """Evaluate particle"""
+        self.counter += 1
 
         particle.actualSolution.penalty = self.evaluationFunction.evaluate(particle.actualSolution)
 
@@ -75,7 +79,10 @@ class PSO(object):
 
         if particle.bestSolution.penalty < self.globalBestSolution.penalty:
             self.globalBestSolution = deepcopy(particle.bestSolution)
-
+            print self.counter
+            print self.globalBestSolution.penalty
+            sys.stderr.write(str(self.counter)+'\n')
+            sys.stderr.write(str(self.globalBestSolution.penalty)+'\n')
 
 
 

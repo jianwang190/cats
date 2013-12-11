@@ -111,7 +111,7 @@ Możliwe przypadki zamian
 \item Zamiana pomiędzy dwoma różnymi zajęciami należącymi do dwóch różnych kursów i okresów
 \item Przypisanie zajęcia ${x_{i,j}}$ do wolnej pozycji - do okresu dla którego zajęcie ${x_{i,j}}$ nie wchodzi w konflikt z pozostałymi zajęciami w tym okresie (tzn. nie narusza ${H1-H4}$ )
 \end{enumerate}
-Przykład możliwych zamian dla podstawowej struktury sąsiedztwa na podstawie zdefiniowanego poniżej problemu (format danych wejściowych zdefiniowany w sekcji 3.2.5, tutaj stosujemy uproszczoną wersję pomijając niektóre parametry nieistotne w tej fazie):
+Przykład możliwych zamian dla podstawowej struktury sąsiedztwa na podstawie zdefiniowanego poniżej problemu (format danych wejściowych zdefiniowany w sekcji ~\ref{sec:input_format}, tutaj stosujemy uproszczoną wersję pomijając niektóre parametry nieistotne w tej fazie):
 \begin{alltt}
 Dane wejściowe:
 Kursy: 
@@ -210,16 +210,18 @@ Specjalnym przypadkiem jest, gdy jeden z łańcuchów jest pusty, wtedy:
 
 
 \begin{figure}[H]
+
 \includegraphics[height=10cm]{kempeSwap.png}\hfill
 \centering
 
 $t_i$\hspace{4.5cm}$t_j$\hspace{3.25cm}$t_i$\hspace{4.5cm}$t_j$ \\
 
 \caption{Przykładowa zamiana łańcuchów Kempe: zielonego ($K_d$) i niebieskiego ($K_e$) dla okresów $t_i$ i $t_j$}
+\label{fig:kempe_swap}
 \end{figure}
 
 \subparagraph{Przykład} 
-Na rysunku powyżej po lewej stronie przedstawiono podgraf $G$, którego wierzchołkami są kursy, których zajęcia zostały przydzielone do okresów $t_i$ i $t_j$, a krawędzie przedstawiają konflikty między tymi kursami. W podgrafie można wyróżnić 5 łańcuchów Kempe: $K_a = \{c_{i1}, c_{i2}, c_{j1}, c_{j2}\}$, $K_b = \{c_{i5}\}$, $K_c = \{c_{j4}\}$, $K_d = \{c_{i3}, c_{i6}, c_{j3}\}$, $K_e = \{c_{i4}, c_{j5}, c_{j6}\}$. Przykładowa zamiana dla łańcuchów $K_d$ i $K_e$ tworzy nowe przypasowanie (na rysunku po prawej stronie) przez przydzielenie $\{c_{i3}, c_{i4}, c_{i6}\}$ do $t_j$ i $\{c_{j3}, c_{i4}, c_{i6}\}$ do $t_i$.
+Na rysunku \ref{fig:kempe_swap} po lewej stronie przedstawiono podgraf $G$, którego wierzchołkami są kursy, których zajęcia zostały przydzielone do okresów $t_i$ i $t_j$, a krawędzie przedstawiają konflikty między tymi kursami. W podgrafie można wyróżnić 5 łańcuchów Kempe: $K_a = \{c_{i1}, c_{i2}, c_{j1}, c_{j2}\}$, $K_b = \{c_{i5}\}$, $K_c = \{c_{j4}\}$, $K_d = \{c_{i3}, c_{i6}, c_{j3}\}$, $K_e = \{c_{i4}, c_{j5}, c_{j6}\}$. Przykładowa zamiana dla łańcuchów $K_d$ i $K_e$ tworzy nowe przypasowanie (na rysunku po prawej stronie) przez przydzielenie $\{c_{i3}, c_{i4}, c_{i6}\}$ do $t_j$ i $\{c_{j3}, c_{i4}, c_{i6}\}$ do $t_i$.
 
 \subparagraph{}Tak określony ruch można traktować jako rozszerzoną wersję podstawowej struktury sąsiedztwa, gdzie zamieniamy po kilka przypasowań na raz. Przy zamianie musimy uważać, aby nie wykonywać ruchów, które powodują przypasowanie do przedziałów czasowych większej liczby kursów, niż jest dostępnych sal. Dodatkowo nakładamy ograniczenia na liczbę kursów biorących udział w zamianie, tj. $|K_1|+ |K_2| \geq 3 $
 
@@ -258,10 +260,10 @@ gdyż ${liczba\ kursów \geq liczba\ konfliktujących\ kursów\ z\ c_{i}} $
 
 \subsubsection{Faza dywersyfikacji}
 \par Jeżeli rozwiązanie nie może zostać poprawione za pomocą algorytmu Tabu Search uruchamiana jest trzecia faza - faza dywersyfikacji. Głównym jej elementem jest losowy operator zaburzeń mający na celu zniszczenie osiągniętego lokalnego minimum. Początkowo identyfikowane są zajęcia z wysoką karą wynikającą z funkcji oceny  i losowo wybierane są zajęcia dla których zostaną dokonane zamiany sprecyzowane w poprzedniej fazie.
-\par W momencie zakończenia fazy intensyfikacji, poszczególne zajęcia ustawiane są w kolejności malejącej ze względu na wysokość funkcji oceny. Z puli $q$ pierwszych zajęć wybierane jest $n$ zajęć, gdzie zajęcie będące na $k$ miejscu w rankingu wybierane zgodnie z rozkładem prawdopodobieństwa $P(k) = k^{-4.0}$. Następnie dokonywane jest $n$ losowych zamian pomiędzy zajęciami (sprecyzowanych w fazie intensyfikacji), ale tylko takich które zawierają przynajmniej jedno z wybranych z rankingu zajęć. \\
+\par W momencie zakończenia fazy intensyfikacji, poszczególne zajęcia ustawiane są w kolejności malejącej ze względu na wysokość funkcji oceny. Z puli $q$ pierwszych zajęć wybierane jest $n$ zajęć, gdzie zajęcie będące na $k$ miejscu w rankingu wybierane zgodnie z rozkładem $P(k) = k^{-4.0}$. Następnie dokonywane jest $n$ losowych zamian pomiędzy zajęciami (sprecyzowanych w fazie intensyfikacji), ale tylko takich które zawierają przynajmniej jedno z wybranych z rankingu zajęć. \\
 Przykład dla parametrów $q = 5$ i $n = 3$:
 \begin{enumerate}
-\item Po obliczeniu funkcji kary dla poszczególnych zajęć - ustawiamy zajęcia w kolejności niemalejącej pod względem funkcji kary (w $[\ ]$ podano przykładowe wartości funkcji kary)\\
+\item Po obliczeniu funkcji kary dla poszczególnych zajęć - ustawiamy zajęcia w kolejności nierosnącej pod względem funkcji kary (w $[\ ]$ podano przykładowe wartości funkcji kary)\\
 \begin{enumerate}
  \item[(1)] $(t_{4}, fizyka, sala1)[127]$
  \item[(2)] $(t_{3}, religia, sala1)[89]$
@@ -274,7 +276,7 @@ Przykład dla parametrów $q = 5$ i $n = 3$:
  \item[(9)] $(t_{2}, historia, sala1)[25]$
 \end{enumerate}
 \item Z puli wszystkich przedmiotów wybieramy $q = 5$ przedmiotów czyli przedmioty $(1) - (5)$ 
-\item Rozkłady prawdopodobieństwa dla wybranych $q$ zajęć:
+\item Rozkłady dla wybranych $q$ zajęć:
 	\begin{enumerate}
 	\item[(1)] $P(1) = 1^{-4.0} = 1$
  	\item[(2)] $P(2) = 2^{-4.0} = \frac{1}{16}$
@@ -282,7 +284,7 @@ Przykład dla parametrów $q = 5$ i $n = 3$:
  	\item[(4)] $P(4) = 4^{-4.0} = \frac{1}{256}$
  	\item[(5)] $P(5) = 5^{-4.0} = \frac{1}{625}$
 	\end{enumerate}
-\item Losowane jest $n = 3$ zajęć zgodnie z powyższym rozkładem prawdopodobieństwa \\
+\item Losowane jest bez powtórzeń $n = 3$ zajęć zgodnie z powyższym rozkładem \\
 	Przykłady wylosowanych zajęć [*]:
 	\begin{enumerate}
 	 \item[(1)] $(t_{4}, fizyka, sala1)[127]$

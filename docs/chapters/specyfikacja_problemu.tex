@@ -1,5 +1,6 @@
 \chapter{Specyfikacja problemu}
 \section{International Timetabling Competition 2007}
+\textit{Filip Czajkowski} \\
 \subsection{Opis konkursu}
 \par International Timetabling Competition (ITC) to międzynarodowy konkurs w dziedzinie układania planów zajęć organizowany przez międzynarodowe środowisko akademickie. Jego celem jest lepsze poznanie problemu rozkładania zajęć lub egzaminów na uczelni, z którym zmagają się od bardzo dawna i wciąż potrzebują stosowania lepszych rozwiązań. W 2007 roku odbyła się jego druga edycja, w której można było startować w dowolnej z trzech kategorii: 
 \begin{itemize}
@@ -53,15 +54,16 @@ Ograniczenia te w bezpośredni sposób nie wpływają na wykonywalność planu z
 \item \textbf{Minimalna liczba dni}
 Jeżeli liczba dni podczas których odbywają się zajęcia jest mniejsza niż minimalna liczba dni, podczas których powinny odbywać się zajęcia to do kary doliczamy rożnicę między minimalną liczbą dni a liczbą dni, w których zajęcia się odbywają pomnożoną o współczynnik $a_{2} = 5$ 
 \item \textbf{Zwartość zajęc}
-Za każde zajęcia w planie należące do danego programu nauczania nieprzylegające do innych zajęć punkt kary pomnożony o współczynnik ${a_{3} = 2}$
+Za każde zajęcia w planie, które nie przylegają do żadnych innych zajęć z tego samego programu nauczania, punkt kary pomnożony o współczynnik ${a_{3} = 2}$
 \item \textbf{Stabilność pomieszczenia}
-Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomieszczań, za każde nowe pomieszczenie punkt kary pomnożony o współczynnik ${a_{2} = 1}$
+Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomieszczań, za każde nowe pomieszczenie punkt kary pomnożony o współczynnik ${a_{4} = 1}$
 \end{enumerate}
 
-\subsection{Matematyczne sformułowanie problemu} \cite{tabu}
+\subsection{Matematyczny zapis przestrzeni rozwiązań} \cite{tabu}
 \par Na problem składa się ${n}$ kursów ${C = \{c_{1}, c_{2},...,c_{n}\}}$ które powinny być przydzielone do ${p}$ różnych okresów ${T = \{t_{1}, t_{2},...,t_{p}\}}$ oraz ${m}$ pomieszczeń w których mogą odbywać się zajęcia ${R = \{r_{1}, r_{2},...,r_{m}\}}$. Okres jest to para składająca się z dnia i przedziału czasowego (${d}$ - liczba dni a ${h}$ - liczba dziennych przedziałów czasowych, czyli ${p = d * h}$). Każdy z kursów składa się z ${n}$ zajęć ${L = \{l_{1},l_{2},...,l_{n}\}}$. Kursy wchodzą w skład ${s}$ programów nauczania ${CR = \{cr_{1}, cr_{2}, ..., cr_{s}\}}$, na program nauczania składają się kursy, na które uczęszczają ci sami studenci. 
 
 \section{Dane wejściowe}
+\label{sec:input_format}
 \subsection{Konkursowe dane wejściowe}
 \par Dane wejściowe zostały uzyskane z konkursu International Timetabling Competition 2007
 \par Dane wejściowe są plikami tekstowymi, w których zawarte są ogólne informacje takie jak: liczba kursów, liczba dostępnych pomieszczeń, liczba dni na które mają być rozłożone zajęcia, liczba programów nauczania oraz ograniczenia precyzujące w jakich terminach nie mogą odbywać się zajęcia z danego kursu. Kolejno sprecyzowane są kursy, pomieszczenia, programy nauczania oraz ograniczenia w zadanym poniżej formacie:

@@ -52,23 +52,27 @@ Metoda ta, podobnie jak algorytm genetyczny, stara się naśladować zachowania 
 \section{Przegląd powstałych systemów}
 Jako że problem układania planu zajęć ma powszechne zastosowanie, powstało dotychczas już sporo rozwiązań zarówno komercyjnych jak i darmowych projektów typu \emph{open source}. Oto przegląd niektórych z nich.
 \subsection{aSc TimeTables}
-Rozbudowane komercyjne narzędzie, które umożliwia automatyczne wygenerowanie planu zajęć na podstawie zebranych wymagań. Posiada bardzo zaawansowane możliwości edycji wygenerowania planu, wprowadzania zastępstw nauczycieli i wizualizacji. Możliwości sterowania generowaniem są ograniczone - można ustalić czas generowania (krótki - długi - bardzo długi) i stopień spełniania warunków. Program jest adresowany do dyrektorów i osób zarządzających planami lekcji, jego obsługa jest bardzo prosta. Wadą jest scentralizowane wprowadzanie ograniczeń, nieestetyczny interfejs i cena 
-(od 499 USD za wersję podstawową, do 3995 USD za wersję z rozszerzonym wsparciem i generowaniem planów dla poszczególnych uczniów)
+Rozbudowane komercyjne narzędzie, które umożliwia automatyczne wygenerowanie planu zajęć na podstawie zebranych wymagań. Program jest adresowany do dyrektorów i osób zarządzających planami lekcji, jego obsługa jest bardzo prosta. Posiada bardzo zaawansowane możliwości edycji wygenerowania planu, wprowadzania zastępstw nauczycieli i wizualizacji. Możliwości sterowania generowaniem są ograniczone - można ustalić czas generowania (krótki - długi - bardzo długi) i stopień spełniania warunków. Wadą jest scentralizowane wprowadzanie ograniczeń, nieestetyczny interfejs i cena 
+(od 499 USD za wersję podstawową, do 3995 USD za wersję z rozszerzonym wsparciem i generowaniem planów dla poszczególnych uczniów) \\
+Strona producenta: \url{http://www.asctimetables.com}
 \begin{figure}[H]
 \includegraphics[width=15cm]{img/asc2.png}
 \caption{Zrzut ekranu z programu aSc. Przy przenoszeniu zajęć konfliktujące okresy podświetlają się na czerwono}
 \end{figure}
 
 \subsection{Mimosa}
-Komercyjny program, który umożliwia wprowadzanie ograniczeń, automatyczne generowanie planu zajęć i optymalizowanie już istniejącego planu. Interfejs aplikacji jest nieczytelny i chaotyczny, cały program sprawia wrażenie przestarzałego. Nie można sterować procesem generowania, który jest realizowany w bardzo szybki sposób, jednak dla przykładowych danych nie przydziela wszystkich zajęć, pomimo tego, że jest to możliwe. Aplikacja jest uniwersalna, można dostosowywać problem do własnych potrzeb, jednak bez uprzedniego przeszkolenia jest to bardzo trudne. Najtańsza licencja na jedno stanowisko kosztuje 500 euro.
+Komercyjny program, który umożliwia wprowadzanie ograniczeń, automatyczne generowanie planu zajęć i optymalizowanie już istniejącego planu. Aplikacja jest uniwersalna, można dostosowywać problem do własnych potrzeb, jednak bez uprzedniego przeszkolenia jest to bardzo trudne. Interfejs aplikacji jest nieczytelny i chaotyczny, cały program sprawia wrażenie przestarzałego. Nie można sterować procesem generowania, który jest realizowany w bardzo szybki sposób, jednak dla przykładowych danych nie przydziela wszystkich zajęć, pomimo tego, że jest to możliwe. Najtańsza licencja na jedno stanowisko kosztuje 500 euro.\\
+Strona producenta: \url{http://www.mimosasoftware.com}
 \begin{figure}[H]
 \includegraphics[width=15cm]{img/mimosa.png}
 \caption{Zrzut ekranu z widoku planu zajęć programu Mimosa}
 \end{figure}
 \subsection{FET - Free Evolutionary Timetable}
-Jest to program darmowy, stworzony dla platformy Linux, rozpowszechniany na zasadach licencji GNU GPL. Napisany w C++ z wykorzystaniem biblioteki Qt, dane pobiera z plików w formacie XML. W swojej początkowej formie opierał się na algorytmie genetycznym, który jednak poczynając od wersji 5.0.0 wydanej w 2007 roku został zastąpiony autorską heurystyką nazwaną przez autora \emph{rekursywnym zamienianiem}. Naśladuje on proces manualnego układania planu zajęć i okazał się dużo szybszy i wydajniejszy dla złożonych problem w porównaniu ze swoim poprzednikiem. Jego rozbudowany interfejs umożliwia śledzenie procesu ewolucji najlepszego rozwiązania.
+Jest to program darmowy, stworzony dla platformy Linux, rozpowszechniany na zasadach licencji GNU GPL. Napisany w C++ z wykorzystaniem biblioteki Qt, dane pobiera z plików w formacie XML. W swojej początkowej formie opierał się na algorytmie genetycznym, który jednak poczynając od wersji 5.0.0 wydanej w 2007 roku został zastąpiony autorską heurystyką nazwaną przez autora \emph{rekursywnym zamienianiem}. Naśladuje on proces manualnego układania planu zajęć i okazał się dużo szybszy i wydajniejszy dla złożonych problem w porównaniu ze swoim poprzednikiem. Jego rozbudowany interfejs umożliwia śledzenie procesu ewolucji najlepszego rozwiązania. \\
+Strona producenta: \url{http://lalescu.ro/liviu/fet/}
 \begin{center}
 \includegraphics[width=15cm]{img/FET.png}
 \end{center}
 \subsection{Tablix}
-Jest to polski produkt typu \emph{open source}, jego autorem jest Tomasz Solc\cite{implementacjeGA}. Program powstał w technologii języka C z użyciem pakietu PVM, który umożliwia zrównoleglenie obliczeń, co znacząco przyspiesza działanie algorytmu. Dane wejściowe muszą znajdować się w plikach XML. Głównym mechanizmem, na którym opiera się program jest zrównoleglony algorytm genetyczny. Zastosowania stworzonego jądra systemu mogą dotyczyć najróżniejszych problemów optymalizacyjnych, lecz w swojej pierwotnej implementacji zostało przystosowane do problemu układania planu zajęć. Nie posiada natomiast interfejsu graficznego, który umożliwiałby edycję danych lub wizualizację wyników.
+Jest to polski produkt typu \emph{open source}, jego autorem jest Tomasz Solc\cite{implementacjeGA}. Program powstał w technologii języka C z użyciem pakietu PVM, który umożliwia zrównoleglenie obliczeń, co znacząco przyspiesza działanie algorytmu. Dane wejściowe muszą znajdować się w plikach XML. Głównym mechanizmem, na którym opiera się program jest zrównoleglony algorytm genetyczny. Zastosowania stworzonego jądra systemu mogą dotyczyć najróżniejszych problemów optymalizacyjnych, lecz w swojej pierwotnej implementacji zostało przystosowane do problemu układania planu zajęć. Nie posiada natomiast interfejsu graficznego, który umożliwiałby edycję danych lub wizualizację wyników.\\
+Strona producenta: \url{http://www.tablix.pl/}
