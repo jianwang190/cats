@@ -79,8 +79,8 @@ class PSO(object):
 
         if particle.bestSolution.penalty < self.globalBestSolution.penalty:
             self.globalBestSolution = deepcopy(particle.bestSolution)
-            print self.counter
-            print self.globalBestSolution.penalty
+            #print self.counter
+            #print self.globalBestSolution.penalty
             sys.stderr.write(str(self.counter)+'\n')
             sys.stderr.write(str(self.globalBestSolution.penalty)+'\n')
 

@@ -5,14 +5,14 @@ import time
 import sys
 
 
-from cats.readers.competitionReader import CompetitionReader
+from cats.readers.competitionReader import  CompetitionDictReader
 
 
 fileName = sys.argv[1]
 timeLimit = float(sys.argv[2])
 
 
-c = CompetitionReader()
+c = CompetitionDictReader()
 data = c.read(fileName)
 
 a = AdaptiveTabuSearch(data, 2400)
