@@ -39,21 +39,21 @@ class GeneticAlgorithm(object):
             self.estimateFitness()
             #self.showSolutionStatus(epoch)
             hardy = countHardConstraints(self.timeTables[self.bestSolutionIndex], self.data)
-            self.f.write(str(hardy) + "+" \
-                         + str(self.fitnessTable[self.bestSolutionIndex] - hardy) + " " \
-                         + str(self.fitnessOperations) + "\n")
+            # self.f.write(str(hardy) + "+" \
+            #              + str(self.fitnessTable[self.bestSolutionIndex] - hardy) + " " \
+            #              + str(self.fitnessOperations) + "\n")
             currentTime = time.time()
-            self.f2.write(str(epoch) + " " + str(self.fitnessTable[self.bestSolutionIndex]) + " " + str(currentTime - self.startTime) + "\n")
-            print epoch, self.fitnessTable[self.bestSolutionIndex], currentTime - self.startTime
+            # self.f2.write(str(epoch) + " " + str(self.fitnessTable[self.bestSolutionIndex]) + " " + str(currentTime - self.startTime) + "\n")
+            #print epoch, self.fitnessTable[self.bestSolutionIndex], currentTime - self.startTime
 
             if int(currentTime - self.startTime) > self.timeout:
-                print "Loops:", epoch, "Execution timeout after", currentTime - self.startTime
-                self.f.close()
-                self.f2.close()
+                # print "Loops:", epoch, "Execution timeout after", currentTime - self.startTime
+                # self.f.close()
+                # self.f2.close()
                 return
 
-        self.f.close()
-        self.f2.close()
+        # self.f.close()
+        # self.f2.close()
 
         #print "Loops:", self.iterationsMax, "Score:", str(self.fitnessTable[self.bestSolutionIndex]), \
         #    "Execution time", currentTime - self.startTime
@@ -73,9 +73,9 @@ class GeneticAlgorithm(object):
                         unassignedLecturesNum += 1
                 self.assignMissingLectures(self.timeTables[populationId], courseId, unassignedLecturesNum)
 
-        self.f = open("/home/filip/Inzynierka/cats/Plany/progres" + str(random.randint(0, 10000)) + ".txt", 'w')
-        self.f2 = open("/home/filip/Inzynierka/cats/Plany/raport" + str(random.randint(0, 10000)) + ".txt", 'w')
-        self.f.write("0+0 0\n")
+        #self.f = open("/home/filip/Inzynierka/cats/Plany/progres" + str(random.randint(0, 10000)) + ".txt", 'w')
+        #self.f2 = open("/home/filip/Inzynierka/cats/Plany/raport" + str(random.randint(0, 10000)) + ".txt", 'w')
+        #self.f.write("0+0 0\n")
 
     def chooseBestRoom(self, populationId, courseId):
         roomList = self.timeTables[populationId].getRoomsIdForCourses(self.data.getAllRooms(), \
