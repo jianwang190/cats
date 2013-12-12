@@ -28,8 +28,8 @@ class GeneticAlgorithm(object):
         self.estimateFitness()
         self.runAlgorithmLoop()
 
-        self.saveBestTimeTableToFile("/home/filip/Inzynierka/cats/Plany/plan" + str(random.randint(0, 10000)) + ".txt")
-        #self.printFinalOutput()
+        #self.saveBestTimeTableToFile("/home/filip/Inzynierka/cats/Plany/plan" + str(random.randint(0, 10000)) + ".txt")
+        self.printFinalOutput()
 
 
     def runAlgorithmLoop(self):
