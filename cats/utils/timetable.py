@@ -8,7 +8,8 @@ class TimeTableFactory(object):
     @classmethod
     def getTimeTable(self, data):
         """
-        Cell in timetable format : tuples (courseId, roomId) instead of old CellOfTimeTable
+        Cell in timetable format : tuple (courseId, roomId)
+
         :param data:
         :return: timetable
         """
@@ -25,6 +26,12 @@ class TimeTableFactory(object):
 
 class TimeTable(object):
     def copy(self):
+        """
+        Makes a copy of a TimeTable object
+
+
+        :return: new TimeTable Object
+        """
         other = TimeTable()
         other.periodsPerDay, other.daysNum, other.timeSlots = self.periodsPerDay, self.daysNum, self.timeSlots
         other.timeTable = {x: self.getTimeTable()[x][:] for x in self.getTimeTable().keys()}
@@ -39,6 +46,7 @@ class TimeTable(object):
     def getValueSlot(self, day, day_period):
         """
         Get value of slot from timetable
+
         :param day: day
         :param day_period: period in day
         :return:
@@ -50,6 +58,7 @@ class TimeTable(object):
     def createNeighbourhoodList(self, curriculumList, courseList):
         """
         Create neighborhood list for courses regarding regarding curriculum lists and teacher's conflicts
+
         :param curriculumList:
         :param courseList:
         :return:
@@ -73,6 +82,7 @@ class TimeTable(object):
     def getKey(self, day, day_period):
         """
         Get key to slot in timetable
+
         :param day: day
         :param day_period: period in day
         :return: key in timetable
@@ -83,6 +93,7 @@ class TimeTable(object):
     def getPeriodPair(self, slot):
         """
         Converts a timeslot value to a pair of day and the day's period
+
         :param slot:
         :return: [ day , day_period ]
         """
@@ -91,6 +102,7 @@ class TimeTable(object):
     def mapKeys(self, constraint):
         """
         Map day and period to key in timetable
+
         :param constraint: constraints
         :return: key
         """
@@ -102,10 +114,11 @@ class TimeTable(object):
 
     def createListOfRooms(self, roomList, course):
         """
-        Create list of rooms for course with appropriate capacity of room for course (considering number of students attending course)
-        :param roomList: list of rooms
+        Create list of rooms for course with appropriate capacity of room for course and appropriate room type
+
+        :param roomList: list of rooms to check
         :param courseStudentsNum: number of students attending to course
-        :return:
+        :return: list of rooms
         """
         listOfRooms = set([r.id for r in roomList if (r.capacity >= course.studentsNum and \
                                                       (course.typeOfRoom == None or r.type == course.typeOfRoom))])
@@ -114,11 +127,11 @@ class TimeTable(object):
 
     def getRoomsIdForCourses(self, roomList, courseList):
         """
-        Get rooms ids for each of courses (considering number of students)
+        Get room ids for each of courses (considering number of students and room type)
 
-        :param roomList:
-        :param courseList:
-        :return:
+        :param roomList: list of available rooms
+        :param courseList: all courses to specify the rooms for
+        :return: list of room ids
         """
         roomsForCourses = {x.id: self.createListOfRooms(roomList, x) for x in courseList}
         return roomsForCourses
@@ -179,6 +192,13 @@ class TimeTable(object):
                 'availablePairs' : availablePairs }
 
     def availableSlotRoomPairs(self, data, courseId):
+        """
+        Find available rooms in a specified period of time which takes into account numer of students attending a course
+
+        :param data: whole specification of constraints and regulations
+        :param courseId:
+        :return: dictionary: key - slot, value - list of suitable rooms
+        """
         rooms = dict()
         for slot in self.getTimeTable().keys():
             rooms[slot] = self.availableRoomsList(slot, data, courseId)
@@ -192,6 +212,13 @@ class TimeTable(object):
 
 
     def availableSlotsForCourse(self, data, courseId):
+        """
+        Find the time slots, when a lecture of specified course can be scheduled (considers constraints list and curriculum conflicts)
+
+        :param data: whole specification of constraints and regulations
+        :param courseId:
+        :return: list of slots, which are available
+        """
         bannedSlots = list()
         for constraint in data.getConstraintsForCourse(courseId):
             bannedSlots.append(self.getKey(constraint.day, constraint.dayPeriod))
@@ -208,7 +235,8 @@ class TimeTable(object):
 
     def assignedLectures(self, courseId):
         """
-        Assigned lectures to timetable
+        Returns already assigned lectures to timetable
+
         :param courseId:
         :return:
         """
@@ -218,12 +246,24 @@ class TimeTable(object):
         return sum
         
     def assignedLecturesWithSlots(self, courseId):
+        """
+        Returns dictionary with slots as keys and lectures assigned to specified course
+
+        :param courseId:
+        :return: not empty slots
+        """
         sum = dict()
         for slot, cells in self.getTimeTable().iteritems():
             sum[slot] = filter(lambda x: x[0] == courseId, cells)
         return filter(lambda x : len(x[1]) > 0, sum.iteritems())
 
     def getAssignedDays(self, courseId):
+        """
+        Get all days when lectures of a specified course are scheduled to
+
+        :param courseId:
+        :return: a distinct set of days
+        """
         lectures = self.assignedLecturesWithSlots(courseId)
         assignedDays = map(lambda x : self.getPeriodPair(x[0])[0], lectures)
 
@@ -232,6 +272,8 @@ class TimeTable(object):
     def getAssignedLecturesSum(self, data):
         """
         Counts the number of lectures currently assigned in this timeTable
+
+
         :return: amount of lectures
         """
         lecturesSum = 0
@@ -261,6 +303,7 @@ class TimeTable(object):
     def unavailableUnfinishedCoursesLectureNum(self, period, courseId, data):
         """
         Get unavailable unfinished courses lectures number
+
         :param period:
         :param courseId:
         :param data:
@@ -276,26 +319,30 @@ class TimeTable(object):
     
     def availableRoomsList(self, period, data, courseId):
         """
-        Return list of available rooms
+        Return list of available considering the number of students attending a course and room type it should take place
 
-
-        :rtype : object
+        :param period: time slot
+        :param data: whole specification of constraints and regulations
+        :param courseId:
+        :return : list of rooms
         """
         allAvailableRooms = list(set(map(lambda x: data.rooms[x].id, \
                                           filter(lambda r:  #data.courses[courseId].typeOfRoom == None or \
                                                           data.rooms[r].type == data.courses[courseId].typeOfRoom, data.rooms))) \
                - set(map(lambda x: x[1], self.getTimeTable()[period])))
 
-
-
-        # allAvailableRooms = list(set(map(lambda x: data.rooms[x].id, filter(lambda r: data.rooms[r].type == data.courses[courseId].typeOfRoom, data.rooms))) \
-        #        - set(map(lambda x: x[1], self.getTimeTable()[period])))
         return allAvailableRooms
     
     def allAvailableRoomsList(self, period, data):
+        """
+        Find all rooms which are available for the time slot
+
+        :param period: time slot
+        :param data: whole specification of constraints and regulations
+        :return: list of rooms
+        """
         return list(set(map(lambda x: x.id, data.getAllRooms())) \
                - set(map(lambda x: x[1], self.getTimeTable()[period])))
-
 
 
     def addDataToTimetable(self, assignedList):
@@ -307,6 +354,11 @@ class TimeTable(object):
         map(lambda a: self.timeTable[a[0]].append((a[1],a[2])), assignedList)
 
     def removeFromTimetable(self, assignedList):
+        """
+        Remove specified lectures from timetable
+
+        :param assignedList: list [ slot, courseId, roomId ]
+        """
         map(lambda a: self.timeTable[a[0]].remove((a[1], a[2])), assignedList)
 
 
@@ -332,6 +384,12 @@ class TimeTable(object):
                          indent=4, separators=(',', ': '))
 
     def copySolution(self, data):
+        """
+        Make an exact copy of a current timetable object
+
+        :param data: whole specification of constraints and regulations
+        :return: new solution
+        """
         newSolution = TimeTableFactory.getTimeTable(data)
         for slot in self.getTimeTable().keys():
             for lecture in self.getTimeTable()[slot]:
@@ -340,6 +398,15 @@ class TimeTable(object):
         return newSolution
 
     def checkIfInsertionIsValid(self, slot, courseId, roomId, data):
+        """
+        Checks if inserting a specified lecture to a timetable will cause a violation in hard constraints
+
+        :param slot:
+        :param courseId:
+        :param roomId:
+        :param data: #remove a random lecture of a course at first
+        :return: true or false
+        """
         #remove a random lecture of a course at first
         oldLecture = random.choice(self.assignedLecturesWithSlots(courseId))
         self.removeFromTimetable([(oldLecture[0], oldLecture[1][0][0], oldLecture[1][0][1])])
@@ -353,6 +420,11 @@ class TimeTable(object):
             return False
 
     def saveResultsToFile(self, fileName):
+        """
+        Save timetable to a file as a list of lectures [ courseId, roomId, day day_period ]
+
+        :param fileName:
+        """
         f = open(fileName,'w')
         for slot in self.getTimeTable().keys():
             for lecture in self.getTimeTable()[slot]:

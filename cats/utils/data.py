@@ -129,6 +129,12 @@ class DictData(IData):
             course.assignedLectureNum = 0
 
     def getAllLecturesCount(self):
+        """
+        Counts the total number of lectures to schedule
+
+
+        :return:
+        """
         lecturesSum = 0
         for course in self.getAllCourses():
             lecturesSum += self.getCourse(course.id).lectureNum

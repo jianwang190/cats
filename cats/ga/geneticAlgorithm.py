@@ -55,9 +55,6 @@ class GeneticAlgorithm(object):
         self.f.close()
         self.f2.close()
 
-        #print "Loops:", self.iterationsMax, "Score:", str(self.fitnessTable[self.bestSolutionIndex]), \
-        #    "Execution time", currentTime - self.startTime
-
     def generateInitialSolutions(self):
         shuffledCourses = self.data.getAllCourseIds()
         for populationId in range(self.populationSize):
