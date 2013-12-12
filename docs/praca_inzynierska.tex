@@ -10,7 +10,9 @@
 \selectlanguage{polish}
 \usepackage{amsmath}
 \usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
-\usepackage{algorithm,algorithmic}
+\usepackage[chapter]{algorithm}
+\usepackage{algorithmic}
+
 \title{System do automatyzacji procesu składania planu zajęć z wykorzystaniem algorytmów genetycznych}
 \author{
 	Katarzyna Śmietanka \\
@@ -47,18 +49,25 @@
 \chapter{Sposób użytkowania systemu}
 
 \chapter{Podsumowanie}
+\input{chapters/podsumowanie.tex}
 
 \begin{thebibliography}{2}
+\bibitem{itc2007} \url{http://www.cs.qub.ac.uk/itc2007}
 \bibitem{tabu} Zhipeng Lu, Jin-Kao Hao. Adaptive TabuSearch for Course Timetabling.  \emph{European Journal of Operational Research}, 200(1):235-244, 2010.
-\bibitem{com} U. Brannlund, P. ). Lindberg, A. Nou, J. E. Nilsson. Timetabling using lagrangian relaxation Transportation Science 32, 358-369, 1998
-\bibitem{sport} J. A. M. Schreuder. Constructing timetables for sport competitions. \emph{Mathematical Programming Study 13}, 58-67, 1980
-\bibitem{worker} M. Chiarandini, A. Schaerf, F. Tiozzo. Solving employee timetabling problems with flexible workload using tabu search. \emph{Proceedings of the 3rd PATAT Conference}, 2013
-\bibitem{pso} Shu-Chuan Chu, Yi-Tin Chen, Jiun-Huei Ho. Timetable Scheduling Using Particle Swarm Optimization. 
+\bibitem{com} U. Brannlund, P. O. Lindberg, A. Nou, J. E. Nilsson. ,,Railway Timetabling using Lagrangian Relaxation'' \emph{Transportation Science 32}, 358-369, 1998
+\bibitem{sport} J. A. M. Schreuder. ,,Constructing timetables for sport competitions''. \emph{Mathematical Programming Study 13}, 58-67, 1980
+\bibitem{worker} M. Chiarandini, A. Schaerf, F. Tiozzo. ,,Solving employee timetabling problems with flexible workload using tabu search''. \emph{Proceedings of the 3rd PATAT Conference}, 2013
+\bibitem{pso} Shu-Chuan Chu, Yi-Tin Chen, Jiun-Huei Ho. ,,Timetable Scheduling Using Particle Swarm Optimization''. 
 \bibitem{glover} Fred Glover (1986). ,,Future Paths for Integer Programming and Links to Artificial Intelligence'' \emph{Computers and Operations Research}, 13 (5): 533–549.
 \bibitem{npcomplete} Tim B. Cooper, Jeffrey H. Kingston ,,The complexity of timetable construction problems''  \emph{Lecture Notes in Computer Science} Volume 1153, 1996, pp 281-295 
 \bibitem{gbhh}  E. Burke, B.McCollum, A. Meisels, S. Petrovic, R. Qu ,,A Graph-Based Hyper-Heuristic for Educational Timetabling Problems '' \emph{European Journal of Operational Research} 176: 177-192, 2007
+
+\bibitem{hyperheuristic} E. K. Burke, E. Hart, G. Kendall, J. Newall, P. Ross, and S. Schulenburg, ,,Hyper-heuristics: An emerging direction in modern search technology'', \emph{Handbook of Metaheuristics } 2003, pp. 457–474
 \bibitem{kostuch} P.Kostuch ,,The University Course Timetabling Problem with a Three-Phase Approach'' \emph{
 Lecture Notes in Computer Science} Volume 3616, 2005, pp 109-125
+\bibitem{simulated_annealing} D. Abramson: ,,Constructing School Timetables using Simulated Annealing: Sequential and Parallel Algorithms'', \emph{Management Science} Volume 37, pp 98-113
+\bibitem{harmony_search}  Mohammed Azmi Al-Betar, Ahamad Tajudin Khader ,,A harmony search algorithm for university course timetabling'',  
+\emph{Annals of Operations Research} Volume 194, Issue 1, pp 3-31 
 \bibitem{Mitchell} Mitchell Melanie (1999). \emph{An Introduction to Genetic Algorithms}, A Bradford Book The MIT Press, ISBN 0-262-63185-7, 2,3,
 \bibitem{implementacjeGA} Marek Jaszuk. \emph{Zastosowanie algorytmów genetycznych do układania planu zajęć}, dostępne pod adresem, \url{http://www.kmis.pwsz.chelm.pl/publikacje/III/Jaszuk.pdf}
 \bibitem{ga2003} Branimir Sigl, Marin Golub, Vedran Mornar \emph{Solving Timetable Scheduling Problem by Using Genetic Algorithms} ISBN 953-96769-6-7, 2003

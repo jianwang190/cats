@@ -1,56 +1,62 @@
 \chapter{Opis problemu układania planu zajęć}
-\textit{Tomasz Dziopa, Filip Czajkowski}
+\textit{Tomasz Dziopa}
 \paragraph{}Układanie planu zajęć można sformułować jako problem przydzielenia zdarzeń do przedziałów czasowych i zasobów, w taki sposób, żeby nie naruszyć odpowiednio skonstruowanych ograniczeń. Ograniczenia można podzielić na:
 \begin{itemize}
 \item ,,twarde'' - naruszenie ich powoduje, że utworzony plan zajęć jest niepoprawny,
 \item ,,miękkie'' - naruszenia ich wyznaczają jakość utworzonego poprawnego planu zajęć. Im więcej naruszeń, tym jakość planu jest niższa.
 \end{itemize}
-\paragraph{}W przypadku problemu układania planu zajęć na uczelni można go sprowadzić do następującej postaci:
+\paragraph{}W przypadku problemu układania planu zajęć na uczelni problem możemy sprowadzić do następującej postaci:
 \begin{itemize}
-\item Zdarzeniami będą powtarzające się zajęcia - wykłady, laboratoria, lekcje.
-\item Zasobami będą wykładowcy oraz sale, w których są prowadzone zajęcia.
-\item Ograniczenia twarde najczęściej uwzględniają następujące warunki:
+\item zdarzeniami będą powtarzające się zajęcia - wykłady, laboratoria, lekcje
+\item zasobami będą sale, w których są prowadzone zajęcia i wykładowcy
+\item ograniczenia twarde najczęściej uwzględniają:
 	\begin{itemize}
 	\item zajęcia dla jednej klasy nie mogą odbywać się w tym samym czasie,
 	\item wykładowca nie może prowadzić równocześnie dwóch różnych zajęć,
 	\item w jednej sali mogą odbywać się tylko jedne zajęcia,
-	\item niektóre zajęcia muszą odbywać się w sali przystosowanej do specyfiki zajęć.
+	\item niektóre zajęcia muszą odbywać się w sali przystosowanej do specyfiki zajęć 
 	\end{itemize}
-\item Ograniczenia miękkie definiuje się odrębnie dla placówek zależnie od ich priorytetów.
+\item ograniczenia miękkie definiuje się odrębnie dla placówek zależnie od ich priorytetów
 \end{itemize}
+
+
 
 %Problem układania planu zajęć jest niezwykle ważnym problemem. Jest obecny w wielu dziedzinach, gdyż przy niewielkich modyfikacjach można przenieść go na problem ustalania rozkładów jazdy, czy planowania grafiku pracowników, gdzie znalezienie lepszego rozwiązania prowadzi do oszczędności czasu i zasobów. 
 \section{Klasyfikacja problemu}
-\paragraph{}Problem układania planu zajęć jest klasyfikowany jako NP-zupełny, co można w łatwy sposób udowodnić poprzez redukcję problemu k-kolorowania wierzchołkowego grafu $G(V, E)$, gdzie $V$ zawiera zdarzenia, a $E$ konflikty między nimi, do decyzyjnej wersji problemu układania planu zajęć (czy da się skonstruować plan zajęć obejmujący $k$ przedziałów czasowych).
-\paragraph{}Problem k-kolorowania wierzchołkowego to problem decyzyjny, który polega na odpowiedzi na pytanie, czy dany graf da się pokolorować wierzchołkowo na dokładnie $k$ kolorów. Przypomnijmy, że w każdym poprawnym pokolorowaniu każde dwa wierzchołki połączone ze sobą krawędzią muszą mieć przyporządkowane różne kolory. W grafie $G(V,E)$ krawędziami połączone są zdarzenia, które nie mogą odbywać się w tym samym czasie. Jeżeli przyjmiemy, że kolorom odpowiadają poszczególne przedziały czasowe otrzymujemy redukcję w czasie wielomianowym ze względu na liczbę wierzchołków i krawędzi do problemu k-kolorowania wierzchołkowego grafu. Bardziej formalny dowód na tą redukcję, jak i inne redukcje z innych problemów NP-zupełnych zawiera załączony w bibliotece dokument\cite{npcomplete}.
+\paragraph{}Problem układania planu zajęć jest klasyfikowany jako NP-zupełny, co można w łatwy sposób udowodnić poprzez redukcję problemu k-kolorowania wierzchołkowego grafu $G(V, E)$, gdzie $V$ zawiera zdarzenia, a $E$ konflikty między nimi, do decyzyjnej wersji problemu układania planu zajęć (czy da się skonstruować plan zajęć obejmujący $k$ przedziałów czasowych) 
+\paragraph{}Problem k-kolorowania wierzchołkowego to problem decyzyjny, który polega na odpowiedzi na pytanie, czy dany graf da się pokolorować wierzchołkowo na dokładnie $k$ kolorów. Przypomnijmy, że w każdym poprawnym pokolorowaniu każde dwa wierzchołki połączone ze sobą krawędzią muszą mieć przyporządkowane różne kolory. W grafie $G(V,E)$ krawędziami połączone są zdarzenia, które nie mogą odbywać się w tym samym czasie. Jeżeli przyjmiemy, że kolorom w pokolorowaniu odpowiadają poszczególne przedziały czasowe otrzymujemy redukcję w czasie wielomianowym ze względu na liczbę wierzchołków i krawędzi do problemu k-kolorowania wierzchołkowego grafu. Bardziej formalny dowód na tą redukcję, jak i inne redukcje z innych problemów NP-zupełnych zawiera \cite{npcomplete}.
+
 
 \section{Przegląd algorytmów}
-\paragraph{}Problem układania rozkładu zajęć można poddawać przeróżnym rozwiązaniom. Najprostszym pomysłem wydaje się rozwiązanie brutalne przeszukujące wszystkie możliwe kombinacje ułożenia planu, lecz w praktyce złożoność tego zagadnienia uniemożliwia osiągnięcie satysfakcjonującego wyniku w rozsądnym czasie. Z tego względu zastosowanie znajdują tu rozmaite techniki optymalizacyjne.
 \subsection{Metaheurystyki}
-\paragraph{}Problem układania planu zajęć jest NP-zupełny, więc nie istnieje deterministyczny algorytm, który zwracałby dokładny wynik w czasie wielomianowym. Konieczne jest więc zastosowanie \textbf{metaheurystyk} - niedeterministycznych algorytmów, które wspomagają przeszukiwanie przestrzeni rozwiązań, w celu znalezienia najlepszego rozwiązania. Bazują one często na obserwacjach różnych procesów zachodzących w naturze. Znane są zastosowania różnego rodzaju metaheurystyk do rozwiązania naszego problemu.
+\paragraph{}Problem układania planu zajęć jest NP-zupełny, więc nie istnieje deterministyczny algorytm, który zwracałby dokładny wynik w czasie wielomianowym. Konieczne jest więc zastosowanie \textbf{metaheurystyk} - niedeterministycznych algorytmów, które wspomagają przeszukiwanie przestrzeni rozwiązań, w celu znalezienia najlepszego rozwiązania. Metaheurystyki często bazują na obserwacjach różnych procesów zachodzących w naturze. Znane są zastosowania różnego rodzaju metaheurystyk do rozwiązania naszego problemu.
 \subsubsection{Algorytm genetyczny}
-\paragraph{} Być może najbardziej popularne i uniwersalne rozwiązanie. Proces optymalizacji rozwiązania odwzorowuje sposób ewolucji genetycznej osobników przystosowujących się do środowiska, w którym przebywają. Swoje odwzorowanie mają zatem metody selekcji lepiej przystosowanych osobników, którzy dożyją następnego pokolenia, operacja krzyżowania osobników w celu stworzenia potomstwa czy też mutacja wprowadzająca drobne zmiany w materiale genetycznym. Algorytm iteracyjne polepsza swoje rozwiązanie coraz dokładniej przeszukując przestrzeń możliwych rozwiązań. Czynnik losowy odgrywa dużą rolę w wymienionych wcześniej procesach, co nie gwarantuje bardzo skutecznych rezultatów. Dokładniejszy opis rozwiązania znajduje się w rozdziale 4.3.
+\paragraph{} Być może najbardziej popularne i uniwersalne rozwiązanie. Proces optymalizacji rozwiązania odwzorowuje sposób ewolucji genetycznej osobników przystosowujących się do środowiska, w którym przebywają. Swoje odwzorowanie mają zatem metody selekcji lepiej przystosowanych osobników, którzy dożyją następnego pokolenia, operacja krzyżowania osobników w celu stworzenia potomstwa czy też mutacja wprowadzająca drobne zmiany w materiale genetycznym. Algorytm iteracyjne polepsza swoje rozwiązanie coraz dokładniej przeszukując przestrzeń możliwych rozwiązań. Czynnik losowy odgrywa dużą rolę w wymienionych wcześniej procesach, co nie gwarantuje bardzo skutecznych rezultatów. Algorytm został szerzej opisany w punkcie \ref{genetic_description}.
 \subsubsection{Algorytm wyszukiwania harmonicznego}
-Jedno z najnowszych rozwiązań (powstałe w 2001 roku). Naśladuje proces poszukiwania harmonii przez grających razem muzyków, której jakość jest miarą rozwiązania. Przechowując w pamięci najlepsze dotychczasowe współbrzmienia oraz tworząc nowe (losowe) wysokości odgrywanych dźwięków, muzycy poprawiają wzajemną harmonię. Rozwiązanie to początkowo zebrało wiele pozytywnych recenzji i zakładano, że może wnieść wiele skutecznych rozwiązań w dziedzinie problemów optymalizacyjnych, lecz nadzieje te zostały porzucone ze względu na duże podobieństwa do pozostałych algorytmów ewolucyjnych.
+Jedno z najnowszych rozwiązań (powstałe w 2001 roku). Naśladuje proces poszukiwania harmonii przez grających razem muzyków, której jakość jest miarą rozwiązania. Przechowując w pamięci najlepsze dotychczasowe współbrzmienia oraz tworząc nowe (losowe) wysokości odgrywanych dźwięków, muzycy poprawiają wzajemną harmonię. Rozwiązanie to początkowo zebrało wiele pozytywnych recenzji i zakładano, że może wnieść wiele skutecznych rozwiązań w dziedzinie problemów optymalizacyjnych, lecz nadzieje te zostały porzucone ze względu na duże podobieństwa do pozostałych algorytmów ewolucyjnych. Dokładny opis zastosowania wyszukiwania harmonicznego w problemie układania planu zajęć znajduje się w \cite{harmony_search}.
 \subsubsection{Algorytm optymalizacji rojem cząsteczek}
-Metoda ta, podobnie jak algorytm genetyczny, stara się naśladować zachowania występujące w przyrodzie. Jest to technika ewolucyjna wzorowana na sposobie poruszania się i inteligencji roju owadów poszukującego optymalnego miejsca do pożywienia się. Wypracowana w wyniku ewolucji wzajemna komunikacja tych zwierząt w połączeniu z indywidualnym przeszukiwaniem przestrzeni, okazują się bardzo wydajne i mogą służyć za wzór przy rozwiązywaniu problemów algorytmicznych. Dokładniejszy opis algorytmu znajduje się w rozdziale 4.2.
+Metoda ta stara się naśladować zachowania występujące w przyrodzie. Jest to technika ewolucyjna wzorowana na sposobie poruszania się i inteligencji roju owadów poszukującego optymalnego miejsca do pożywienia się. Dokładniejszy opis algorytmu znajduje się w punkcie \ref{pso_description}.
 
 \subsubsection{Algorytm symulowanego wyżarzania}
-\paragraph{} Jest to metoda przeszukiwania iteracyjnego zainspirowana procesem wyżarzania w przemyśle metalowym. Przechowujemy specjalną zmienną, która symuluje malejącą ,,temperaturę'' otoczenia. W każdej iteracji przeglądamy sąsiadów i z prawdopodobieństwem proporcjonalnym do ,,temperatury'' akceptujemy rozwiązanie ,,chłodniejsze'' od aktualnego.
+\paragraph{} Metoda przeszukiwania iteracyjnego zainspirowana procesem wyżarzania w przemyśle metalowym. Przechowujemy specjalną zmienną, która symuluje malejącą ,,temperaturę'' otoczenia. W każdej iteracji przeglądamy sąsiadów i z prawdopodobieństwem proporcjonalnym do ,,temperatury'' akceptujemy rozwiązanie gorsze od aktualnego. Przykładowe zastosowanie algorytmu zaprezentowano w \cite{simulated_annealing} .
+
 
 \subsubsection{Algorytm Tabu Search}
-\paragraph{} Metoda iteracyjnego przeszukiwania najlepszego rozwiązania, która bazuje na liście tabu - liście ruchów zabronionych, których nie można wykonać przez określoną liczbę iteracji. Dokładny opis algorytmu znajduje się w punkcie 4.1.3.
+\paragraph{} Metoda iteracyjnego przeszukiwania najlepszego rozwiązania, która bazuje na liście tabu - liście ruchów zabronionych, których nie można wykonać przez określoną liczbę iteracji. Dokładny opis algorytmu znajduje się w punkcie \ref{tabu_search}.
 
 \subsection{Hiperheurystyki}
-\paragraph{}Nieco innym podejściem do rozwiązania problemu układania planu zajęć jest zastosowanie hiperheurystyki. \textbf{Hiperheurystyka} to algorytm, który ma za zadanie odnalezienie najlepszej metaheurystyki, która najlepiej zbliża nas do optymalnego rozwiązania. Przykładem hiperheurystyki może być algorytm Adaptive Tabu Search, opisany szerzej w punkcie 4.1, gdzie metaheurystykami niskiego poziomu są procedury Tabu Search dla dwóch struktur sąsiedztwa, a metaheurystyką jest iteracyjne przeszukiwanie lokalne, które steruje głębokością procedury Tabu Search i wprowadza operator zaburzeń rozwiązania.
-\paragraph{}Innym przykładem hiperheurystyki jest algorytm opisany w poniższym dokumencie \cite{gbhh}. Autorzy jako metaheurystyki niskiego poziomu wybrali 5 różnych kolejności, w których można rozpatrywać wierzchołki grafu kursów i konfliktów między nimi. Metaheurystyka wysokiego poziomu - w tym przypadku Tabu Search, zawiera lista Tabu, która przechowuje kombinacje dwuelementowe metaheurystyk niskiego poziomu. Jej działanie polega na wybieraniu dwóch metaheurystyki, które nie występują na liście Tabu, a następnie przyporządkowuje według nich kolejne kursy i porównuje otrzymany wynik z najlepszym dotychczas osiągniętym.
+\paragraph{}Nieco innym podejściem do rozwiązania problemu układania planu zajęć jest zastosowanie hiperheurystyki. \textbf{Hiperheurystyka} \cite{hyperheuristic} to algorytm, który ma za zadanie odnalezienie najlepszej metaheurystyki mającej na celu znaleźć optymalne rozwiązanie. Przykładem hiperheurystyki może być algorytm Adaptive Tabu Search, opisany szerzej w punkcie \ref{ats_description}, gdzie metaheurystykami niskiego poziomu są procedury Tabu Search dla dwóch struktur sąsiedztwa, a metaheurystyką jest iteracyjne przeszukiwanie lokalne, które steruje głębokością procedury Tabu Search i wprowadza operator zaburzeń rozwiązania.
+\paragraph{}Innym przykładem hiperheurystyki jest algorytm opisany w \cite{gbhh}. Autorzy jako metaheurystyki niskiego poziomu wybrali 5 różnych kolejności, w których można rozpatrywać wierzchołki grafu kursów i konfliktów między nimi. Metaheurystyka wysokiego poziomu - w tym przypadku Tabu Search, gdzie lista Tabu przechowuje kombinacje dwuelementowe metaheurystyk niskiego poziomu - wybiera dwie metaheurystyki, które nie występują na liście Tabu, przyporządkowywuje według nich kolejne kursy i porównuje wynik z najlepszym.
 
 \subsection{Algorytmy \textit{state-of-the-art}}
-\paragraph{} Inną grupą algorytmów, na które można się natknąć w literaturze są algorytmy tzw. \textit{state-of-the-art} - wielofazowe algorytmy, które w kolejnych fazach wykonują po kilka różnych metaheurystyk. Przykładem takiego algorytmu jest algorytm, który wygrał konkurs ITC w 2003 roku, opisany w referowanym dokumencie\cite{kostuch}.
+
+\paragraph{} Inną grupą algorytmów, na które można się natknąć w literaturze są algorytmy tzw. \textit{state-of-the-art} - wielofazowe algorytmy, które kolejnych fazach wykonują po kilka różnych metaheurystyk. Przykładem takiego algorytmu jest algorytm, który wygrał konkurs ITC w 2003 roku, opisany w \cite{kostuch}.
 
 
-\section{Przegląd powstałych systemów}
-Jako że problem układania planu zajęć ma powszechne zastosowanie, powstało dotychczas już sporo rozwiązań zarówno komercyjnych jak i darmowych projektów typu \emph{open source}. Oto przegląd niektórych z nich.
+\section{Przegląd istniejących systemów}
+
+
+
 \subsection{aSc TimeTables}
 Rozbudowane komercyjne narzędzie, które umożliwia automatyczne wygenerowanie planu zajęć na podstawie zebranych wymagań. Program jest adresowany do dyrektorów i osób zarządzających planami lekcji, jego obsługa jest bardzo prosta. Posiada bardzo zaawansowane możliwości edycji wygenerowania planu, wprowadzania zastępstw nauczycieli i wizualizacji. Możliwości sterowania generowaniem są ograniczone - można ustalić czas generowania (krótki - długi - bardzo długi) i stopień spełniania warunków. Wadą jest scentralizowane wprowadzanie ograniczeń, nieestetyczny interfejs i cena 
 (od 499 USD za wersję podstawową, do 3995 USD za wersję z rozszerzonym wsparciem i generowaniem planów dla poszczególnych uczniów) \\
@@ -74,5 +80,5 @@ Strona producenta: \url{http://lalescu.ro/liviu/fet/}
 \includegraphics[width=15cm]{img/FET.png}
 \end{center}
 \subsection{Tablix}
-Jest to polski produkt typu \emph{open source}, jego autorem jest Tomasz Solc\cite{implementacjeGA}. Program powstał w technologii języka C z użyciem pakietu PVM, który umożliwia zrównoleglenie obliczeń, co znacząco przyspiesza działanie algorytmu. Dane wejściowe muszą znajdować się w plikach XML. Głównym mechanizmem, na którym opiera się program jest zrównoleglony algorytm genetyczny. Zastosowania stworzonego jądra systemu mogą dotyczyć najróżniejszych problemów optymalizacyjnych, lecz w swojej pierwotnej implementacji zostało przystosowane do problemu układania planu zajęć. Nie posiada natomiast interfejsu graficznego, który umożliwiałby edycję danych lub wizualizację wyników.\\
+Jest to polski produkt typu \emph{open source}, jego autorem jest Tomasz Solc. Program powstał w technologii języka C z użyciem pakietu PVM, który umożliwia zrównoleglenie obliczeń, co znacząco przyspiesza działanie algorytmu. Dane wejściowe muszą znajdować się w plikach XML. Głównym mechanizmem, na którym opiera się program jest zrównoleglony algorytm genetyczny. Zastosowania stworzonego jądra systemu mogą dotyczyć najróżniejszych problemów optymalizacyjnych, lecz w swojej pierwotnej implementacji zostało przystosowane do problemu układania planu zajęć. Nie posiada natomiast interfejsu graficznego, który umożliwiałby edycję danych lub wizualizację wyników. \\
 Strona producenta: \url{http://www.tablix.pl/}

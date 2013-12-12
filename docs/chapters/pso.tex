@@ -2,20 +2,19 @@
 \section{Particle Swarm Optimization (PSO)}
 \author{Paweł Jastrzębski}
 \subsection{Ogólny opis algorytmu}
+\label{pso_description}
 \par Particle Swarm Optimaliation (PSO) lub optymalizacja rojem cząsteczek jest algorytmem zaproponowanym przez Jamesa Kennedy'ego oraz Russela Eberhart'a w roku 1995. Jest to technika wzorowana na zachowaniach występujących w przyrodzie. Algorytm naśladuje inteligencję i sposób poruszania się roju owadów poszukujących pożywienia. PSO ma wiele elementów wspólnych z technikami ewolucyjnymi, takimi jak algorytmy genetyczne czy programowanie ewolucyjne.
 \par Zachowania te są w pewien sposób uproszczone, zamiast roju owadów mamy pewną liczbę cząsteczek (agentów) poruszających się w n-wymiarowej przestrzeni. Cząsteczki przemieszczają się w różnych kierunkach poszukując optymalnego rozwiązania, korzystają przy tym ze swoich indywidualnych doświadczeń jak i doświadczenia ogółu.
 \subsection{Działanie algorytmu}
 \subsubsection{Oryginalna wersja}
-\par W podstawowej wersji algorytmu używane są:
+\par Podstawowe elementy:
 \begin{description}
-  \item[Rój] \hfill \\
-      Który posiada:
+  \item \textbf{Rój} posiada:
     \begin{itemize}
       \item Cząsteczki 
-      \item Najlepszą pozycję (najlepsza pozycja osiągnięta dotychczas przez cząsteczki)
+      \item Najlepszą pozycję osiągniętą dotychczas przez cząsteczki
     \end{itemize}
-  \item[Cząsteczki] \hfill \\
-      Mające cechy:
+  \item \textbf{Cząsteczki} posiadające cechy:
     \begin{itemize}
       \item Pozycja (aktualna pozycja cząsteczki)
       \item Prędkość (wektor definiujący zmianę pozycji)
@@ -46,7 +45,7 @@
   \item[Krok 4:]
         \par Wyliczenie wartości funkcji dla aktualnych pozycji cząsteczek.
   \item[Krok 5:] 
-      \par Sprawdzanie czy któraś cząsteczka poprawiła najlepszą pozycję roju lub samej siebie. Jeśli tak to aktualizujemy odpowiednią najlepszą pozycję.
+      \par Sprawdzanie czy któraś z cząsteczek poprawiła najlepszą pozycję roju lub samej siebie. Jeśli tak to aktualizujemy odpowiednią najlepszą pozycję.
 
     \[  f(X^{i}_{k}) < f(P^{i}_{k}) \Longrightarrow P^{i}_{k} = X^{i}_{k}\]
 \[  f(X^{i}_{k}) < f(G^{i}) \Longrightarrow  P^{i} = X^{i}_{k}\]
