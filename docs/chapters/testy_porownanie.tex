@@ -351,12 +351,48 @@ Wyniki te potwierdzają najlepszą skuteczność działania algorytmu ATS, któr
     \includegraphics[width=10cm]{ats_test_2.png}
 \end{figure}
 \subsection{Dane szkolne}
-Do działania na danych szkolnych zostały przystosowane dwa algorytmy: Algorytm Genetyczny i Algorytm Adaptacyjny Tabu.
+Do działania na danych szkolnych zostały przystosowane dwa algorytmy: Algorytm Genetyczny i Algorytm Adaptacyjny Tabu. \\
+Dla danych szkolnych wprowadzono dodatkowe ograniczenie twarde ${H_{5}}$ dotyczące typu sali- zajęcia muszą odbywać się w odpowiednim typie sali lekcyjnej np. zajęcia z informatyki w sali laboratoryjnej. W funkcji oceny rozwiązania zrezygnowano z kary za ograniczenie dotyczące stabilności sali, ponieważ dla tego typu szkoły nie ma to zupełnie znaczenia, a może to w znacznym stopniu zmieniać optymalne rozwiązanie problemu.
+Parametry dla algorytmów:
+\begin{enumerate}
+\item GA - liczba osobników: 200, liczba iteracji: 173, szacowany czas działania algorytmu: 60 min
+\item ATS - czas działania: 20 min
+\end{enumerate}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ |c|c|c| }
+\multicolumn{1}{r}{}
+ &  \multicolumn{1}{c}{$$}
+ & \multicolumn{1}{c}{$$} 
+ \\
+\cline{1-2}
+$Liczba\ przedmiotów\ (kursów)$ & $373$\\
+\cline{1-2}
+$Liczba\ klas\ (programów\ nauczania)$ & $22$\\
+\cline{1-2}
+$Liczba\ dni$ & $5$ \\
+\cline{1-2}
+$Licza\ przedziałów\ czasowych$ & $15$ \\
+\cline{1-2}
+$Liczba\ ograniczeń$ & $0$ \\
+\cline{1-2}
+\end{tabular}
+\end{center}
+\caption {Specyfikacja danych szkolnych}
+\end{table}
+Wyniki uzyskane przez poszczególne algorytmy:
+\begin{itemize}
+\item Algorytm Genatyczny - funkcja oceny ograniczeń miękkich : \textbf{146}, liczba naruszeń ograniczeń twardych: \textbf{2}
+\item Algorytm Adaptacyjny Tabu - funkcja oceny ograniczeń miękkich : \textbf{1493}, liczba naruszeń ograniczeń twardych: \textbf{0}
+\end{itemize}
+Algorytmy mimo stosunkowo długiego działania, ze względu na dużą liczbę kursów, nie znalazły bardzo dobrego, optymalnego rozwiązania problemu. Algorytm Adaptacyjny Tabu wygenerował plan zajęć nienaruszających żadnych ograniczeń twardych, przydzielając wszystkie obowiązkowe zajęcia do planu zajęć. Całkowite przystosowanie algorytmy adaptacyjnego do danych uzyskanych ze szkoły wymagałaby długiej analizy działania algorytmu i przystosowania funkcji oceny do tych danych.
+
 
 \subsection{Podsumowanie działania algorytmów}
-\par Algorytm Roju Cząsteczek nie dla wszystkich instancji był w stanie wygenerować wykonywalny plan zajęć, pomimo stosunkowo długiego czasu działania. Algorytm ten nie daje gwarancji, że ograniczenia twarde zostaną całkowicie wyeliminowane. Ponadto metoda ta jest mało odporna na lokalne minima. Rozpatrywanie różnych modyfikacji algorytmu dało możliwość badawczego zapoznania się z tym jakże trudnym problemem, jakim jest układanie planu zajęć.
+\par Algorytm Roju Cząsteczek nie dla wszystkich instancji był w stanie wygeneregować wykonywalny plan zajęć, pomimo stosunkowo długiego czasu działania. Algorytm ten nie daje gwarancji, że ograniczenia twarde zostaną całkowicie wyeliminowane.Ponadto metoda ta jest mało odporna na lokalne minima. Rozpatrywanie różnych modyfikacji algorytmu dało możliwość badawczego zapoznania się z tym jakże trudnym problemem, jakim jest układanie planu zajęć.
 \par Algorytm Genetyczny jest również stosunkowo niepewnym rozwiązaniem, niedającym gwarancji o nie naruszeniu ograniczeń twardych. Głównym czynnikiem wpływającym na działanie algorytmu jest element losowy wprowadzony do niego, który w różny sposób tworzy początkowe rozwiązania. Zastosowanie zwiększonego współczynnika mutacji umożliwia wyjście algorytmu z lokalnego minimum. Algorytm mimo swojej prostoty, dla wybranych instancji uzyskał stosunkowo dobre wyniki.
-\par Algorytm Adaptacyjny Tabu uzyskał dla większości instancji najlepsze wyniki. Algorytm ten gwarantuje zawsze spełnienie części z ograniczeń twardych $H_{2}-H_{4}$, nie zawsze zaś ograniczenia $H_{1}$. Ograniczenie ${H_{1}}$ jest naruszane w przypadku kiedy niemożliwe jest znalezienie przedziału czasu, gdzie może zostać przyporządkowany kurs według zachłannej heurystyki nie naruszając $H_{2}-H_{4}$. ATS charakteryzuje się największą liczbą odwołań do funkcji oceny, w celu znalezienia optymalnego rozwiązania. 
+\par Algorytm Adaptacyjny Tabu uzyskał dla większości instancji najlepsze wyniki. Algorytm ten gwarantuje zawsze spełnienie części z ograniczeń twardych $H_{2}-H_{4}$, nie zawsze zaś ograniczenia $H_{1}$. Ograniczenie ${H_{1}}$ jest naruszane w przypadku kiedy niemożliwe jest znalezienie przedziału czasu, gdzie może zostać przyporządkowany kurs nie naruszając $H_{2}-H_{4}$. ATS charakteryzuje się największą liczbą odwołań do funkcji oceny, w celu znalezienia optymalnego rozwiązania.
 
 
 
