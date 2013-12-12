@@ -1,6 +1,7 @@
 \chapter{Testy i porównanie algorytmów}
 \section{Analiza działania poszczególnych algorytmów}
 \subsection{Algorytm Roju Cząsteczek}
+\textit{Paweł Jastrzębski} \\
 \subsubsection{Problemy związane z rozwiązaniem}
 \par Podczas analizy oraz testowania zaimplementowanego rozwiązania, okazało się, że algorytm jest mało skuteczny, gdyż nie był w stanie usunąć całkowicie naruszeń ograniczeń twardych. Ograniczenia te w bezpośredni sposób wpływają na prawidłowość wygenerowanego planu zajęć.
 \par W związku z tym zdecydowałem się na wprowadzenie dodatkowej kary: do kary za ograniczenia miękkie dodaję za każde naruszenie ograniczenia twardego 1 milion punktów kary. Dzięki temu, algorytm w pierwszej kolejności bierze pod uwagę ograniczenia twarde, próbując je wyeliminować, a potem dopiero ograniczenia miękkie. \\
@@ -61,6 +62,7 @@ Poniższy wykres pokazuje efektywność algorytmu. Uwagę należy zwrócić na s
 
 \par Jako ostateczne rozwiązanie wybrałem podążanie za globalnie najlepszym planem. Jest to spowodowane tym, że mimo wielu testów nie udało mi się znaleźć przypadku kiedy podążanie za lokalnie najlepszym planem wypadłoby lepiej. 
 \subsection{Algorytm Adaptacyjny Tabu}
+\textit{Tomasz Dziopa, Katarzyna Śmietanka}\\
 Przedstawienie działania algorytmu dla wybranych testów.\\
 Testy szczegółowo zostały opisane w kolejnej sekcji.
 \par \textbf{Test 1}
@@ -184,24 +186,28 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
 W powyższych wykresów można zaobserwować funkcję oceny początkowych rozwiązań wygenerowanych przez każdy z algorytmów. Najniższą wartość oceny na początku uzyskał algorytm GA, najwyższą zaś PSO. Dla każdego z wywołań alorytmu GA, czy też PSO funkcja oceny rozwiązania początkowego będzie inna, ze względu na losowość zaś w algorytmie ATS taka sama. W ATS początkowe rozwiązanie jest tworzone przy pomocy heurystyki, która w ten sam sposób, dla tej samej instancji tworzy inicjalny plan zajęć. Ciekawą cechą algorytmu ATS jest stosunkowo duża liczba odwołań jego do funkcji oceny, choćby dla początkowej fazy działania algorytmu. Wykres funkcji oceny od liczby referencji dla PSO ma kształt wykresu funkcji wykładniczej malejącej. Nietypowy kształ wykresu dla ATS wynika z nagłej zmiany najlepszego rozwiązania, spowodowanej wywołaniem funkcji przypasowującej sale do poszczególnych zajęć. Nieznaczne zaburzenia na wykresie dotyczące zmiany wartości najlepszego rozwiązania mogą być spowodowane nie dokońca właściwym sposobem przygotowania danych do stworzenia wykresów zmian, pomimo tego oddają one istotę przedstawionej idei.
 \subsubsection{Test 1 - wizualizacja}
 \par Celem stworzenia wizualizacji jest zobrazowanie instancji problemu dla pierwszego testu, jak również pokazanie, że wprowadzanie kolejnych nawet minimalnych ograniczeń znacznie komplikuje problem.
-\par Wierzchołki oznaczone ikoną książki oznaczają poszczególne kursy, opatrzone są one również etykietą - nazwą kursu.Krawędzie łączące poszczególne kursy ze sobą oznaczają konflikty występujące pomiędzy tymi zajęciami. Zajęcia połączone wspólną krawędzią nie mogą odbywać się w tym samym czasie, gdyż albo prowadzone są przez tego samego wykładowcę albo wchodzą w skład tego samego programu nauczania. Nierealne by było dla studenta uczęszczanie na obowiązkowe zajęcia, które odbywają się dokładnie w tym samym czasie, dlatego też konieczne jest rozpatrzenie podczas działania algorytmu tych ograniczeń. Na grafach nie przedstawiono ograniczeń związanych z niedostępnością wykładowcy w danym czasie, ponieważ trudno byłoby to uwzględnić na takim rodzaju grafu.
+\par Wierzchołki oznaczone ikoną książki oznaczają poszczególne kursy, opatrzone są one również etykietą - nazwą kursu.Krawędzie łączące poszczególne kursy ze sobą oznaczają konflikty występujące pomiędzy tymi zajęciami. Zajęcia połączone wspólną krawędzią nie mogą odbywać się w tym samym czasie, gdyż albo prowadzone są przez tego samego wykładowcę albo wchodzą w skład tego samego programu nauczania. Nierealne by było dla studenta uczęszczanie na wszystkie obowiązkowe zajęcia, które odbywają się dokładnie w tym samym czasie, dlatego też konieczne jest rozpatrzenie podczas działania algorytmu tych ograniczeń. Na grafach nie przedstawiono ograniczeń związanych z niedostępnością wykładowcy w danym czasie, ponieważ trudno byłoby to uwzględnić na takim rodzaju grafu.
 \begin{figure}[H]
   \centering
     \includegraphics[width=10cm]{test1.PNG}
       \caption{Graf przedstawiający wszystkie zależności pomiędzy kursami (uwzględniając tych samych prowadzących nauczycieli oraz należenie kursu do tego samego programu nauczania) }
 \end{figure}
-\par Oddzielne przestawienie poszczególnych ograniczeń na grafach\\ Wierzchołkami są kursy, a krawędzie są to konflikty pomiędzy kursami, oznaczające, że zajęcia z kursów połączonych krawędzią nie mogą odbywać się w tym samym czasie.
+Oddzielne przestawienie poszczególnych ograniczeń na grafach. Wierzchołkami są kursy, a krawędzie są to konflikty pomiędzy kursami, oznaczające, że zajęcia z kursów połączonych krawędzią nie mogą odbywać się w tym samym czasie.
 
 \begin{figure}[H]
   \caption{Graf uwzględniający zależności pomiędzy kursami uwzględniając prowadzących dane kursy}
   \centering
     \includegraphics[width=10cm]{test1_teach.PNG}
 \end{figure}
+Na grafie można zaobserwować, że tylko nieliczne kursy prowadzone są przez tego samego wykładowcę, większość z nauczycieli realizuje tylko zajęcia z jednego przedmiotu. Krawędź pomiędzy parę wierzchołków wskazuje, które z kursów nauczane są przez tego samego wykładowcę. W interaktywnej wersji grafów najechanie myszką na wierzchołek powoduje wyświetlenie identyfikatora kursu.
 \begin{figure}[H]
   \caption{Graf uwględniający grupy zależnych od siebie kursów wchodzących w skład tego samego programu nauczania}
   \centering
     \includegraphics[width=10cm]{test1_con.PNG}
 \end{figure}
+\par Powiązania między kursami pokazują zależności pomiędzy programami nauczania. Każda z przedstawionych grup zawiera kilka programów nauczania w skład, którego wchodzą kursy. Brak połączeń pomiędzy tymi czterema grupami, wskazuje na to, że te kursy należące do każdej z tych grup są niezależne od innych programów nauczania, uwzględniając jedynie czynnik przynależności do tego samego programu nauczania. W wersji interaktywnej po najechaniu myszką na wierzchołek grafu uzyskamy informację o identyfikatorze kursu.
+\par Połączenie tych wszystkich ograniczeń znacznie utrudnia problem ułożenia prawidłowego planu zajęć, zwiększając liczbę krawędzi pomiedzy wierzchołkami grafu, a tym samym liczbę występujących konflików pomiędzy kursami. Można to zauważyć na początkowej wizualizacji.
+
 \subsection{Test 2}
 \begin{table}[H]
 \begin{center}
