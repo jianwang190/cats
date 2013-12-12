@@ -112,7 +112,7 @@ class AdaptiveTabuSearch:
             if  solutionQuality < bestQuality:
                 bestQuality = solutionQuality
                 #print "outside loop"
-                print bestQuality, softConstraints2.refPenalty
+                #print bestQuality, softConstraints2.refPenalty
                 self.updateBest(solution)
         #print "ATS FINISHED", bestQuality
         return self.bestSolution
@@ -148,7 +148,7 @@ class AdaptiveTabuSearch:
                 #moje
                 self.updateBest(bestSolution)
                 #print "inside loop"
-                print bestQuality, softConstraints2.refPenalty
+                #print bestQuality, softConstraints2.refPenalty
             else:
                 iterations -=1
             initialSolution = advancedNeighborhood.copy()
@@ -225,7 +225,7 @@ def tabuSimpleNeighborhood(timetable, data, theta):
         initialSolution.timeTable = bestSwap[0][1]
         if bestSwap[1]<currentBestQuality:
             currentBestQuality, currentBestSolution = bestSwap[1], bestSwap[0][1]
-            print currentBestQuality, softConstraints2.refPenalty
+            #print currentBestQuality, softConstraints2.refPenalty
 
 
     initialSolution.timeTable = currentBestSolution
@@ -283,7 +283,7 @@ def tabuAdvancedNeighborhood(timetable, data, theta):
         if bestCandidateQuality<currentBestQuality:
             currentBestSolution = {x: bestCandidate[x][:] for x in bestCandidate.keys()}
             currentBestQuality = bestCandidateQuality
-            print currentBestQuality, softConstraints2.refPenalty
+            #print currentBestQuality, softConstraints2.refPenalty
             #print softConstraints2.totalSoftConstraintsForTimetable(currentBestSolution, data), bestCandidateQuality
 
 
