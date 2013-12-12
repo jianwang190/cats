@@ -1,6 +1,9 @@
 \documentclass[11pt]{report}
-
 \usepackage[T1]{fontenc}
+%\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -38,6 +41,8 @@
 \input{chapters/projekt_systemu.tex}
 
 \chapter{Opis zaimplementowanych algorytmów}
+\par Podstawowym elementem Systemu do automatyzacji procesu układania planów zajęć jest Algorytm Genatyczny. Chęć głębszego zapoznania się z innymi algorytmami rozwiązującymi podobne zadanie, wpłynęła na decyzję poszerzenia zagadnienia naszego projektu o dodatkowe implementacje algorytmów do układania planów zajęć: Algorytm Roju Cząsteczek i Algorytm Adaptacyjny Tabu. 
+Jako, że każdy z algorytmów charakteryzuje się innym podejściem do problemu, dlatego też przedstawimy ogólną ideę każdego z tych algorytmów oraz opiszemy wybrane przez nas rozwiązanie. Prawidłowa implementacja algorytmów jest niezbędna do właściwego działania systemu, którego celem jest stworzenie możliwie jak najbardziej optymalnego planu zajęć dla wprowadzonych danych.
 \input{chapters/tabu.tex}
 \input{chapters/pso.tex}
 \input{chapters/ga.tex}
@@ -47,14 +52,8 @@
 \input{chapters/testy_porownanie.tex}
 
 \chapter{Sposób użytkowania systemu}
-
+\input{chapters/uzytkowanie_systemu.tex}
 \chapter{Podsumowanie}
-\par Realizacja projektu inżynierskiego postawiła nas przed ciekawą możliwością głębszego zapoznania się z problemem układania planów zajęć, zagłębienia się w literaturę tematu oraz implementację wybranych przez nas algorytmów: Algorytmu Adaptacyjnego Tabu, Algorytmu Roju Cząsteczek oraz Algorytmu Genetycznego.  Pierwotną, planowaną wizją było przystosowanie zaimplementowanych algorytmów do systemu Politechniki Gdańskiej moja.pg. Niestety mimo licznych trudności związanych z prawem dotyczącym ochrony danych osobowych nie udało się uzyskać niezbędnych danych do realizacji projektu. W konsekwencji zdecydowaliśmy się na przystosowanie naszych algorytmów do danych uzyskanych z jednej ze szkół ponadgimnazjalnej, w celu urealnienia tego problemu. Większość  wstępnych założeń dotycząca implementacji algorytmów została zrealizowana, a uzyskane przez nas wyniki potwierdziły nasze przypuszczenia co do skuteczności  działania poszczególnych algorytmów. 
-
-
-
-\par Celem projektu inżynierskiego było stworzenie systemu do automatyzacji procesu układania planu zajęć. W naszej pracy większy nacisk położyliśmy na porównanie trzech algorytmów, które miały w zamyśle służyć jako podstawa systemu. Stworzony przez nas system posiada założone przez nas wymagania, jednak patrząc pod kątem biznesowym, jego funkcjonalność jest dosyć ograniczona. Struktura projektu umożliwia rozbudowanie go w przyszłości o dodatkowe funkcjonalności przydatne potencjalnym użytkownikom końcowym (np. dyrektorom szkół, administratorom uczelni), jak np. możliwość edycji wygenerowanego planu, rozproszone zbieranie wymagań od nauczycieli, eksport do większej liczby formatów. Poprzez wydzielenie modułu algorytmów istnieje również możliwość rozbudowania systemu o większą liczbę algorytmów, jak i modyfikacji parametrów działania. 
-
 \input{chapters/podsumowanie.tex}
 
 \begin{thebibliography}{2}
@@ -77,13 +76,14 @@ Lecture Notes in Computer Science} Volume 3616, 2005, pp 109-125
 \bibitem{Mitchell} Mitchell Melanie (1999). \emph{An Introduction to Genetic Algorithms}, A Bradford Book The MIT Press, ISBN 0-262-63185-7, 2,3,
 \bibitem{implementacjeGA} Marek Jaszuk. \emph{Zastosowanie algorytmów genetycznych do układania planu zajęć}, dostępne pod adresem, \url{http://www.kmis.pwsz.chelm.pl/publikacje/III/Jaszuk.pdf}
 \bibitem{ga2003} Branimir Sigl, Marin Golub, Vedran Mornar \emph{Solving Timetable Scheduling Problem by Using Genetic Algorithms} ISBN 953-96769-6-7, 2003
-\bibitem{FET} \url{http://www.lalescu.ro/liviu/fet}
-\bibitem{Tablix} \url{http://www.tablix.org}
-\bibitem{github} \url{https://github.com/tomecki/cats}
-\bibitem{travis} \url{http://travis.com}
-\bibitem{celery} \url{http://www.celeryproject.org/}
-\bibitem{pso2} \url{http://jakubniwa.pl/pso-optymalizacja-za-pomoca-roju-czasteczek/}
-\bibitem{itc} \url{http://www.cs.qub.ac.uk/itc2007/}
+\bibitem{wiz} \url{http://d3js.org/}, Data dostępu: 11/12/2013
+\bibitem{FET} \url{http://www.lalescu.ro/liviu/fet}, Data dostępu: 10/12/2013
+\bibitem{Tablix} \url{http://www.tablix.org}, Data dostępu: 09/12/2013
+\bibitem{github} \url{https://github.com/tomecki/cats}, Data dostępu: 07/12/2013
+\bibitem{travis} \url{http://travis.com}, Data dostępu: 06/10/2013
+\bibitem{celery} \url{http://www.celeryproject.org/}, Data dostępu: 11/11/2013
+\bibitem{pso2} \url{http://jakubniwa.pl/pso-optymalizacja-za-pomoca-roju-czasteczek/}, Data dostępu: 11/12/2013
+\bibitem{itc} \url{http://www.cs.qub.ac.uk/itc2007/}, Data dostępu: 11/12/2013
 \end{thebibliography}
 
 \end{document}
