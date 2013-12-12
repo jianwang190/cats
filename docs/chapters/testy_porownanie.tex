@@ -177,7 +177,7 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
         \caption{Wykresy zmian funkcji oceny w zależności od liczby odwolań do funkcji oceny dla poszczególnych algorytmów}
 \end{figure}
 
-W powyższych wykresów można zaobserwować funkcję oceny początkowych rozwiązań wygenerowanych przez każdy z algorytmów. Najniższą wartość oceny na początku uzyskał algorytm GA, najwyższą zaś PSO. Dla każdego z wywołań alorytmu GA, czy też PSO funkcja oceny rozwiązania początkowego będzie inna, ze względu na losowość zaś w algorytmie ATS taka sama. W ATS początkowe rozwiązanie jest tworzone przy pomocy heurystyki, która w ten sam sposób, dla tej samej instancji tworzy inicjalny plan zajęć. Ciekawą cechą algorytmu ATS jest stosunkowo duża liczba odwołań algorytmu do funkcji oceny, choćby dla początkowej fazy działania algorytmu. Wykres funkcji oceny od liczby referencji dla PSO ma kształt wykresu funkcji wykładniczej malejącej. Nietypowy kształ wykresu dla ATS wynika z nagłej zmiany najlepszego rozwiązania, spowodowanej wywołaniem funkcji przypasowującej sale do poszczególnych zajęć. 
+W powyższych wykresów można zaobserwować funkcję oceny początkowych rozwiązań wygenerowanych przez każdy z algorytmów. Najniższą wartość oceny na początku uzyskał algorytm GA, najwyższą zaś PSO. Dla każdego z wywołań alorytmu GA, czy też PSO funkcja oceny rozwiązania początkowego będzie inna, ze względu na losowość zaś w algorytmie ATS taka sama. W ATS początkowe rozwiązanie jest tworzone przy pomocy heurystyki, która w ten sam sposób, dla tej samej instancji tworzy inicjalny plan zajęć. Ciekawą cechą algorytmu ATS jest stosunkowo duża liczba odwołań jego do funkcji oceny, choćby dla początkowej fazy działania algorytmu. Wykres funkcji oceny od liczby referencji dla PSO ma kształt wykresu funkcji wykładniczej malejącej. Nietypowy kształ wykresu dla ATS wynika z nagłej zmiany najlepszego rozwiązania, spowodowanej wywołaniem funkcji przypasowującej sale do poszczególnych zajęć, nieznaczne zaburzenia na wykresie zmiany wartości najlepszego rozwiązania mogą być spowodowane nie dokońca właściwym sposobem przygotowania danych do testowania.
 \subsubsection{Test 1 - wizualizacja}
 Celem stworzenia wizualizacji jest zobrazowanie instancji problemu, jak również pokazanie, że wprowadzanie kolejnych nawet minimalnych ograniczeń znacznie komplikuje problem.
 \begin{figure}[H]
@@ -285,7 +285,10 @@ Zarówno Algorytm Genetyczny jak również Algorytm Róju cząsteczek nie dają 
 \end{figure}
 
 
-Przedstwione wykresy potwierdzają wcześniej postawioną tezę o bardzo dużej liczbie odwołań do funkcji oceny dla algotytmu ATS. Początkowe rozwiązanie dla tego algotymu miało najniższą wartość funkcji oceny. Mimo początkowej wysokiej funkcji oceny dla algorytmu GA i PSO, końcowe rezultaty (wartości funkcji oceny) zostały w znaczący sposób pomniejszone, niestety dla PSO nie usuwając wszystkich ograniczeń twardych.
+\par Przedstawione wykresy potwierdzają wcześniej postawioną tezę o bardzo dużej liczbie odwołań do funkcji oceny dla algotytmu ATS. Początkowe rozwiązanie dla tego algotymu miało najniższą wartość funkcji oceny. Mimo początkowej wysokiej funkcji oceny dla algorytmu GA i PSO, końcowe rezultaty (wartości funkcji oceny) zostały w znaczący sposób pomniejszone, niestety dla PSO nie usuwając wszystkich ograniczeń twardych. 
+\par Zmiana wartości lokalnie najlepszego rozwiązania na wykresie dla algorytmu PSO około wartości 130000 na osi X, spowodowana jest zróżnicowaną funkcją oceny wprowadzoną w algorytmie. Na wykresie przedstawione są wartości funkcji ograniczeń miękkich bez uwzględnienia ograniczeń twardych, a zaprojektowana funkcja oceny dla tego algorytmu zawierała informację o tych ograniczeniach. W PSO każde naruszenie ograniczenia twardego było związane z doliczeniem dodatkowej kary (jeden milion za każde jedno naruszenie), której celem było nastawienie działania algorytmu na usuwanie w pierwszej kolejności ${H1- H4}$. Do realizacji wykresów pominięto wartości powyżej miliona i skupiono się na analizie funkcji ograniczeń miękkich.
+
+
 \subsection{Test 3}
 \begin{table}[H]
 \begin{center}
