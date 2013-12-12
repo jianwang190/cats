@@ -154,22 +154,29 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
 \end{table}
 \par Jak można zaobserwować najlepszy rezultat dla pierwszej instancji uzyskał algorytm PSO, jednak czas potrzebny do uzyskania tego wyniku był stosunkowo długi w porównaniu do algorytmu GA. Żaden z wygenerowanych planów nie narusza ograniczeń twardych. Najgorsze wyniki uzyskał Algorytm Adaptacyjny Tabu, prawdopodobnie czas działania algorymu był zbyt krótki, tak aby zmiejszyć funkcję oceny.
 \par Ciekawym spostrzeżeniem jest to, że żaden z algorytmów nie miał problemu z minimalizacją do zera ograniczenia miękkiego,  $S_{3}$, które dotyczy minimalnej liczby dni na które muszą być rozłożone zajęcia z danego kursu. Kara uzyskana za $S_{2}$ stabilnośc pomieszczenia jest porównywalna dla wszystkich algorytmów.
-\par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów. 
+\par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów.
 \begin{figure}[H]
-  \caption{Algorytm Genetyczny}
-  \centering
-    \includegraphics[width=10cm]{ga_test_1.png}
+        \centering
+\begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{ga_test_1.png}
+                \caption{Algorytm Genetyczny}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{pso_1.png}
+                \caption{Algorytm Roju Cząsteczek}
+        \end{subfigure}
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+          \\
+        \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{ats_test_1.png}
+                \caption{Algorytm Adaptacyjny Tabu}
+        \end{subfigure}
+        \caption{Wykresy zmian funkcji oceny w zależności od liczby odwolań do funkcji oceny dla poszczególnych algorytmów}
 \end{figure}
-\begin{figure}[H]
-  \caption{Algorytm Roju Cząsteczek}
-  \centering
-    \includegraphics[width=10cm]{pso_1.png}
-\end{figure}
-\begin{figure}[H]
-  \caption{Algorytm Adaptacyjny Tabu}
-  \centering
-    \includegraphics[width=10cm]{ats_test_1.png}
-\end{figure}
+
 W powyższych wykresów można zaobserwować funkcję oceny początkowych rozwiązań wygenerowanych przez każdy z algorytmów. Najniższą wartość oceny na początku uzyskał algorytm GA, najwyższą zaś PSO. Dla każdego z wywołań alorytmu GA, czy też PSO funkcja oceny rozwiązania początkowego będzie inna, ze względu na losowość zaś w algorytmie ATS taka sama. W ATS początkowe rozwiązanie jest tworzone przy pomocy heurystyki, która w ten sam sposób, dla tej samej instancji tworzy inicjalny plan zajęć. Ciekawą cechą algorytmu ATS jest stosunkowo duża liczba odwołań algorytmu do funkcji oceny, choćby dla początkowej fazy działania algorytmu. Wykres funkcji oceny od liczby referencji dla PSO ma kształt wykresu funkcji wykładniczej malejącej. Nietypowy kształ wykresu dla ATS wynika z nagłej zmiany najlepszego rozwiązania, spowodowanej wywołaniem funkcji przypasowującej sale do poszczególnych zajęć. 
 \subsubsection{Test 1 - wizualizacja}
 Celem stworzenia wizualizacji jest zobrazowanie instancji problemu, jak również pokazanie, że wprowadzanie kolejnych nawet minimalnych ograniczeń znacznie komplikuje problem.
@@ -256,20 +263,28 @@ Jak można zauważyć z powyższej tabeli algorytm PSO mimo bardzo długiego cza
 Zarówno Algorytm Genetyczny jak również Algorytm Róju cząsteczek nie dają gwarancji wygenerowania całkowicie poprawnego planu zajęć, nie naruszającego żadnych z ograniczeń $H_{1}-H_{4}$. Algorytm Adaptacyjny Tabu gwarantuje, że ograniczenia $H_{2}-H_{4}$ będą spełnione dla stworzonego planu zajęć, ale nie zapewnia o spełnieniu ograniczenia ${H}_{1}$. Nie spełnienie tego ograniczenia może zajść w fazie inicjalizacji, gdzie nie będzie możliwe przyporządkowanie zajęć do żadnego z przedziałów czasowych nie naruszając innych ograniczeń.
 \par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów.
 \begin{figure}[H]
-  \caption{Algorytm Genetyczny}
-  \centering
-    \includegraphics[width=10cm]{ga_test_2.png}
+        \centering
+\begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{ga_test_2.png}
+                \caption{Algorytm Genetyczny}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{pso_2.png}
+                \caption{Algorytm Roju Cząsteczek}
+        \end{subfigure}
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+          \\
+        \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{ats_test_2.png}
+                \caption{Algorytm Adaptacyjny Tabu}
+        \end{subfigure}
+        \caption{Wykresy zmian funkcji oceny w zależności od liczby odwolań do funkcji oceny dla poszczególnych algorytmów}
 \end{figure}
-\begin{figure}[H]
-  \caption{Algorytm Roju Cząsteczek}
-  \centering
-    \includegraphics[width=10cm]{pso_2.png}
-\end{figure}
-\begin{figure}[H]
-  \caption{Algorytm Adaptacyjny Tabu}
-  \centering
-    \includegraphics[width=10cm]{ats_test_2.png}
-\end{figure}
+
+
 Przedstwione wykresy potwierdzają wcześniej postawioną tezę o bardzo dużej liczbie odwołań do funkcji oceny dla algotytmu ATS. Początkowe rozwiązanie dla tego algotymu miało najniższą wartość funkcji oceny. Mimo początkowej wysokiej funkcji oceny dla algorytmu GA i PSO, końcowe rezultaty (wartości funkcji oceny) zostały w znaczący sposób pomniejszone, niestety dla PSO nie usuwając wszystkich ograniczeń twardych.
 \subsection{Test 3}
 \begin{table}[H]
@@ -335,20 +350,27 @@ $Funkcja\ oceny$ & $564$ & $438$ & $279$ \\
 \end{table}
 Wyniki te potwierdzają najlepszą skuteczność działania algorytmu ATS, który generuje wykonywalny plan oraz jego funkcja oceny jest najniższa spośród pozostałych algorytmów. Warto również zauważyć dość dobrą skuteczność działania algorytmu GA, który eliminuje wszystkie ograniczenia twarde.
 \par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów.
+
 \begin{figure}[H]
-  \caption{Algorytm Genetyczny}
-  \centering
-    \includegraphics[width=10cm]{ga_test_2.png}
-\end{figure}
-\begin{figure}[H]
-  \caption{Algorytm Roju Cząsteczek}
-  \centering
-    \includegraphics[width=10cm]{pso_2.png}
-\end{figure}
-\begin{figure}[H]
-  \caption{Algorytm Adaptacyjny Tabu}
-  \centering
-    \includegraphics[width=10cm]{ats_test_2.png}
+        \centering
+\begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{ga_test_3.png}
+                \caption{Algorytm Genetyczny}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{pso_3.png}
+                \caption{Algorytm Roju Cząsteczek}
+        \end{subfigure}
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+          \\
+        \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{ats_test_3.png}
+                \caption{Algorytm Adaptacyjny Tabu}
+        \end{subfigure}
+        \caption{Wykresy zmian funkcji oceny w zależności od liczby odwolań do funkcji oceny dla poszczególnych algorytmów}
 \end{figure}
 \subsection{Dane szkolne}
 Do działania na danych szkolnych zostały przystosowane dwa algorytmy: Algorytm Genetyczny i Algorytm Adaptacyjny Tabu. \\
