@@ -1,8 +1,9 @@
 \chapter{Specyfikacja problemu}
+\paragraph{}Specyfikacja problem układania planu zajęć różni się bardzo w kontekście konkretnego przypadku. Dlatego też chcieliśmy, aby nasze implementacje opierały się na dobrze opisanym przypadku, który umożliwi jasne określenie wymagań względem naszych rozwiązań i pozwoli na ich jednoznaczne porównanie. Okazało się, że odbywający się co kilka lat międzynarodowy konkurs na najlepsze rozwiązanie w tej dziedzinie bardzo dobrze spełnia te założenia.
 \section{International Timetabling Competition 2007}
 \textit{Filip Czajkowski} \\
 \subsection{Opis konkursu}
-\par International Timetabling Competition (ITC) to międzynarodowy konkurs w dziedzinie układania planów zajęć organizowany przez międzynarodowe środowisko akademickie. Jego celem jest lepsze poznanie problemu rozkładania zajęć lub egzaminów na uczelni, z którym zmagają się od bardzo dawna i wciąż potrzebują stosowania lepszych rozwiązań. W 2007 roku odbyła się jego druga edycja, w której można było startować w dowolnej z trzech kategorii: 
+\paragraph{International Timetabling Competition (ITC)}\cite{itc} to międzynarodowy konkurs w dziedzinie układania planów zajęć organizowany przez międzynarodowe środowisko akademickie. Jego celem jest lepsze poznanie problemu rozkładania zajęć lub egzaminów na uczelni, z którym zmagają się od bardzo dawna i wciąż potrzebują stosowania lepszych rozwiązań. W 2007 roku odbyła się jego druga edycja, w której można było startować w dowolnej z trzech kategorii: 
 \begin{itemize}
 \item Układanie rozkładu sesji egzaminacyjnej na uczelni. W tym przypadku zakłada się, że wszyscy studenci zapisani na swoje zajęcia muszą mieć możliwość wzięcia udziału we wszystkich dotyczących ich egzaminach. Plan powstaje zatem po zapisaniu się wszystkich studentów na wybrane przez siebie przedmioty.
 \item Tworzenie planu zajęć dla studentów zapisanych na konkretne zajęcia. W tym przypadku rozkład wszystkich zajęć obowiązujących przez cały semestr jest generowany w momencie, gdy studenci wybrali już przedmioty, na które zajęcia chcą uczęszczać. Ten model rozwiązania jest dostosowany do elastycznych programów nauczania, które uczelnie coraz częściej stosują.
@@ -34,8 +35,8 @@ Plan jest wykonywalny - czyli możliwy do realizacji, jeżeli żadne z wymienion
 \subsubsection{Ograniczenia miękkie}
 Ograniczenia te w bezpośredni sposób nie wpływają na wykonywalność planu zajęć, ale na jakość wygenerowanego planu zajęć, określoną na podstawie funkcji oceny.
 \begin{itemize}
-\item  ${S_{1}}$ \textbf{Wielkość sali} - liczba studentów uczęszczajacych na zajęcia w danej sali musi być mniejsza bądź równa liczbie dostępnych miejsc.
-\item  ${S_{2}}$ \textbf{Stabilność pomieszczenia} - zajęcia wchodzące w skład jednego kursu powinny odbywać się w jednej tej samej sali, jeżeli jest to niemożliwe liczba sal w których obdywają się te zajęcia powinna być jak najmniejsza.
+\item  ${S_{1}}$ \textbf{Wielkość sali} - liczba studentów uczęszczających na zajęcia w danej sali musi być mniejsza bądź równa liczbie dostępnych miejsc.
+\item  ${S_{2}}$ \textbf{Stabilność pomieszczenia} - zajęcia wchodzące w skład jednego kursu powinny odbywać się w jednej tej samej sali, jeżeli jest to niemożliwe liczba sal w których odbywają się te zajęcia powinna być jak najmniejsza.
 \item  ${S_{3}}$ \textbf{Minimalna liczba dni} - minimalna liczba dni na które powinny być rozłożone zajęcia z danego kursu.
 \item  ${S_{4}}$ \textbf{Zwartość zajęć} - zajęcia wchodzące w skład jednego programu nauczania powinny odbywać się w jak najmniejszych odstępach czasowych między sobą. [*] - dotyczy to tylko $Danych\ konkursowych$
 \end{itemize}
@@ -52,8 +53,8 @@ Ograniczenia te w bezpośredni sposób nie wpływają na wykonywalność planu z
 \begin{enumerate}
 \item \textbf{Wielkość sali} - Jeżeli liczba studentów jest większa niż liczba dostępnych miejsc w sali to za każdego dodatkowego studenta punkt kary pomnożony przez współczynnik ${a_{1} = 1}$ 
 \item \textbf{Minimalna liczba dni}
-Jeżeli liczba dni podczas których odbywają się zajęcia jest mniejsza niż minimalna liczba dni, podczas których powinny odbywać się zajęcia to do kary doliczamy rożnicę między minimalną liczbą dni a liczbą dni, w których zajęcia się odbywają pomnożoną o współczynnik $a_{2} = 5$ 
-\item \textbf{Zwartość zajęc}
+Jeżeli liczba dni podczas których odbywają się zajęcia jest mniejsza niż minimalna liczba dni, podczas których powinny odbywać się zajęcia to do kary doliczamy różnicę między minimalną liczbą dni a liczbą dni, w których zajęcia się odbywają pomnożoną o współczynnik $a_{2} = 5$ 
+\item \textbf{Zwartość zajęć}
 Za każde zajęcia w planie, które nie przylegają do żadnych innych zajęć z tego samego programu nauczania, punkt kary pomnożony o współczynnik ${a_{3} = 2}$
 \item \textbf{Stabilność pomieszczenia}
 Te same zajęcia powinny odbywać się w jak najmniejszej liczbie różnych pomieszczań, za każde nowe pomieszczenie punkt kary pomnożony o współczynnik ${a_{4} = 1}$
