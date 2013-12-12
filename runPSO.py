@@ -17,6 +17,6 @@ data = c.read(fileName)
 pso = PSO(data, endTime)
 best = pso.run()
 
-print best.penalty
+# print best.penalty
 
 
