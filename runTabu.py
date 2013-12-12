@@ -9,13 +9,13 @@ from cats.readers.competitionReader import  CompetitionDictReader
 
 
 fileName = sys.argv[1]
-timeLimit = float(sys.argv[2])
+timeLimit = int(sys.argv[2])
 
 
 c = CompetitionDictReader()
 data = c.read(fileName)
 
-a = AdaptiveTabuSearch(data, 2400)
+a = AdaptiveTabuSearch(data, timeLimit)
 bestSolution = a.run()
 
 for slot in bestSolution.getTimeTable():

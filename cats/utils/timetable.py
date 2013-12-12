@@ -267,7 +267,6 @@ class TimeTable(object):
         :return:
         """
         result = 0
-        print data.getUnfinishedCourses()
         for course in data.getUnfinishedCourses():
             if self.neighbourhoodList.has_key(courseId) and \
                 course.id in self.neighbourhoodList[courseId]:

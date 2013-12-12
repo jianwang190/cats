@@ -76,6 +76,7 @@ class AdaptiveTabuSearch:
 
         iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
         while iterationsWithoutChange>0:
+
             #print "ATS:", solutionQuality, bestQuality
             # print "THETA: %f ETA: %f xi: %f F: %f" % (theta, eta, xi, softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data))
             #print "PERTURBATION"
