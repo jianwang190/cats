@@ -167,7 +167,7 @@ $t_{5}$ & $null$ & $null$ & $null$ \\
 Przykłady możliwych zamian dla poszczególnych przypadków (zdefiniowane w postaci $[(t_{i}, c_{i}, r_{i}), (t_{j}, c_{j}, r_{j})]$ oznaczająca możliwą zamianę między kursami $c_{i}$ i $c_{j}$, wobec której kurs $c_{i}$ zostanie przypisany do okresu $t_{j}$ i sali $r_{j}$ a kurs $c_{j}$ przypisany do $t_{i}$ i sali $r_{i}$:
 \begin{enumerate}
 \item $[(t_{1}, null, sala1),(t_{3},religia, sala1)]$ , $[(t_{1}, null, sala1),(t_{4},etyka, sala2)]$,\\ $[(t_{5}, null, sala1)$,$(t_{1},biologia, sala2)]$ 
-\item $[(t_{1}, biologia, sala2),(t_{3},religia, sala1)]$, $[(t_{1}, język\ angielski, sala3),(t_{3},język\ polski, sala2)]$
+\item $[(t_{1}, biologia, sala2),(t_{3},religia, sala1)]$, $[(t_{1}, język\ angielski, sala3)$\\$(t_{3},język\ polski, sala2)]$
 \end{enumerate}
 
 Przykłady niepoprawnych zamian:
@@ -284,7 +284,7 @@ Przykład dla parametrów $q = 5$ i $n = 3$:
  \item[(9)] $(t_{2}, historia, sala1)[25]$
 \end{enumerate}
 \item Z puli wszystkich przedmiotów wybieramy $q = 5$ przedmiotów czyli przedmioty $(1) - (5)$ 
-\item Rozkłady dla wybranych $q$ zajęć:
+\item Rozkłady przed normalizacją dla wybranych $q$ zajęć:
 	\begin{enumerate}
 	\item[(1)] $P(1) = 1^{-4.0} = 1$
  	\item[(2)] $P(2) = 2^{-4.0} = \frac{1}{16}$
@@ -292,7 +292,7 @@ Przykład dla parametrów $q = 5$ i $n = 3$:
  	\item[(4)] $P(4) = 4^{-4.0} = \frac{1}{256}$
  	\item[(5)] $P(5) = 5^{-4.0} = \frac{1}{625}$
 	\end{enumerate}
-\item Losowane jest bez powtórzeń $n = 3$ zajęć zgodnie z powyższym rozkładem \\
+\item Losowane jest bez powtórzeń $n = 3$ zajęć zgodnie z powyższym rozkładem po dokonaniu normalizacji \\
 	Przykłady wylosowanych zajęć [*]:
 	\begin{enumerate}
 	 \item[(1)] $(t_{4}, fizyka, sala1)[127]$
