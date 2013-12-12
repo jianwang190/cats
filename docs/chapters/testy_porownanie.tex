@@ -1,4 +1,5 @@
 \chapter{Testy i porównanie algorytmów}
+Implementacja kilku algotymów dała nam możliwość porównania ich działania dla kilku instancji problemu. Dzięki temu możliwe jest zauważenie charakterystycznych cech poszczególnych algorytmów oraz ocena wygenerowanych planów zajęć przez te algorytmy.
 \section{Analiza działania poszczególnych algorytmów}
 \subsection{Algorytm Roju Cząsteczek}
 \textit{Paweł Jastrzębski} \\
@@ -72,7 +73,7 @@ Testy szczegółowo zostały opisane w kolejnej sekcji.
     \includegraphics[width=10cm]{ogolny.png}
      \caption{Wykres zależności funkcji oceny od czasu}
 \end{figure}
-Na wykresie wyraźnie widać wyodrębioną fazę inicjalizacji, w której tworzone jest początkowe rozwiązanie nienaruszające twardych ograniczeń. Nagła zmiana wartości funkcji oceny wynika z wywołania w algorytmie funkcji przypasowującej sale do poszczególnych zajęć. Celem tej funkcji jest początkowe przypasowanie największych sal do kursów, na które uczęszcza największa liczba studentów, dzięki temu zmiejszana jest funkcja oceny miękkich ograniczeń dotycząca wielkości sali wykładowej. Stosunkowo długi czas działania algorytmu wynika z bardzo dużej ilości wywołań funkcji oceny, niezbędnej do stworzenia rozwiązania początkowego oraz do określenia najlepszych mozliwych zmian, które mogą zostać wprowadzone w kolejnych fazach: intensyfikacji i dywersyfikacji. Problem mógłby zostać rozwiązany implementacją modułu w języku \verb#C#, który w znacznie szybszy sposób wylicza funkcję kary, niż zaimplementowana optymalnie ta sama funkcjonalność w języki \verb#python#.
+Na wykresie wyraźnie widać wyodrębioną fazę inicjalizacji, w której tworzone jest początkowe rozwiązanie nienaruszające twardych ograniczeń. Nagła zmiana wartości funkcji oceny wynika z wywołania w algorytmie funkcji przypasowującej sale do poszczególnych zajęć. Celem tej funkcji jest początkowe przypasowanie największych sal do kursów, na które uczęszcza największa liczba studentów, dzięki temu zmiejszana jest funkcja oceny miękkich ograniczeń dotycząca wielkości sali wykładowej. Stosunkowo długi czas działania algorytmu wynika z bardzo dużej ilości wywołań funkcji oceny, niezbędnej do stworzenia rozwiązania początkowego oraz do określenia najlepszych możliwych zmian, które mogą zostać wprowadzone w kolejnych fazach: intensyfikacji i dywersyfikacji. Problem mógłby zostać rozwiązany implementacją modułu w języku \verb#C#, który w znacznie szybszy sposób wylicza funkcję kary, niż zaimplementowana optymalnie ta sama funkcjonalność w języki \verb#python#.
 \begin{figure}[H]
   
   \centering
@@ -94,7 +95,7 @@ Wykres obrazuje jak zmieniała się funkcja oceny w czasie. Dla testu 2 początk
     \includegraphics[width=10cm]{szczegolowy2_instancja.png}
     \caption{Wykres zależności funkcji oceny od czasu, bez uwzględnienia fazy inicjalizacji}
 \end{figure}
-Wykres przedstawia działanie algorytmu w fazie dywersyfikacji i intensyfikacji.
+Wykres przedstawia działanie algorytmu w fazie dywersyfikacji i intensyfikacji, gdzie można zauważyć lokalne zmiany w funkcji oceny poszczególnych rozwiązań uzyskiwanych w kolejnych etapach działania algorytmu.
 \section{Specyfikacja testów}
 \textit{Katarzyna Śmietanka} 
 \\
@@ -159,7 +160,7 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
 \caption {Wyniki uzyskane przez poszczególne algorytm}
 \end{table}
 \par Jak można zaobserwować najlepszy rezultat dla pierwszej instancji uzyskał algorytm PSO, jednak czas potrzebny do uzyskania tego wyniku był stosunkowo długi w porównaniu do algorytmu GA. Żaden z wygenerowanych planów nie narusza ograniczeń twardych. Najgorsze wyniki uzyskał Algorytm Adaptacyjny Tabu, prawdopodobnie czas działania algorymu był zbyt krótki, tak aby zmiejszyć funkcję oceny.
-\par Ciekawym spostrzeżeniem jest to, że żaden z algorytmów nie miał problemu z minimalizacją do zera ograniczenia miękkiego,  $S_{3}$, które dotyczy minimalnej liczby dni na które muszą być rozłożone zajęcia z danego kursu. Kara uzyskana za $S_{2}$ stabilnośc pomieszczenia jest porównywalna dla wszystkich algorytmów.
+\par Ciekawym spostrzeżeniem jest to, że żaden z algorytmów nie miał problemu z minimalizacją do zera ograniczenia miękkiego $S_{3}$, które dotyczy minimalnej liczby dni na które muszą być rozłożone zajęcia z danego kursu. Kara uzyskana za $S_{2}$ stabilnośc pomieszczenia jest porównywalna dla wszystkich algorytmów.
 \par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów.
 \begin{figure}[H]
         \centering
@@ -186,7 +187,7 @@ $Funkcja\ oceny$ & $74$ & $37$ & $243$ \\
 W powyższych wykresów można zaobserwować funkcję oceny początkowych rozwiązań wygenerowanych przez każdy z algorytmów. Najniższą wartość oceny na początku uzyskał algorytm GA, najwyższą zaś PSO. Dla każdego z wywołań alorytmu GA, czy też PSO funkcja oceny rozwiązania początkowego będzie inna, ze względu na losowość zaś w algorytmie ATS taka sama. W ATS początkowe rozwiązanie jest tworzone przy pomocy heurystyki, która w ten sam sposób, dla tej samej instancji tworzy inicjalny plan zajęć. Ciekawą cechą algorytmu ATS jest stosunkowo duża liczba odwołań jego do funkcji oceny, choćby dla początkowej fazy działania algorytmu. Wykres funkcji oceny od liczby referencji dla PSO ma kształt wykresu funkcji wykładniczej malejącej. Nietypowy kształ wykresu dla ATS wynika z nagłej zmiany najlepszego rozwiązania, spowodowanej wywołaniem funkcji przypasowującej sale do poszczególnych zajęć. Nieznaczne zaburzenia na wykresie dotyczące zmiany wartości najlepszego rozwiązania mogą być spowodowane nie dokońca właściwym sposobem przygotowania danych do stworzenia wykresów zmian, pomimo tego oddają one istotę przedstawionej idei.
 \subsubsection{Test 1 - wizualizacja}
 \par Celem stworzenia wizualizacji jest zobrazowanie instancji problemu dla pierwszego testu, jak również pokazanie, że wprowadzanie kolejnych nawet minimalnych ograniczeń znacznie komplikuje problem.
-\par Wierzchołki oznaczone ikoną książki oznaczają poszczególne kursy, opatrzone są one również etykietą - nazwą kursu.Krawędzie łączące poszczególne kursy ze sobą oznaczają konflikty występujące pomiędzy tymi zajęciami. Zajęcia połączone wspólną krawędzią nie mogą odbywać się w tym samym czasie, gdyż albo prowadzone są przez tego samego wykładowcę albo wchodzą w skład tego samego programu nauczania. Nierealne by było dla studenta uczęszczanie na wszystkie obowiązkowe zajęcia, które odbywają się dokładnie w tym samym czasie, dlatego też konieczne jest rozpatrzenie podczas działania algorytmu tych ograniczeń. Na grafach nie przedstawiono ograniczeń związanych z niedostępnością wykładowcy w danym czasie, ponieważ trudno byłoby to uwzględnić na takim rodzaju grafu.
+\par Wierzchołki oznaczone ikoną książki oznaczają poszczególne kursy, opatrzone są one również etykietą - nazwą kursu. Krawędzie łączące poszczególne kursy ze sobą oznaczają konflikty występujące pomiędzy tymi zajęciami. Zajęcia połączone wspólną krawędzią nie mogą odbywać się w tym samym czasie, gdyż albo prowadzone są przez tego samego wykładowcę albo wchodzą w skład tego samego programu nauczania. Nierealne by było dla studenta uczęszczanie na wszystkie obowiązkowe zajęcia, które odbywają się dokładnie w tym samym czasie, dlatego też konieczne jest rozpatrzenie podczas działania algorytmu tych ograniczeń. Na grafach nie przedstawiono ograniczeń związanych z niedostępnością wykładowcy w danym czasie, ponieważ trudno byłoby to uwzględnić na takim rodzaju grafu.
 \begin{figure}[H]
   \centering
     \includegraphics[width=10cm]{test1.PNG}
@@ -206,7 +207,7 @@ Na grafie można zaobserwować, że tylko nieliczne kursy prowadzone są przez t
     \includegraphics[width=10cm]{test1_con.PNG}
 \end{figure}
 \par Powiązania między kursami pokazują zależności pomiędzy programami nauczania. Każda z przedstawionych grup zawiera kilka programów nauczania w skład, którego wchodzą kursy. Brak połączeń pomiędzy tymi czterema grupami, wskazuje na to, że te kursy należące do każdej z tych grup są niezależne od innych programów nauczania, uwzględniając jedynie czynnik przynależności do tego samego programu nauczania. W wersji interaktywnej po najechaniu myszką na wierzchołek grafu uzyskamy informację o identyfikatorze kursu.
-\par Połączenie tych wszystkich ograniczeń znacznie utrudnia problem ułożenia prawidłowego planu zajęć, zwiększając liczbę krawędzi pomiedzy wierzchołkami grafu, a tym samym liczbę występujących konflików pomiędzy kursami. Można to zauważyć na początkowej wizualizacji.
+\par Połączenie tych wszystkich ograniczeń znacznie utrudnia problem ułożenia prawidłowego planu zajęć, zwiększając liczbę krawędzi pomiędzy wierzchołkami grafu, a tym samym liczbę występujących konflików pomiędzy kursami. Można to zauważyć na początkowej wizualizacji.
 
 \subsection{Test 2}
 \begin{table}[H]
@@ -270,7 +271,8 @@ $Funkcja\ oceny$ & $676$ & $330$ & $287$ \\
 \end{center}
 \caption {Wyniki uzyskane przez poszczególne algorytmy}
 \end{table}
-Jak można zauważyć z powyższej tabeli algorytm PSO mimo bardzo długiego czasu działania nie usunął wszystkich naruszeń związanych z ograniczeniami twardymi dotyczącymi: ${H}_{1}$ przyporządkowania wszystkich wykładów oraz $H_{4}$ dostępności wykładowcy. Najlepszy rezultat działania został uzyskany przez ATS, którego czas działania był najkrótszy w stosunku do pozostałych algorytmów. Największym problemem do minimalizacyjnym dla wszystkich algorytmów było zmiejszenie funkcji oceny za $S_{4}$ zwartość zajęc, a kara otrzymana za $S_{3}$ jest porównywalna dla wszystkich algorytmów. 
+\par Jak można zauważyć z powyższej tabeli algorytm PSO mimo bardzo długiego czasu działania nie usunął wszystkich naruszeń związanych z ograniczeniami twardymi dotyczącymi: ${H}_{1}$ przyporządkowania wszystkich wykładów oraz $H_{4}$ dostępności wykładowcy. Najlepszy rezultat działania został uzyskany przez ATS, którego czas działania był najkrótszy w stosunku do pozostałych algorytmów. 
+\par Największym problemem minimalizacyjnym dla wszystkich algorytmów było zmiejszenie funkcji oceny za $S_{4}$ zwartość zajęć, a kara otrzymana za $S_{3}$ jest porównywalna dla wszystkich algorytmów. 
 Zarówno Algorytm Genetyczny jak również Algorytm Róju cząsteczek nie dają gwarancji wygenerowania całkowicie poprawnego planu zajęć, nie naruszającego żadnych z ograniczeń $H_{1}-H_{4}$. Algorytm Adaptacyjny Tabu gwarantuje, że ograniczenia $H_{2}-H_{4}$ będą spełnione dla stworzonego planu zajęć, ale nie zapewnia o spełnieniu ograniczenia ${H}_{1}$. Nie spełnienie tego ograniczenia może zajść w fazie inicjalizacji, gdzie nie będzie możliwe przyporządkowanie zajęć do żadnego z przedziałów czasowych nie naruszając innych ograniczeń.
 \par  Wykresy zmiany funkcji oceny w zależności od liczby odwołań do funkcji oceny dla poszczególnych algorytmów.
 \begin{figure}[H]
@@ -419,16 +421,16 @@ $Liczba\ ograniczeń$ & $0$ \\
 \end{table}
 Wyniki uzyskane przez poszczególne algorytmy:
 \begin{itemize}
-\item Algorytm Genatyczny - funkcja oceny ograniczeń miękkich : \textbf{146}, liczba naruszeń ograniczeń twardych: \textbf{2}
+\item Algorytm Genetyczny - funkcja oceny ograniczeń miękkich : \textbf{146}, liczba naruszeń ograniczeń twardych: \textbf{2}
 \item Algorytm Adaptacyjny Tabu - funkcja oceny ograniczeń miękkich : \textbf{1493}, liczba naruszeń ograniczeń twardych: \textbf{0}
 \end{itemize}
 Algorytmy mimo stosunkowo długiego działania, ze względu na dużą liczbę kursów, nie znalazły bardzo dobrego, optymalnego rozwiązania problemu. Algorytm Adaptacyjny Tabu wygenerował plan zajęć nienaruszających żadnych ograniczeń twardych, przydzielając wszystkie obowiązkowe zajęcia do planu zajęć. Całkowite przystosowanie algorytmy adaptacyjnego do danych uzyskanych ze szkoły wymagałaby długiej analizy działania algorytmu i przystosowania funkcji oceny do tych danych.
 
 
 \subsection{Podsumowanie działania algorytmów}
-\par Algorytm Roju Cząsteczek nie dla wszystkich instancji był w stanie wygeneregować wykonywalny plan zajęć, pomimo stosunkowo długiego czasu działania. Algorytm ten nie daje gwarancji, że ograniczenia twarde zostaną całkowicie wyeliminowane.Ponadto metoda ta jest mało odporna na lokalne minima. Rozpatrywanie różnych modyfikacji algorytmu dało możliwość badawczego zapoznania się z tym jakże trudnym problemem, jakim jest układanie planu zajęć.
+\par Algorytm Roju Cząsteczek nie dla wszystkich instancji był w stanie wygeneregować wykonywalny plan zajęć, pomimo stosunkowo długiego czasu działania. Algorytm ten nie daje gwarancji, że ograniczenia twarde zostaną całkowicie wyeliminowane. Ponadto metoda ta jest mało odporna na lokalne minima. Rozpatrywanie różnych modyfikacji algorytmu dało możliwość badawczego zapoznania się z tym jakże trudnym problemem, jakim jest układanie planu zajęć.
 \par Algorytm Genetyczny jest również stosunkowo niepewnym rozwiązaniem, niedającym gwarancji o nie naruszeniu ograniczeń twardych. Głównym czynnikiem wpływającym na działanie algorytmu jest element losowy wprowadzony do niego, który w różny sposób tworzy początkowe rozwiązania. Zastosowanie zwiększonego współczynnika mutacji umożliwia wyjście algorytmu z lokalnego minimum. Algorytm mimo swojej prostoty, dla wybranych instancji uzyskał stosunkowo dobre wyniki.
-\par Algorytm Adaptacyjny Tabu uzyskał dla większości instancji najlepsze wyniki. Algorytm ten gwarantuje zawsze spełnienie części z ograniczeń twardych $H_{2}-H_{4}$, nie zawsze zaś ograniczenia $H_{1}$. Ograniczenie ${H_{1}}$ jest naruszane w przypadku kiedy niemożliwe jest znalezienie przedziału czasu, gdzie może zostać przyporządkowany kurs nie naruszając $H_{2}-H_{4}$. ATS charakteryzuje się największą liczbą odwołań do funkcji oceny, w celu znalezienia optymalnego rozwiązania.
+\par Algorytm Adaptacyjny Tabu uzyskał dla większości instancji najlepsze wyniki. Gwarantuje on zawsze spełnienie części z ograniczeń twardych $H_{2}-H_{4}$, nie zawsze zaś ograniczenia $H_{1}$. Ograniczenie ${H_{1}}$ jest naruszane w przypadku kiedy niemożliwe jest znalezienie przedziału czasu, gdzie może zostać przyporządkowany kurs nie naruszając $H_{2}-H_{4}$. ATS charakteryzuje się największą liczbą odwołań do funkcji oceny, w celu znalezienia optymalnego rozwiązania.
 
 
 
