@@ -1,8 +1,8 @@
-\section{Projekt systemu}
+\chapter{Projekt systemu}
 \author{Filip Czajkowski}
-\subsection{Cele systemu}
+\section{Cele systemu}
 \paragraph{}Wytworzony system miał na celu umożliwić wygenerowanie rozkładu zajęć na podstawie dostępnych danych opisujących daną placówkę edukacyjną. Główny wysiłek został położony na implementację algorytmów, które plan układają, natomiast aplikacja webowa miała służyć jako prosty interfejs do ich wywoływania. Poprzez zastosowanie kilku algorytmów do rozwiązania tego problemu, system umożliwiać miał porównanie ich wydajności. Dodatkowo miał także udostępniać wizualną prezentację powstałego planu dla danego programu nauczania, aby móc go ocenić pod kątem praktycznego zastosowania.
-\subsection{Wymagania}
+\section{Wymagania}
 \paragraph{}Powstały system miał narzucone następujące ograniczenia techniczne:
 \begin{itemize}
 \item Aplikacja po stronie klienta jest dostępna z poziomu przeglądarki z obsługą JavaScript i wymaga jedynie aktywnego połączenia z serwerem.
@@ -28,9 +28,9 @@
 \item W widoku zakończonego zadania możliwość wybrania z listy programów nauczania dowolnego z nich i przedstawienie wszystkich przydzielonych kursów w formie tabeli.
 \item Możliwość zapisania na dysku wygenerowanego zestawu planów do arkuszy w pliku w formacie \emph{.csv}.
 \end{itemize}
-\subsection{Zastosowanie}
+\section{Zastosowanie}
 \paragraph{}Wytworzony system może mieć zastosowanie dwojakie. Pierwsze z nich należy do pola naukowo - badawczego i szczególnie pod tym kątem było projektowane. Dotyczy ono samego zagadnienia układania planu zajęć, umożliwia porównanie zastosowanych trzech metod pod kątem np. czasu pracy czy samej efektywności procesu. Drugim obszarem zastosowań jest platforma biznesowa, choć dość ograniczona w tym przypadku. Posiadając dane na temat jakiejś placówki dydaktycznej w odpowiednim formacie będziemy mogli ułożyć dla niej realny rozkład zajęć. Udostępniany przez system sposób wizualizacji wynikowego planu umożliwia poddanie go trafnej ocenie przydatności przez człowieka.
-\subsubsection{Przypadki użycia}
+\subsection{Przypadki użycia}
 \begin{itemize}
 \item{\textbf{Aktorzy}} - Wszyscy mogą korzystać z systemu w ten sam sposób, więc istnieje jeden aktor, podstawowy użytkownik systemu. Natomiast aby przeprowadzić jakąkolwiek operację konieczne jest zalogowanie się na wcześniej utworzone konto.
 \end{itemize}
@@ -49,7 +49,7 @@
 \item{Zobacz plan zajęć w tabeli HTML} - Po wybraniu konkretnego zadania z widoku listy, dla każdego elementu z listy programów nauczania zawartych w planie, dostępny będzie przycisk wywołujący wizualizację wygenerowanego dla niego planu w postaci tabeli HTML.
 \item{Pobierz wygenerowane plany} - Po wybraniu konkretnego zadania z widoku listy, dostępny będzie przycisk umożliwiający pobranie wszystkich planów w postaci arkuszy w pliku \emph{.csv}.
 \end{enumerate}
-\subsection{Architektura systemu}
+\section{Architektura systemu}
 \paragraph{} Ogólna architektura systemu oparta jest na modelu klient - serwer. Wszystkie operacje logiczne są wykonywane po stronie serwera, natomiast część kliencka odpowiada jedynie za pobranie danych i prezentację wyników. W części serwera zawarte są następujące komponenty.
 \begin{enumerate}
 \item Oprogramowanie obsługi serwera wykonane w środowisku \emph{Python}, które generuje widok strony internetowej, odbiera żądania klienta itd.
@@ -63,7 +63,7 @@
   \centering
     \includegraphics[width=0.8\textwidth]{img/ComponentsDiagram.png}
 \end{figure}
-\subsection{Rozwiązania implementacyjne}
+\section{Rozwiązania implementacyjne}
 \paragraph{Komunikacja} - schemat komunikacji w systemie po stronie serwera podczas wywołania zadania generującego plan prezentuje poniższy diagram.
 \begin{figure}[H]
   \caption{Diagram komunikacji po stronie serwera}
