@@ -43,9 +43,6 @@ class AdaptiveTabuSearch:
         signal.alarm(self.timeLimit)
         try:
             self.runTimeLimited()
-        except Exception as e:
-            print traceback.format_exc()
-            #print softConstraints2.refPenalty
         finally:
             return self.bestSolution
 
@@ -76,6 +73,7 @@ class AdaptiveTabuSearch:
 
         iterationsWithoutChange = INITIAL_ITERATIONS_WITHOUT_CHANGE
         while iterationsWithoutChange>0:
+
             #print "ATS:", solutionQuality, bestQuality
             # print "THETA: %f ETA: %f xi: %f F: %f" % (theta, eta, xi, softConstraints2.totalSoftConstraintsForTimetable(bestSolution.getTimeTable(), data))
             #print "PERTURBATION"
