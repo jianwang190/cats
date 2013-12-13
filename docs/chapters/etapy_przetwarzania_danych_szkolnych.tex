@@ -1,9 +1,10 @@
 
 \chapter{Etapy przetwarzania danych szkolnych}
+\label{daneSzkolne}
 \textit{Katarzyna Śmietanka} \\
-Ważnym etapem pracy nas systemem okazało się być przystosowanie algorytmów do realnych danych uzyskanych z jednej ze szkoł ponadgimnazjalnych. Proces ten wymagał przeprowadzenia różnych działań związanych z eksploracją danych, czyli przetworzenia danych oraz wyodrębnienia istotnych danych dla zdefiniowanego przez nas problemu. Na proces obróbki danych składało się kilka etapów: analiza danych, wybór istotnych danych, transformacje danych, czyszczenie i uzupełnienie brakujących danych oraz stworzenie wizualizacji danych.
+Ważnym etapem pracy nas systemem okazało się być przystosowanie algorytmów do realnych danych uzyskanych z jednej ze szkół ponadgimnazjalnych. Proces ten wymagał przeprowadzenia różnych działań związanych z eksploracją danych, czyli przetworzenia danych oraz wyodrębnienia istotnych danych dla zdefiniowanego przez nas problemu. Na proces obróbki danych składało się kilka etapów: analiza danych, wybór istotnych danych, transformacje danych, czyszczenie i uzupełnienie brakujących danych oraz stworzenie wizualizacji danych.
 \section{Opis danych szkolnych}
-Uzyskane dane szkolne są plikami tekstowymi w formacie CSV. \\
+Uzyskane dane szkolne są plikami tekstowymi w formacie \emph{.CSV}. \\
 W sekcji tej poniższe pojęcia będą używane synonimicznie: \\
 kurs - przedmiot \\
 program nauczania - klasa \\
@@ -14,7 +15,7 @@ Rodzaje plików z danymi:
 Format:
 <Nazwa przedmiotu><Prowadzący przedmiot>
 \end{verbatim}
-\item[2.] Grupy występujace w szkole
+\item[2.] Grupy występujące w szkole
 \begin{verbatim}
 Format:
 <Kod grupy> <Grupa nadrzędna> <Nazwa grupy> <Rodzaj grupy> 
@@ -43,7 +44,7 @@ Format:
 \begin{figure}[H]
   \centering
     \includegraphics[width=0.8\textwidth]{proces_przetwarzania.png}
-  \caption{Szkip etapów przetwarzania danych}
+  \caption{Szkic etapów przetwarzania danych}
 \end{figure}
 \begin{enumerate}
 \item[(1)] \textbf{Analiza danych szkolnych} - zapoznanie się z danymi oraz analiza w jaki sposób efektywnie i racjonalnie wykorzystać nagromadzoną wiedzę, poznanie struktury danych.
@@ -52,7 +53,7 @@ Format:
 \item[(4)] \textbf{Transformacja danych} - wykonane transformacje opisane w sekcji ,,Transformacje''
 \item[(5)] \textbf{Wizualizacja danych} - wykonanie grafów przedstawiających zależności pomiędzy danymi, szczegółowy opis w sekcji ,,Wizualizacja danych szkolnych''
 \item[(6)] \textbf{Czyszczenie danych}  - usunięcie niepełnych, niepoprawnych oraz nieistotnych danych np. kursy (przedmioty), które mają niepełne dane zaburzające działanie algorytmu, usunięcie zbędnych kursów m.in. $Biblioteka\ szkolna$, który w znacznym stopniu utrudniał ułożenie planu poprzez zwiększenie liczby konfliktów pomiędzy zajęciami.
-\item[(7)] \textbf{Uzupełnienie brakujących danych} - dane uzyskane ze szkoły nie zawierały informacji o maksymalnej liczbie osób, która może się zmieścić w danej sali, typach sal szkolnych - co jest dość istotnym elementem, który wpływa na realność ułożonego planu. Nie uzwględnienie tego czynnika może powodować, że np. zajęcia z matematyki będą musiały odbywać się na sali gimnastycznej. 
+\item[(7)] \textbf{Uzupełnienie brakujących danych} - dane uzyskane ze szkoły nie zawierały informacji o maksymalnej liczbie osób, która może się zmieścić w danej sali, typach sal szkolnych - co jest dość istotnym elementem, który wpływa na realność ułożonego planu. Nie uwzględnienie tego czynnika może powodować, że np. zajęcia z matematyki będą musiały odbywać się na sali gimnastycznej. 
 \item[(8)] \textbf{Sprawdzenie spójności danych} - wczytanie danych do struktury początkowej dla zaimplementowanych algorytmów.
 \item[(9)] \textbf{Wizualizacja danych} - w celu łatwiejszej identyfikacji występujących błędów oraz sprecyzowanie trudności ułożenia planu zajęć dla tych danych.
 \end{enumerate}
@@ -80,12 +81,12 @@ Występujące identyfikatory grup:
 2 LW Chemia
 2 LP Chemia
 \end{verbatim}
-Pomimo różnych identyfikatorów można zauwazyć, że  grupy \verb#2 LW Chemia# oraz 
+Pomimo różnych identyfikatorów można zauważyć, że  grupy \verb#2 LW Chemia# oraz 
 \verb#2 LP Chemia# tworzą jedną z grup międzyklasowych, ponieważ są nauczane przez tego samego nauczyciela oraz odbywają się dokładnie w tym samym czasie.
 \item Przypisanie identyfikatorów grup międzyklasowych do odpowiednich klas (stworzenie międzyklasowych kursów), dla których dany przedmiot jest nauczany. Zliczenie liczby godzin realizowanego kursu międzyklasowego i liczby studentów uczęszczających na dany kurs.
-\item Wyodrębnienie wszystkich przedmiotów nauczanych w szkole (nauczanych tylko w obrębie jednej klasy) oraz przypisanie ich do opowiednich klas.
+\item Wyodrębnienie wszystkich przedmiotów nauczanych w szkole (nauczanych tylko w obrębie jednej klasy) oraz przypisanie ich do odpowiednich klas.
 \item Zgrupowanie danych z dokumentu ,,Zestawienie planu'' na podstawie kluczy: \\
-\verb#<Zajęcia><Grupa uczniów># w celu zliczenia liczby godzin realizowanego przedmiotu w danej klasie oraz przypisania identyfikora nauczyciela. \\
+\verb#<Zajęcia><Grupa uczniów># w celu zliczenia liczby godzin realizowanego przedmiotu w danej klasie oraz przypisania identyfikatora nauczyciela. \\
 Dokument ,,Zestawienie planu'' zawiera aktualnie ułożony plan szkolny, w którym każde zajęcia przyporządkowane są do dnia tygodnia i godziny lekcyjnej oraz klasy. Aby uzyskać liczbę godzin nauczanego przedmiotu lub liczbę uczniów, konieczne było przeprowadzenie operacji grupowania.
 \end{enumerate}
 \subsection{Specyfikacja uzyskanych danych}
@@ -136,14 +137,14 @@ Dlatego też zdecydowaliśmy się na uproszczenie problemu, poprzez przyporządk
 \subsection{Wizualizacje danych szkolnych}
 \par Poniższe grafy zostały stworzone przy pomocy biblioteki JavaScript, D3.js. Wierzchołki oznaczają kursy (przedmioty) zaś krawędzie w grafie konflikty pomiędzy kursami. Konflikty pomiędzy kursami występują, kiedy dany kurs należy do tego samego programu nauczania co kurs połączony z nim bezpośrednio krawędzią, bądź oba kursy prowadzone są przez tego samego wykładowcę.
 Zajęcia połączone krawędzią nie mogą być przeprowadzane w tym samym czasie. 
-\par Stworzenie wizualizacji danych dało możliwość obejrzenia struktury danych wejściowych, sprawdzenia ich poprawności oraz identyfikację nieprawidłowych zależności pomiędzy kursami. Naniesienie wszystkich organiczeń na graf dało bardzo nieczytelną strukturę grafu, dlatego też zdecydowano się na rozdzielenie poszczególnych ograniczeń i przedstawienie uzyskanych zależności pomiędzy kursami.
+\par Stworzenie wizualizacji danych dało możliwość obejrzenia struktury danych wejściowych, sprawdzenia ich poprawności oraz identyfikację nieprawidłowych zależności pomiędzy kursami. Naniesienie wszystkich ograniczeń na graf dało bardzo nieczytelną strukturę grafu, dlatego też zdecydowano się na rozdzielenie poszczególnych ograniczeń i przedstawienie uzyskanych zależności pomiędzy kursami.
 \begin{figure}[H]
   \centering
   
     \includegraphics[width=10cm]{szkola1.PNG}
     \caption{Fragment grafu przedstawiający konflikty pomiędzy pomiędzy kursami, uwzględniając zależności związane z tym samym prowadzącym zajęcia. Grafy pełne.}
 \end{figure}
-\par Graf pokazuje konflikty pomiędzy zajęciami, po uwzględnieniu ograniczeń dotyczących tego samego prowadzącego nauczyciela, który uczy w kilku grupach przedmiotowych. Uzyskana struktura grafu jest prawiłowa, ponieważ w danym czasie nauczyciel jest w stanie prowadzić zajęcia tylko w jednej grupie przedmiotowej. Na wizualizację składają się grafy pełne zawierające wszystkie zależności dotyczące konfliktów uwzględniających tego samego wykładowcę.
+\par Graf pokazuje konflikty pomiędzy zajęciami, po uwzględnieniu ograniczeń dotyczących tego samego prowadzącego nauczyciela, który uczy w kilku grupach przedmiotowych. Uzyskana struktura grafu jest prawidłowa, ponieważ w danym czasie nauczyciel jest w stanie prowadzić zajęcia tylko w jednej grupie przedmiotowej. Na wizualizację składają się grafy pełne zawierające wszystkie zależności dotyczące konfliktów uwzględniających tego samego wykładowcę.
 \begin{figure}[H]
   \centering
   
@@ -158,7 +159,7 @@ Wizualizacje zostały stworzone z wykorzystaniem biblioteki JavaScript D3.js \ci
 \section{Trudności w analizie i przetwarzaniu danych}
 \begin{enumerate}
 \item \textbf{Nadmiarowość danych} - po wstępnej analizie okazało się, że część z uzyskanych danych nie jest potrzeba do wyodrębniania istotnych dla algorytmów danych. Uzyskane pliki z danymi zawierające informacje o przedmiotach nauczanych w każdej klasie i nauczycielach prowadzących okazały się być zbędne. W tych danych nie było dołączonej informacji o liczbie godzin realizowanego przedmiotu ani liczbie uczniów uczęszczających na ten przedmiot. 
-\item \textbf{Niespójność konwencji nazewnictwa w danych} - utrudniało to w znacznym stopniu analizę danych i powiązań pomiędzy występującymi grupami wchodzącymi w skład klasy. Grupy międzyklasowe mimo tego, że miały dokładnie te same zajęcia w tym samym czasiem i prowadzone były przez tego samego nauczyciela, identyfikatory tych grup były różne dla każdej z klas.
+\item \textbf{Niespójność konwencji nazewnictwa w danych} - utrudniało to w znacznym stopniu analizę danych i powiązań pomiędzy występującymi grupami wchodzącymi w skład klasy. Grupy międzyklasowe mimo tego, że miały dokładnie te same zajęcia w tym samym czasie i prowadzone były przez tego samego nauczyciela, identyfikatory tych grup były różne dla każdej z klas.
 \item \textbf{Niepełne i czasami niepoprawne dane} - brak danych o nauczycielu uczącym danego przedmiotu, brak informacji o liczbie osób uczęszczających na dane zajęcia. Niepełne dane powodowały błędne działanie algorytmu. Uzupełnienie brakujących danych domyślnymi danymi wprowadzało kolejne konflikty pomiędzy kursami, które znacznie utrudniały oraz modyfikowały problem ułożenia planu dla tej szkoły.
 \item \textbf{Integracja danych} - konieczność łączenia danych w celu wyodrębnienia informacji o poszczególnych przedmiotach i grupach uczniów. W celu uzyskania danych niezbędnych do specyfikacji problemu koniecznym było połączenie danych z kilku plików, dotyczy to głównie grup międzyklasowych, które występują dla tej szkoły.
 \item \textbf{Odtworzenie danych} - konieczność odtworzenia niektórych danych z istniejącego planu zajęć dla szkoły zdefiniowanego pliku ,,Zestawienie planu''. Dane nie zawierały ściśle określonej liczby godzin realizowanego przedmiotu przez daną klasę, dlatego też trzeba było to uzyskać, zliczając poszczególne wystąpienia zajęć w istniejącym planie ułożonym przez szkołę.

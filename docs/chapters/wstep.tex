@@ -8,21 +8,21 @@
 \par Problem ułożenia planu zajęć podejmowany był w wielu pracach naukowych również na Politechnice Gdańskiej, co świadczy o tym że ułożenie bezkonfliktowego planu zajęć jest problemem stosunkowo trudnym do rozwiązania a zarazem bardzo ciekawym, ponieważ w bezpośredni sposób dotyczy każdej uczącej się osoby. Dlatego też na przestrzeni wielu lat powstało wiele różnych podejść do tego problemu od algorytmów klasycznych poprzez różnego typu algorytmy sztucznej inteligencji.
 \par Problem układania graficznych rozkładów nie tylko związany jest ze szkolnictwem, ale również dotyczy układania rozkładów jazdy komunikacji miejskiej \cite{com}, planu zajęć dla pracowników \cite{worker} oraz terminarza zawodów sportowych \cite{sport}.
 \section{Cel}
-\par Celem naszej pracy jest stworzenie systemu do automatyzacji procesu układania planów zajęć z wykorzystaniem Algorytmu Genetycznego (Genetic Algorithm).  W przeciągu ostatnich lat pojawiły się nowe podejścia, algotymy rozwiązujące problem układania planu zajęć, które postawiły algorytm genetyczny w nowym świetle. Chęć głębszego zapoznania się z postawionym przed nami problemem sprawiła, że zdecydowaliśmy się na rozszerzenie zagadnienia tematu naszej pracy inżynierskiej o kolejne implementacje algorytmów: Algorytm Roju Cząsteczek (Particle Swarm Optimization) oraz Algorytm Adaptacyjny Tabu (Adaptive Tabu Search). Ponadto w celu urzeczywistnienia problemu zdecydowaliśmy się na przystosowanie działania naszych algorytmów do realych danych, uzyskanych z jednej z gdyńskich szkół ponadgimnazjalnych.
-\par Implementacja algorytmów: Genetycznego, Roju Cząsteczek oraz Adaptacyjnego Tabu postawiła nas przed ciekawą możliwością porównania działania tych algorytmów, co jak się okazuje nie jest łatwym zadaniem.
+\par Celem naszej pracy jest stworzenie systemu do automatyzacji procesu układania planów zajęć z wykorzystaniem algorytmu genetycznego (Genetic algorithm). W przeciągu ostatnich lat pojawiły się jednak nowe podejścia, algorytmy rozwiązujące problem układania planu zajęć, które postawiły algorytm genetyczny w nowym świetle. Chęć głębszego zapoznania się z postawionym przed nami problemem sprawiła, że zdecydowaliśmy się na rozszerzenie zagadnienia tematu naszej pracy inżynierskiej o kolejne implementacje algorytmów: algorytm roju cząsteczek (Particle swarm optimization) oraz algorytm adaptacyjny tabu (Adaptive tabu search). Ponadto w celu urzeczywistnienia problemu zdecydowaliśmy się na przystosowanie działania naszych algorytmów do realnych danych, uzyskanych z jednej z gdyńskich szkół ponadgimnazjalnych.
+\par Implementacja algorytmów: genetycznego, roju cząsteczek oraz adaptacyjnego tabu postawiła nas przed ciekawą możliwością porównania działania tych algorytmów, co jak się okazało, nie jest łatwym zadaniem.
 \section{Zakres pracy}
 \par Na realizację postawionego celu składa się:
 \begin{enumerate}
 \item System do automatyzacji procesu układania planu zajęć
 \begin{enumerate}
-\item Frontend — aplikacja kliencka, odpowiadająca za interakcję z użytkownikiem: wprowadzanie danych wejściowych, wybór algorytmu do generowania planu zajęć oraz wizualizacja wygenerowanego planu zajęc w Ext JS Calendar.
+\item Frontend — aplikacja kliencka, odpowiadająca za interakcję z użytkownikiem: wprowadzanie danych wejściowych, wybór algorytmu do generowania planu zajęć oraz wizualizacja wygenerowanego planu zajęć w \emph{Ext JS Calendar}.
 \item Backend - generowanie planu zajęć z danych prowadzonych przez użytkownika 
 \end{enumerate}
 \item Implementacja algorytmów
 \begin{enumerate}
-\item Algorytm Genetyczny
-\item Algorytm Roju Cząsteczek
-\item Algorytm Adaptacyjny Tabu
+\item Algorytm genetyczny
+\item Algorytm roju cząsteczek
+\item Algorytm adaptacyjny tabu
 \end{enumerate}
 \item Przetworzenie danych szkolnych do zaimplementowanych algorytmów
 \item Porównanie działania algorytmów
@@ -34,29 +34,28 @@
 \begin{enumerate}
 \item Tomasz Dziopa 
 \begin{itemize}
-\item Implementacja Algorytmu Adaptacyjnego Tabu
+\item Implementacja algorytmu adaptacyjnego tabu
 \item Przystosowanie działania algorytmu (ATS) do danych szkolnych
-\item Implementacja systemu do automatyzacji procesu układania planów zajęć: stworzenie interfejsu użytkownika, wizualizacja wygenerowanych planów w Ext JS Calendar
+\item Implementacja systemu do automatyzacji procesu układania planów zajęć: stworzenie interfejsu użytkownika, wizualizacja wygenerowanych planów w \emph{Ext JS Calendar}
 \end{itemize}
 \item Paweł Jastrzębski
 \begin{itemize}
-\item Implementacja Algorytmu Roju Cząsteczek
+\item Implementacja algorytmu roju cząsteczek
 \item Implementacja systemu do automatyzacji procesu układania planów zajęć: stworzenie formularza do dodawania zadań, list do wyświetlania zadań, zdalne uruchamianie zadań poprzez rozproszoną kolejkę 
 \end{itemize}
 \item Filip Czajkowski
 \begin{itemize}
-\item Implementacja Algorytmu Genetycznego
+\item Implementacja algorytmu genetycznego
 \item Przystosowanie działania algorytmu (GA) do danych szkolnych
 \item Przygotowanie dokumentacji dla Systemu do automatyzacji procesu układania planów zajęć
 \end{itemize}
 \item Katarzyna Śmietanka
 \begin{itemize}
-\item Implementacja Algorytmu Adaptacyjnego
+\item Implementacja algorytmu adaptacyjnego tabu
 \item Przystosowanie działania algorytmu (ATS) do danych szkolnych
 \item Przetworzenie danych szkolnych do struktury zaimplementowanych algorytmów
 \item Porównanie działania algorytmów, przygotowanie wizualizacji danych wejściowych
 \end{itemize}
 \end{enumerate}
 \section{Środowisko pracy i narzędzia}
-\paragraph{} Przy tworzeniu pracy inżynierskiej korzystaliśmy z repozytorium git w serwisie github.com \cite{github} z podpiętym narzędziem typu \textit{continuous integration} o nazwie travis \cite{travis}. Praktycznie cały kod został napisany w języku Python w wersji interpretera 2.7.6. Do testów jednostkowych użyto modułu \verb#nosetests#, aplikacja webowa została oparta o framework \verb#django# w wersji 1.6 i rozproszoną kolejkę zadań \verb#celery# \cite{celery}.
-\paragraph{} 
+\paragraph{} Przy tworzeniu pracy inżynierskiej korzystaliśmy z repozytorium \verb#Git# w serwisie \emph{github.com} \cite{github} z podpiętym narzędziem typu \textit{continuous integration} o nazwie Travis \cite{travis}. Praktycznie cały kod został napisany w języku \verb#Python# w wersji interpretera 2.7.6. Do testów jednostkowych użyto modułu \verb#nosetests#, aplikacja webowa została oparta o framework \verb#Django# w wersji 1.6 i rozproszoną kolejkę zadań \verb#Celery# \cite{celery}.

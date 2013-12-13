@@ -29,7 +29,7 @@
 \item W widoku zakończonego zadania możliwość wybrania z listy programów nauczania dowolnego z nich i wizualizacji planu w komponencie kalendarza.
 \end{itemize}
 \section{Zastosowanie}
-\paragraph{}Wytworzony system może mieć zastosowanie dwojakie. Pierwsze z nich należy do pola naukowo - badawczego i szczególnie pod tym kątem było projektowane. Dotyczy ono samego zagadnienia układania planu zajęć, umożliwia porównanie zastosowanych trzech metod pod kątem np. czasu pracy czy samej efektywności procesu. Drugim obszarem zastosowań jest platforma biznesowa, choć dość ograniczona w tym przypadku. Posiadając dane na temat jakiejś placówki dydaktycznej w odpowiednim formacie będziemy mogli ułożyć dla niej realny rozkład zajęć. Udostępniany przez system sposób wizualizacji wynikowego planu umożliwia poddanie go trafnej ocenie przydatności przez człowieka.
+\paragraph{}Wytworzony system może mieć zastosowanie dwojga rodzaju. Pierwsze z nich należy do pola naukowo - badawczego i szczególnie pod tym kątem było projektowane. Dotyczy ono samego zagadnienia układania planu zajęć, umożliwia porównanie zastosowanych trzech metod pod kątem np. czasu pracy czy samej efektywności procesu. Drugim obszarem zastosowań jest platforma biznesowa, choć dość ograniczona w tym przypadku. Posiadając dane na temat jakiejś placówki dydaktycznej w odpowiednim formacie będziemy mogli ułożyć dla niej realny rozkład zajęć. Udostępniany przez system sposób wizualizacji wynikowego planu umożliwia poddanie go trafnej ocenie przydatności przez człowieka.
 \subsection{Przypadki użycia}
 \begin{itemize}
 \item{\textbf{Aktorzy}} - Wszyscy mogą korzystać z systemu w ten sam sposób, więc istnieje jeden aktor, podstawowy użytkownik systemu. Natomiast aby przeprowadzić jakąkolwiek operację konieczne jest zalogowanie się na wcześniej utworzone konto.
@@ -39,14 +39,14 @@
 \includegraphics[width=0.8\textwidth]{img/InzynierkaUseCase.png}
 \end{center}
 \begin{enumerate}
-\item{Wygeneruj rozkład zajęć} - Po zalogowaniu z górnego menu wybrać opcję \emph{Add task} i wyświetli się widok umożliwiający wyspecyfikowanie nowego zadania generującego rozkład zajęć.
-\item{Podaj limit czasu} - Po wybraniu z menu opcji \emph{Add task} możliwe będzie wpisanie limitu na czas działania algorytmu w sekundach.
-\item{Wczytanie ograniczeń z pliku} - Po wybraniu z menu opcji \emph{Add task} widoczny będzie formularz umożliwiający wybór pliku ze zdefiniowanym problemem.
-\item{Wybierz algorytm} - Po wybraniu z menu opcji \emph{Add task} w widocznym formularzu dostępna jest lista trzech algorytmów, które będę sterować procesem generacji planu.
-\item{Pokaż szczegóły zadania} - Po wybraniu zadania z listy poprzez kliknięcie \emph{Details} ukarze się widok ze szczegółami dotyczącymi konkretnego planu.
-\item{Pokaż listę zadań} - Po wybraniu z menu opcji \emph{List all tasks} pokaże się lista dotychczas wykonanych zadań.
-\item{Usuń zadanie} - Po wybraniu z menu opcji \emph{List all tasks} pokaże się lista zadań, a każde z nich będzie można usunąć poprzez kliknięcie na przycisk \emph{Delete}, co wywoła następnie odświeżenie listy.
-\item{Zobacz plan zajęć w tabeli HTML} - Po wybraniu konkretnego zadania z widoku listy, dla każdego elementu z listy programów nauczania zawartych w planie, dostępny będzie przycisk wywołujący wizualizację wygenerowanego dla niego planu w postaci komponentu kalendarza.
+\item \textbf{Wygeneruj rozkład zajęć} - Po zalogowaniu z górnego menu wybrać opcję \emph{Add task} i wyświetli się widok umożliwiający wyspecyfikowanie nowego zadania generującego rozkład zajęć.
+\item \textbf{Podaj limit czasu} - Po wybraniu z menu opcji \emph{Add task} możliwe będzie wpisanie limitu na czas działania algorytmu w sekundach.
+\item \textbf{Wczytanie ograniczeń z pliku} - Po wybraniu z menu opcji \emph{Add task} widoczny będzie formularz umożliwiający wybór pliku ze zdefiniowanym problemem.
+\item \textbf{Wybierz algorytm} - Po wybraniu z menu opcji \emph{Add task} w widocznym formularzu dostępna jest lista trzech algorytmów, które będę sterować procesem generacji planu.
+\item \textbf{Pokaż szczegóły zadania} - Po wybraniu zadania z listy poprzez kliknięcie \emph{Details} ukarze się widok ze szczegółami dotyczącymi konkretnego planu.
+\item \textbf{Pokaż listę zadań} - Po wybraniu z menu opcji \emph{List all tasks} pokaże się lista dotychczas wykonanych zadań.
+\item \textbf{Usuń zadanie} - Po wybraniu z menu opcji \emph{List all tasks} pokaże się lista zadań, a każde z nich będzie można usunąć poprzez kliknięcie na przycisk \emph{Delete}, co wywoła następnie odświeżenie listy.
+\item \textbf{Zobacz plan zajęć w tabeli HTML} - Po wybraniu konkretnego zadania z widoku listy, dla każdego elementu z listy programów nauczania zawartych w planie, dostępny będzie przycisk wywołujący wizualizację wygenerowanego dla niego planu w postaci komponentu kalendarza.
 %\item{Pobierz wygenerowane plany} - Po wybraniu konkretnego zadania z widoku listy, dostępny będzie przycisk umożliwiający pobranie wszystkich planów w postaci arkuszy w pliku \emph{.csv}.
 \end{enumerate}
 \section{Architektura systemu}
@@ -72,4 +72,4 @@
 \end{figure}
 Gdy użytkownik prześle plik wejściowy i parametry wykonania, następuje wywołanie procedury wytworzenia planu zajęć. Aplikacja serwera przekazuje wiadomość o potrzebie wykonania zadania wraz z informacją jaki algorytm wywołać i gdzie znajduje się plik wejściowy. Zlecone zadania są zapamiętywane w kolejce systemowej. Następnie, gdy obiekt wywołujący zadania jest wolny, podbiera z kolejki zadanie i następnie wywołuje odpowiedni komponent wskazany przez typ stosowanego algorytmu. Po wykonaniu zadania zapisuje zwrócony plan zajęć do pliku i dodaje w bazie danych wpis o kolejnym zakończonym zadaniu. Dzięki tej informacji aplikacja kliencka może później pobrać informacje o wygenerowanym planie.
 \paragraph{}W celu zapisywania wygenerowanych planów, została stworzona  na serwerze określona struktura plików. Istnieją dwa foldery \emph{input} oraz \emph{output}, w których składowane są pliki odpowiednio z danymi wejściowymi dla algorytmu oraz z planem wynikowym. Rozróżniane są dzięki swojej nazwie, która odpowiada numerowi identyfikującemu zadanie w bazie danych.
-\paragraph{} Implementacja samych komponentów generujących plan wedle trzech algorytmów powstawała przy współudziale czterech osób. Stąd współdzielą one część kodu, ale też niektóre stosowane struktury są odmienne. Szczegółowy opis struktur poszczególnych rozwiązań zawiera się w rozdziale Implementacja.
+\paragraph{} Implementacja samych komponentów generujących plan wedle trzech algorytmów powstawała przy współudziale czterech osób. Stąd współdzielą one część kodu, ale też niektóre stosowane struktury są odmienne. Szczegółowe opisy struktur poszczególnych rozwiązań znajdują się w rozdziale dotyczącym opisu algorytmów i ich implementacji\ref{algorytmy}.
