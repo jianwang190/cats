@@ -151,6 +151,9 @@ class CompetitionDictReader(object):
         c = CompetitionReader()
         data = c.readInstance(id)
         return DictData(data)
-
+    def read(self, path):
+        c= CompetitionReader()
+        data = c.read(path)
+        return DictData(data)
 
 

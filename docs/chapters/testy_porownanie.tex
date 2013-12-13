@@ -390,7 +390,7 @@ Wyniki te potwierdzają najlepszą skuteczność działania algorytmu ATS, któr
 \end{figure}
 \subsection{Dane szkolne}
 Do działania na danych szkolnych zostały przystosowane dwa algorytmy: Algorytm Genetyczny i Algorytm Adaptacyjny Tabu. \\
-Dla danych szkolnych wprowadzono dodatkowe ograniczenie twarde ${H_{5}}$ dotyczące typu sali- zajęcia muszą odbywać się w odpowiednim typie sali lekcyjnej np. zajęcia z informatyki w sali laboratoryjnej. W funkcji oceny rozwiązania zrezygnowano z kary za ograniczenie dotyczące stabilności sali, ponieważ dla tego typu szkoły nie ma to zupełnie znaczenia, a może to w znacznym stopniu zmieniać optymalne rozwiązanie problemu.
+Dla danych szkolnych wprowadzono dodatkowe ograniczenie twarde ${H_{5}}$ dotyczące typu sali- zajęcia muszą odbywać się w odpowiednim typie sali lekcyjnej np. zajęcia z informatyki w sali laboratoryjnej. W funkcji oceny rozwiązania zrezygnowano z kary za ograniczenie dotyczące stabilności sali, ponieważ dla tego typu szkoły nie ma to zupełnie znaczenia, a może to w znacznym stopniu zmieniać optymalne rozwiązanie problemu .Podczas oceny rozwiązania głównie brane jest pod uwagę kryterium dotyczące zwartości zajęć ${S_{4}}$ oraz wielkości sali ${S_{1}}$. Jako, że dane testowe nie mają sprecyzowanej dokładnie minimalnej liczby dni, na którą zajęcia powinny być rozłożone zdecydowano się na pominięcie tego kryterium oceny. \\
 Parametry dla algorytmów:
 \begin{enumerate}
 \item GA - liczba osobników: 200, liczba iteracji: 173, szacowany czas działania algorytmu: 60 min
@@ -424,7 +424,25 @@ Wyniki uzyskane przez poszczególne algorytmy:
 \item Algorytm Genetyczny - funkcja oceny ograniczeń miękkich : \textbf{146}, liczba naruszeń ograniczeń twardych: \textbf{2}
 \item Algorytm Adaptacyjny Tabu - funkcja oceny ograniczeń miękkich : \textbf{1493}, liczba naruszeń ograniczeń twardych: \textbf{0}
 \end{itemize}
-Algorytmy mimo stosunkowo długiego działania, ze względu na dużą liczbę kursów, nie znalazły bardzo dobrego, optymalnego rozwiązania problemu. Algorytm Adaptacyjny Tabu wygenerował plan zajęć nienaruszających żadnych ograniczeń twardych, przydzielając wszystkie obowiązkowe zajęcia do planu zajęć. Całkowite przystosowanie algorytmy adaptacyjnego do danych uzyskanych ze szkoły wymagałaby długiej analizy działania algorytmu i przystosowania funkcji oceny do tych danych.
+\begin{figure}[H]
+        \centering
+\begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{algorytm_genetyczny_szkola.png}
+                \caption{Algorytm Genetyczny}
+        \end{subfigure}%
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.5\textwidth}
+                \includegraphics[width=\textwidth]{alg_ats_szkola.png}
+                \caption{Algorytm Adaptacyjny Tabu}
+        \end{subfigure}
+        \caption{Wykresy zmian funkcji oceny w zależności od liczby odwolań do funkcji oceny dla poszczególnych algorytmów}
+\end{figure}
+\par Algorytmy mimo stosunkowo długiego działania, ze względu na dużą liczbę kursów, nie znalazły bardzo dobrego, optymalnego rozwiązania problemu. Algorytm Adaptacyjny Tabu wygenerował plan zajęć nienaruszający żadnych ograniczeń twardych, przydzielając wszystkie obowiązkowe zajęcia do planu zajęć. 
+\par Na wykresach można zaobserwować jak zmieniała się wartość funkcji oceny w zależności od liczby odwołań do funkcji oceny do uzyskania lepszego rozwiązania niż poprzednie. Początkowe, wygenerowane rozwiązanie przez algorytm genetyczny było znacznie lepsze pod względem funkcji oceny ograniczeń miękkich niż dla algorytmu adaptacyjnego tabu. Jednak algorytm genetyczny nie był w stanie usunąć wszystkich ograniczeń twardych, wpływających na wykonalność planu. Warto zwrócić uwagę na bardzo dużą liczbę odwołań do funkcji oceny dla ATS w stosunku do GA.
+\par Wykres dla ATS obrazuje słabą skuteczność działania algorytmu, pomimo jego stosunkowo długiego czasu wykonywania. Wartość najlepszego, uzyskanego rozwiązania nie zmieniła się od fazy inicjalizacji, w której został stworzony wykonywalny plan zajęć. Uzyskane rezutaty spowodowane są prawdopodobnie słabą skutecznością operatora zaburzeń, który nie był w stanie wyprowadzić algorytmu z lokalnego minimum.
+\par Główną wadą uzyskanego planu zajęć przez ATS są liczne przerwy między obowiązkowymi zajęciami dla poszczególnych klas. Czynnik ten znacząco wpływa na nierealność planu zajęć, ponieważ uczniowie nie powinni mieć przerw między zajęciami. Problem generowania planu zajęć dla tej szkoły został w nieznaczny sposób uproszczony poprzez brak możliwości, żeby zajęcia grupowe dla jednej klasy odbywały się dokładnie w tym samym czasie. Powoduje to, że każde z zajęć z danego programu nauczania musi być przydzielone do innego przedziału czasu, np. zajęcia z wychowania fizycznego dla dziewcząt i chłopców, pomimo innego nauczyciela prowadzącego będą musiały, w tak zdefiniowanym problemie odbywać się w różnym czasie. Dla ATS wszystkie z zajęć zostały przypasowane do odpowiedniego typu sali, co było zdefiniowane dla tego przypadku jako ograniczenie twarde.
+\par Całkowite przystosowanie Algorytmy Adaptacyjnego do danych uzyskanych ze szkoły wymagałaby długiej analizy działania algorytmu i przystosowania funkcji oceny do tych specyficznych danych oraz prawdopodobnie rozbudowania operatora zaburzeń, tak by wyjść z lokalnego minimum.
 
 
 \subsection{Podsumowanie działania algorytmów}

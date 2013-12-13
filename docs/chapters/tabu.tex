@@ -312,7 +312,11 @@ Przykład dla parametrów $q = 5$ i $n = 3$:
 \paragraph{} Pomimo rozbudowanej matematycznej definicji funkcji kosztu w literaturze, efektywna implementacja okazała się być nietrywialna. Pierwsza wersja implementacji potrzebowała przejrzeć cały plan zajęć dla każdego ograniczenia miękkiego, w wersji ostatecznej wystarczą do tego tylko 2 przeglądy. Optymalizacja funkcji kosztu jest kluczowa dla czasu działania algorytmu. Korzystając z narzędzi do profilowania - moduł \verb#line_profile# - zauważyliśmy, że zdecydowaną większość czasu algorytm przeznacza na wykonanie funkcji kosztu.
 \subsubsection{Optymalizacje językowe}
 \paragraph{} Implementując algorytm staraliśmy się korzystać z funkcjonalnego paradygmatu programowania - funkcji \verb#map# i \verb#filter#, które w porównaniu ze zwykłymi pętlami w Pythonie nie mają dodatkowego narzutu przy iterowaniu. Ponadto korzystanie z elementów programowania funkcjonalnego spowodowało, że kod źródłowy jest w naszej ocenie bardziej zwięzły i czytelny.
+\subsubsection{Inne problemy wydajnościowe}
+\paragraph{} W trakcie testów okazało się, że nasz wybór języka do implementacji algorytmów był zły patrząc pod kątem wydajnościowym. Wykonując testy wydajnościowe naszej implementacji funkcji kosztu w języku Python dla $10^4$ wykonań uzyskaliśmy średni czas około 13 sekund. Podobna implementacja dostarczona przez organizatorów konkursu, napisana w języku C++ dla $10^8$ wykonań osiąga średni czas około 0.5 sekundy. Potencjalnym rozwiązaniem tego problemu jest napisanie modułu w języku C, którego zadaniem byłoby liczenie funkcji kosztu. Jednak w związku z narzutem czasowym na przekształcanie struktur danych Pythona na struktury w C możliwy zysk czasowy jest trudny do oszacowania.
+
 \subsubsection{Test-Driven Development}
 \paragraph{} Przy implementacji algorytmu staraliśmy wykorzystywać podejście TDD, czyli pisanie testów jednostkowych dla funkcji przed implementacją funkcji. ,,Szczelne'' pokrycie testami jednostkowymi podstawowych funkcji zdecydowanie ułatwiło późniejsze większe zmiany w logice i strukturze algorytmu.
+
 
 
