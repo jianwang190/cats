@@ -19,6 +19,12 @@
 \item Przeprowadzana jest mutacja, czyli wprowadzenie drobnych losowych zmian u niektórych osobników.
 \item Rodzi się kolejne pokolenie. Aby utrzymać stałą liczbę osobników w populacji te najlepsze według funkcji oceny przystosowania są powielane, a najsłabsze usuwane. Jeżeli nie znaleziono dostatecznie dobrego rozwiązania, algorytm powraca do kroku drugiego. W przeciwnym wypadku wybieramy najlepszego osobnika z populacji - jego genotyp to uzyskany wynik.
 \end{enumerate}
+\par Ilustrację powyższego procesu jest przedstawiony poniżej wykres:
+\begin{figure}[H]
+  \caption{Schemat działania algorytmu genetycznego}
+  \centering
+    \includegraphics[width=0.3\textwidth]{img/schematGA.png}
+\end{figure}
 \subsection{Historia i zastosowanie}
 Sposób działania algorytmów genetycznych nieprzypadkowo przypomina zjawisko ewolucji biologicznej, ponieważ ich twórca John Henry Holland właśnie z biologii czerpał inspiracje do swoich prac\cite{Mitchell}. W 1975 roku wydał książkę \emph{Adaptation in Natural and Artificial Systems}, w której jako pierwszy wykazał, jak procesy genetyczne mogą mieć zastosowanie wśród rozwiązywania problemów optymalizacyjnych. Specyfika działania algorytmu czyni go bardzo uniwersalnym. Możliwości jego użycia wybiegają poza czystą algorytmikę i znajduje on zastosowanie w bioinformatyce, inżynierii, ekonomii, chemii, matematyce czy fizyce. Konkretnymi przykładami mogą być np. poszukiwanie najbardziej aerodynamicznego kształtu skrzydła samolotu, opracowanie kształtu anteny najlepiej odbierającej fale radiowe albo, tak jak w tym przypadku, problem układania planu zajęć.
 \subsection{Fazy algorytmu w implementowanym rozwiązaniu}

@@ -26,6 +26,7 @@
 \item Pobieranie z pliku tekstowego wedle ustalonego wzorca zestawu ograniczeń opisujących potrzeby rozkładu zajęć.
 \item Podgląd listy wykonanych wcześniej zadań oraz stanu uruchomionych obecnie procesów.
 \item Wybranie z listy zadań konkretnego przypadku i odczytanie informacji o przyporządkowanych zajęciach do poszczególnych kursów.
+\item Pobranie wygenerowanego rozkładu zajęć w formie pliku \emph{.CSV}.
 \item W widoku zakończonego zadania możliwość wybrania z listy programów nauczania dowolnego z nich i wizualizacji planu w komponencie kalendarza.
 \end{itemize}
 \section{Zastosowanie}
@@ -47,7 +48,7 @@
 \item \textbf{Pokaż listę zadań} - Po wybraniu z menu opcji \emph{List all tasks} pokaże się lista dotychczas wykonanych zadań.
 \item \textbf{Usuń zadanie} - Po wybraniu z menu opcji \emph{List all tasks} pokaże się lista zadań, a każde z nich będzie można usunąć poprzez kliknięcie na przycisk \emph{Delete}, co wywoła następnie odświeżenie listy.
 \item \textbf{Zobacz plan zajęć w tabeli HTML} - Po wybraniu konkretnego zadania z widoku listy, dla każdego elementu z listy programów nauczania zawartych w planie, dostępny będzie przycisk wywołujący wizualizację wygenerowanego dla niego planu w postaci komponentu kalendarza.
-%\item{Pobierz wygenerowane plany} - Po wybraniu konkretnego zadania z widoku listy, dostępny będzie przycisk umożliwiający pobranie wszystkich planów w postaci arkuszy w pliku \emph{.csv}.
+\item{Pobierz wygenerowane plany} - Po wybraniu konkretnego zadania z widoku listy, dostępny będzie przycisk umożliwiający pobranie wszystkich planów w postaci arkuszy w pliku \emph{.csv}.
 \end{enumerate}
 \section{Architektura systemu}
 \paragraph{} Ogólna architektura systemu oparta jest na modelu klient - serwer. Wszystkie operacje logiczne są wykonywane po stronie serwera, natomiast część kliencka odpowiada jedynie za pobranie danych i prezentację wyników. W części serwera zawarte są następujące komponenty.
